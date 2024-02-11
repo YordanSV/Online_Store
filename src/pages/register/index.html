@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center vh-100">
+            <div class="col-md-6">
+                <div class="form-container">
+                    <form id="registrationForm">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="identification">Identification:</label>
+                            <input type="text" class="form-control" id="identification" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="surname">Surname:</label>
+                            <input type="text" class="form-control" id="surname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdate">Date of Birth:</label>
+                            <input type="date" class="form-control" id="birthdate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="province">Province:</label>
+                            <select id="province" class="form-control" onchange="updateCantons()" required>
+                                <option value="San José">San José</option>
+                                <option value="Alajuela">Alajuela</option>
+                                <option value="Heredia">Heredia</option>
+                                <option value="Cartago">Cartago</option>
+                                <option value="Guanacaste">Guanacaste</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="canton">Canton:</label>
+                            <select id="canton" class="form-control" onchange="updateDistricts()" required>
+                                <!-- Canton options will be added dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="district">District:</label>
+                            <select id="district" class="form-control" required>
+                                <!-- District options will be added dynamically -->
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="register.js"></script>
+</body>
+
+</html>
+
