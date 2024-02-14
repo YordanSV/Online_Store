@@ -117,23 +117,42 @@ document.getElementById("registrationForm").addEventListener("submit", function 
 
 
 // app.js
+// Obtener los valores de los campos de entrada
 
-const express = require('express');
-const consultaController = require('../../../backend/controllers/consultarController');
-const configuracion = require('../../database_config');
+// Crear un objeto JSON con los valores
+document.addEventListener("DOMContentLoaded", function () {
+    // Obtener una referencia al botón "Register"
+    const registerButton = document.getElementById("registerButton");
+    // Agregar un controlador de eventos al hacer clic en el botón "Register"
+    // registerButton.addEventListener("click", function (event) {
+    //     event.preventDefault(); // Evitar el comportamiento predeterminado del botón submit
 
-const app = express();
-const puerto = 3000;
-
-app.use(express.json());
-app.use('/api', consultaController); // Montar el enrutador para las consultas en la base de datos
-
-app.listen(puerto, () => {
-    console.log(`Servidor escuchando en el puerto ${puerto}`);
+    //     // Obtener los valores de los campos de entrada y almacenarlos en la constante userInfo
+    //     const userInfo = {
+    //         name: document.getElementById("name").value,
+    //         identification: document.getElementById("identification").value,
+    //         surname: document.getElementById("surname").value,
+    //         birthdate: document.getElementById("birthdate").value,
+    //         email: document.getElementById("email").value,
+    //         password: document.getElementById("password").value,
+    //         province: document.getElementById("province").value,
+    //         canton: document.getElementById("canton").value,
+    //         district: document.getElementById("district").value
+    //     };
+    // }
 });
+// Función para obtener todos los productos
+async function obtenerProductos() {
+    try {
+        const response = await axios.get('http://localhost:3000/products');
+        const productos = response.data; // Aquí tienes los datos de los productos como un objeto JavaScript
+        console.log('Productos:', productos);
+        // Aquí puedes realizar cualquier acción adicional con los productos, como mostrarlos en la interfaz de usuario
+    } catch (error) {
+        console.error('Error al obtener los productos:', error);
+    }
+}
 
-// Usa las configuraciones importadas
-console.log(configuracion.user);
-console.log(configuracion.password);
-console.log(configuracion.server);
-console.log(configuracion.database);
+// Agregar evento onclick al botón
+const obtenerProductosBtn = document.getElementById('registerButton');
+obtenerProductosBtn.onclick = obtenerProductos;

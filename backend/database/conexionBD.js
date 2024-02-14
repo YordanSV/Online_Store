@@ -12,7 +12,7 @@ const dbSettings = {
     }
 };
 
-async function getConnection(){
+export async function getConnection(){
     try {
         const pool = await sql.connect(dbSettings);
         return pool
@@ -22,7 +22,7 @@ async function getConnection(){
         console.error('Error al conectar o consultar la base de datos:', error);
     }
 } 
-getConnection();
+export {sql}
 // async function ejecutarConsulta(consulta) {
 //     try {
 //         await sql.connect(config);
