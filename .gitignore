@@ -1,3 +1,4 @@
-*_config.php
+*_config.js
+database_config
 .env
 node_modules
