@@ -114,3 +114,26 @@ document.getElementById("registrationForm").addEventListener("submit", function 
     // })
     // .then(response => ...
 });
+
+
+// app.js
+
+const express = require('express');
+const consultaController = require('../../../backend/controllers/consultarController');
+const configuracion = require('../../database_config');
+
+const app = express();
+const puerto = 3000;
+
+app.use(express.json());
+app.use('/api', consultaController); // Montar el enrutador para las consultas en la base de datos
+
+app.listen(puerto, () => {
+    console.log(`Servidor escuchando en el puerto ${puerto}`);
+});
+
+// Usa las configuraciones importadas
+console.log(configuracion.user);
+console.log(configuracion.password);
+console.log(configuracion.server);
+console.log(configuracion.database);
