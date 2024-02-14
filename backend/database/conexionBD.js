@@ -1,20 +1,12 @@
 import sql from 'mssql'
+import { dbSettings } from './database_config';
 
 
-const dbSettings = {
-    user: 'yordan',
-    password: '1234',
-    server: 'localhost', // Puede ser 'localhost\\nombre_instancia' para SQL Server local
-    database: 'Tienda_Online',
-    options: {
-        encrypt: true,
-        trustServerCertificate: true
-    }
-};
 
 export async function getConnection(){
     try {
         const pool = await sql.connect(dbSettings);
+        //console.log(pool)
         return pool
         // const result = await pool.request().query("select * from Products"); // Espera a que la consulta se resuelva
         // console.log(result.recordset); // Imprime el resultado de la consulta

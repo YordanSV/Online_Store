@@ -1,5 +1,5 @@
 function redirectLogin() {
-    window.location.href="src/pages/login/index.html"
+    window.location.href="pages/login/index.html"
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function redirectRegister() {
-    window.location.href="src/pages/register/index.html"
+    window.location.href="pages/register/index.html"
 }
 document.addEventListener('DOMContentLoaded', () => {
     var button = document.getElementById("redirectRegisterButton")
