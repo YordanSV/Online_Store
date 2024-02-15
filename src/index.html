@@ -1,46 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Online Store</title>
-  <script src="js/redirects.js" defer></script>
+  <script type="module" src="js/redirects.js" ></script>
+  <script type="module" src="js/index.js" ></script>
+  <script src="main.js" ></script>
+  <link href="./style.css" rel="stylesheet">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
   <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">Online Store</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
               Catalog
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Clothing</a>
-              <a class="dropdown-item" href="#">Beaty</a>
-              <a class="dropdown-item" href="#">Home</a>
-              <a class="dropdown-item" href="#">Toys</a>
-              <a class="dropdown-item" href="#">Electronic</a>
-
+              <a class="dropdown-item" href="#" onclick="filterProducts(1)">Electronics</a>
+              <a class="dropdown-item" href="#" onclick="filterProducts(2)">Clothing and Accessories</a>
+              <a class="dropdown-item" href="#" onclick="filterProducts(3)">Home and Garden</a>
+              <a class="dropdown-item" href="#" onclick="filterProducts(4)">Health and Beauty</a>
+              <a class="dropdown-item" href="#" onclick="filterProducts(5)">Sports and Outdoor Activities</a>
+ 
               <!-- Add more options as needed -->
             </div>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
-          <button id="redirectLoginButton" class="btn btn-outline-success my-2 my-sm-0" type="submit" >Login</button>
-          <button id="redirectRegisterButton" class="btn btn-outline-primary my-2 my-sm-0 ml-2" type="submit">Register</button>
+          <button id="redirectLoginButton" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+          <button id="redirectRegisterButton" class="btn btn-outline-primary my-2 my-sm-0 ml-2"
+            type="submit">Register</button>
         </form>
       </div>
     </nav>
   </header>
+  <section id="flightAvailable">
+    <!-- Contenedor para los vuelos generados dinamicamente -->
+    <div id="flightCardsContainer" class="container">
+      <div class="row" id="flightCardRow"></div>
+    </div>
+  </section>
 
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

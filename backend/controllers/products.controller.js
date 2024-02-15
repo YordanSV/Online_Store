@@ -5,8 +5,8 @@ export const getProducts = async (req, res) => {
     const pool = await getConnection();
     const result = await pool.request().query('select * from products');
 
-    console.log(result);
-    //res.json(result.recordset);
+    //return result;
+    res.json(result.recordset);
 }
 
 export const createNewProduct = async (req, res) => {

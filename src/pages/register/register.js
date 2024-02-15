@@ -141,18 +141,9 @@ document.addEventListener("DOMContentLoaded", function () {
     //     };
     // }
 });
-// Función para obtener todos los productos
-async function obtenerProductos() {
-    try {
-        const response = await axios.get('http://localhost:3000/products');
-        const productos = response.data; // Aquí tienes los datos de los productos como un objeto JavaScript
-        console.log('Productos:', productos);
-        // Aquí puedes realizar cualquier acción adicional con los productos, como mostrarlos en la interfaz de usuario
-    } catch (error) {
-        console.error('Error al obtener los productos:', error);
-    }
-}
+
+
 
 // Agregar evento onclick al botón
 const obtenerProductosBtn = document.getElementById('registerButton');
-obtenerProductosBtn.onclick = obtenerProductos;
+//obtenerProductosBtn.onclick = getProducts;

@@ -157,10 +157,10 @@ INSERT INTO Categories (CategoryId, CategoryName) VALUES
 
 -- Inserci�n de datos en la tabla Products
 INSERT INTO Products (ProductId, ProductName, Presentation, Size, Pr_weight, Price, MinInventoryQuantity, MaxWareHouseQuantity, CategoryID) VALUES
-(1, 'Smartphone', 'Box', '5.5 inches', 0.2, 699.99, 10, 100, 1),
-(2, 'Jeans', 'Piece', 'M', 0.5, 39.99, 20, 200, 2),
+(1, 'Samsung Galaxy ZFlip', 'Box', '5.5 inches', 0.2, 699.99, 10, 100, 1),
+(2, 'Jeans Fashion', 'Piece', 'M', 0.5, 39.99, 20, 200, 2),
 (3, 'Garden Hose', 'Roll', '50 ft', 2.0, 29.99, 5, 50, 3),
-(4, 'Shampoo', 'Bottle', '500 ml', 0.6, 9.99, 30, 300, 4),
+(4, 'Shampoo Dove', 'Bottle', '500 ml', 0.6, 9.99, 30, 300, 4),
 (5, 'Yoga Mat', 'Piece', 'Standard', 1.5, 19.99, 15, 150, 5);
 
 -- Inserci�n de datos en la tabla Purchases
