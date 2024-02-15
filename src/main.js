@@ -17,19 +17,24 @@ document.addEventListener('DOMContentLoaded', () => {
     getProducts().then(() => {
         renderFlightCards(products);
     });
-//   renderFlightCards(products); //Muestra los vuelos al cargar
+    //   renderFlightCards(products); //Muestra los vuelos al cargar
 })
 
 
 function filterProducts(idCategory) {
-        const result = products.filter(filterCategory(idCategory));
-        renderFlightCards(result);
+    if (idCategory == 0) { // si marca mostrar todo
+        getProducts().then(() => {
+            renderFlightCards(products);
+        });
+    }
+    const result = products.filter(filterCategory(idCategory));
+    renderFlightCards(result);
 }
 
 function filterCategory(idCategory) {
     console.log(idCategory)
-    return function(product){
-          return product.CategoryID === idCategory;
+    return function (product) {
+        return product.CategoryID === idCategory;
     }
 
 }
@@ -38,50 +43,51 @@ function filterCategory(idCategory) {
 function generateFlightCard(product) {
 
 
-    const category = product.CategoryID==1 ? "Electronics" :
-                     product.CategoryID==2 ? "Clothing and Accessories" :
-                     product.CategoryID==3 ? "Home and Garden" :
-                     product.CategoryID==4 ? "Health and Beauty" :
-                     "Sports and Outdoor Activitie";
+    const category = product.CategoryID == 1 ? "Electronics" :
+        product.CategoryID == 2 ? "Clothing and Accessories" :
+            product.CategoryID == 3 ? "Home and Garden" :
+                product.CategoryID == 4 ? "Health and Beauty" :
+                    "Sports and Outdoor Activitie";
 
 
 
-  return `
-      <div class="col-md-4 mb-4">
-          <div class="card" style="width: 18rem;">
-                  <h5 class="card-title">${category}</h5>
-                  <img class="card-img-top img-thumbnail" src="./img/${product.ProductName}.jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">${product.ProductName} </h5>
-                  <p class="card-text">
-                      <strong>Presentation:</strong> ${product.Presentation}<br>
-                      <strong>Size:</strong> ${product.Size}<br>
-                      <strong>Price per kilogram:</strong> ${product.Pr_weight}<br>
-                      <strong>Price:</strong> $${product.Price}
-                  </p>
-                  <a href="#" class="btn btn-primary">Book Now</a>
-               </div>
-          </div>
-      </div>
+    return `
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <img class="card-img-top" src="./img/${product.ProductName}.jpg" alt="Card image cap">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">${category}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">${product.ProductName}</h6>
+                <p class="card-text">
+                    <strong>Presentation:</strong> ${product.Presentation}<br>
+                    <strong>Size:</strong> ${product.Size}<br>
+                    <strong>Price per kilogram:</strong> ${product.Pr_weight}<br>
+                    <strong>Price:</strong> $${product.Price}
+                </p>
+                <a href="#" class="mt-auto btn btn-primary">Book Now</a>
+            </div>
+        </div>
+    </div>
+
   `;
 }
 
 function renderFlightCards(products) {
     console.log(products)
-  cleanHTML();
-  // Obtener el contenedor de filas de tarjetas de vuelo
-  const productCardRow = document.getElementById('flightCardRow');
+    cleanHTML();
+    // Obtener el contenedor de filas de tarjetas de vuelo
+    const productCardRow = document.getElementById('productCardRow');
 
-  // Generar las tarjetas de vuelo y agregarlas al contenedor en filas
-  products.forEach(product => {
-    const productCard = generateFlightCard(product);
-    productCardRow.innerHTML += productCard;
-  });
+    // Generar las tarjetas de vuelo y agregarlas al contenedor en filas
+    products.forEach(product => {
+        const productCard = generateFlightCard(product);
+        productCardRow.innerHTML += productCard;
+    });
 }
 
 function cleanHTML() {
-  const flightCardRow = document.getElementById('flightCardRow');
-  while (flightCardRow.firstChild) {
-    flightCardRow.removeChild(flightCardRow.firstChild);
-  }
+    const productCardRow = document.getElementById('productCardRow');
+    while (productCardRow.firstChild) {
+        productCardRow.removeChild(productCardRow.firstChild);
+    }
 }

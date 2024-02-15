@@ -28,6 +28,7 @@
               Catalog
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#" onclick="filterProducts(0)">All</a>
               <a class="dropdown-item" href="#" onclick="filterProducts(1)">Electronics</a>
               <a class="dropdown-item" href="#" onclick="filterProducts(2)">Clothing and Accessories</a>
               <a class="dropdown-item" href="#" onclick="filterProducts(3)">Home and Garden</a>
@@ -46,12 +47,14 @@
       </div>
     </nav>
   </header>
-  <section id="flightAvailable">
-    <!-- Contenedor para los vuelos generados dinamicamente -->
-    <div id="flightCardsContainer" class="container">
-      <div class="row" id="flightCardRow"></div>
-    </div>
-  </section>
+  <main>
+    <section id="productsAvailable" class="pt-5">
+      <!-- Contenedor para los vuelos generados dinámicamente -->
+      <div id="productCardsContainer" class="container">
+        <div class="row" id="productCardRow"></div>
+      </div>
+    </section>
+  </main>
 
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
