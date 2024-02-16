@@ -1,6 +1,7 @@
 use Tienda_Online
 
 DROP TRIGGER IF EXISTS Trg_Login_log ON Users;
+DROP TRIGGER IF EXISTS Historial_Compras ON Purchases;
 
 /*Trigger
 ------------------
@@ -54,3 +55,42 @@ Print 'Position not recognized'
 end
 
 end;
+
+GO
+/*Trigger
+------------------
+--------------------
+--------------------
+----------------------
+------------------------*/
+
+	Create trigger Historial_Compras
+	On Purchases
+	After insert
+	as 
+	begin
+
+	If exists (select * from deleted)
+
+	----inserta los datos en el historial, obteniendo los datos de un join
+
+	INSERT INTO Historial(UserID, ProductName, ProductId, FirstName, PurchaseID, PurchaseDate)
+
+	SELECT
+        C.UserID,
+        P.ProductName,
+        P.ProductId,
+        C.FirstName,
+        I.PurchaseID,
+        I.PurchaseDate
+    FROM
+        inserted AS I
+    INNER JOIN
+        Costumers AS C ON I.UserID = C.UserID
+    INNER JOIN
+        Products AS P ON P.ProductId = I.PurchaseID;
+
+
+	End;
+
+    
