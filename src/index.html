@@ -5,10 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Online Store</title>
-  <script type="module" src="js/redirects.js" ></script>
-  <script type="module" src="js/index.js" ></script>
-  <script src="main.js" ></script>
   <link href="./style.css" rel="stylesheet">
+  <link href="./css/normalize.css style.css" rel="stylesheet">
+  <link href="./css/skeleton.css" rel="stylesheet">
+  <script type="module" src="js/redirects.js"></script>
+  <script type="module" src="js/index.js"></script>
+  <script type="module" src="cart.js"></script>
+  <script src="main.js"></script>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -34,11 +37,42 @@
               <a class="dropdown-item" href="#" onclick="filterProducts(3)">Home and Garden</a>
               <a class="dropdown-item" href="#" onclick="filterProducts(4)">Health and Beauty</a>
               <a class="dropdown-item" href="#" onclick="filterProducts(5)">Sports and Outdoor Activities</a>
- 
+
               <!-- Add more options as needed -->
             </div>
           </li>
         </ul>
+         <!-- Nuevo div container para el carrito -->
+      <div class="container col-md-6 text-right">
+        <div class="row">
+          <div class="four columns">
+            <!-- <img src="./img/logo.png" id="logo"> -->
+          </div>
+          <div class="two columns u-pull-right">
+            <ul>
+              <li class="submenu">
+                <img src="./img/cart.png" id="img-carrito">
+                <div id="carrito">
+                  <table id="lista-carrito" class="u-full-width">
+                    <thead>
+                      <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                  <a href="#" id="vaciar-carrito" class="button u-full-width">Vaciar Carrito</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- Fin del nuevo div container -->
         <form class="form-inline my-2 my-lg-0">
           <button id="redirectLoginButton" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
           <button id="redirectRegisterButton" class="btn btn-outline-primary my-2 my-sm-0 ml-2"
@@ -47,6 +81,7 @@
       </div>
     </nav>
   </header>
+
   <main>
     <section id="productsAvailable" class="pt-5">
       <!-- Contenedor para los vuelos generados dinámicamente -->
@@ -56,6 +91,28 @@
     </section>
   </main>
 
+  <footer id="footer" class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="four columns">
+          <nav id="principal" class="menu">
+            <a class="enlace" href="#">Para tu Negocio</a>
+            <a class="enlace" href="#">Conviertete en Instructor</a>
+            <a class="enlace" href="#">Aplicaciones Móviles</a>
+            <a class="enlace" href="#">Soporte</a>
+            <a class="enlace" href="#">Temas</a>
+          </nav>
+        </div>
+        <div class="four columns">
+          <nav id="secundaria" class="menu">
+            <a class="enlace" href="#">¿Quienes Somos?</a>
+            <a class="enlace" href="#">Empleo</a>
+            <a class="enlace" href="#">Blog</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

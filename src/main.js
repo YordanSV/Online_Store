@@ -53,7 +53,7 @@ function generateFlightCard(product) {
 
     return `
     <div class="col-md-4 mb-4">
-        <div class="card h-100">
+        <div class="card h-100" data-id=${product.CategoryID}>
             <img class="card-img-top" src="./img/${product.ProductName}.jpg" alt="Card image cap">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">${category}</h5>
@@ -61,10 +61,10 @@ function generateFlightCard(product) {
                 <p class="card-text">
                     <strong>Presentation:</strong> ${product.Presentation}<br>
                     <strong>Size:</strong> ${product.Size}<br>
-                    <strong>Price per kilogram:</strong> ${product.Pr_weight}<br>
+                    <strong class='price'>Price per kilogram:</strong> ${product.Pr_weight}<br>
                     <strong>Price:</strong> $${product.Price}
                 </p>
-                <a href="#" class="mt-auto btn btn-primary">Book Now</a>
+                <a href="#" class="mt-auto btn btn-primary agregar-carrito">Book Now</a>
             </div>
         </div>
     </div>
