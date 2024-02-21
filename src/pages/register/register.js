@@ -1,3 +1,65 @@
+const firtName = document.getElementById("name").value;
+const identification = document.getElementById("identification").value;
+const surname = document.getElementById("surname").value;
+const birthdate = document.getElementById("birthdate").value;
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+const province = document.getElementById("province").value;
+const canton = document.getElementById("canton").value;
+const district = document.getElementById("district").value;
+
+const newUser = {
+    name: firtName,
+    identification: identification,
+    surname: surname,
+    birthdate: birthdate,
+    email: email,
+    password: password,
+    province: province,
+    canton: canton,
+    district: district
+  };
+
+async function getUser() {
+    try {
+        const response = await axios.post('http://localhost:3000/register', newUser);
+        const users = response.data;
+
+        users.forEach(user => {
+            if (emailInput.value === user.Email && passwordInput.value === user.Pass_word) {
+                selectUser = user;
+                // console.log('El usuario existe:', user);
+                // Almacenar el usuario en el LocalStorage
+                localStorage.setItem('user', JSON.stringify(selectUser));
+                // Redireccionar a otra página
+                window.location.href = "../../index.html";
+
+
+            }
+        });
+
+        if (!selectUser) {
+            console.log('El usuario no existe o la clave es incorrecta');
+        }
+    } catch (error) {
+        console.error('Error retrieving products:', error);
+    }
+}
+
+
+document.getElementById("submitButton").addEventListener('click', (event) => {
+    event.preventDefault();
+    getUser().then(() => {
+        console.log(selectUser)
+    });
+    //   renderFlightCards(products); //Muestra los vuelos al cargar
+})
+
+
+
+
+
+
 const cantonsByProvince = {
     "San José": ["San José", "Escazú", "Desamparados", "Alajuelita", "Montes de Oca"],
     "Alajuela": ["Alajuela", "San Ramón", "Grecia", "Atenas", "Palmares"],
@@ -89,30 +151,6 @@ document.getElementById("registrationForm").addEventListener("submit", function 
     const canton = document.getElementById("canton").value;
     const district = document.getElementById("district").value;
 
-    // Here you can perform additional actions, such as sending the data to a server or logging it to console for demonstration purposes
-    console.log("Name:", name);
-    console.log("Identification:", identification);
-    console.log("Surname:", surname);
-    console.log("Date of Birth:", birthdate);
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Province:", province);
-    console.log("Canton:", canton);
-    console.log("District:", district);
-
-    // Here you could send the data to a server, for example:
-    // fetch("server_url", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     name: name,
-    //     identification: identification,
-    //     // and so on for other fields
-    //   }),
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   }
-    // })
-    // .then(response => ...
 });
 
 
@@ -123,23 +161,7 @@ document.getElementById("registrationForm").addEventListener("submit", function 
 document.addEventListener("DOMContentLoaded", function () {
     // Obtener una referencia al botón "Register"
     const registerButton = document.getElementById("registerButton");
-    // Agregar un controlador de eventos al hacer clic en el botón "Register"
-    // registerButton.addEventListener("click", function (event) {
-    //     event.preventDefault(); // Evitar el comportamiento predeterminado del botón submit
 
-    //     // Obtener los valores de los campos de entrada y almacenarlos en la constante userInfo
-    //     const userInfo = {
-    //         name: document.getElementById("name").value,
-    //         identification: document.getElementById("identification").value,
-    //         surname: document.getElementById("surname").value,
-    //         birthdate: document.getElementById("birthdate").value,
-    //         email: document.getElementById("email").value,
-    //         password: document.getElementById("password").value,
-    //         province: document.getElementById("province").value,
-    //         canton: document.getElementById("canton").value,
-    //         district: document.getElementById("district").value
-    //     };
-    // }
 });
 
 
