@@ -1,5 +1,14 @@
 let products = [];
+const storedUser = JSON.parse(localStorage.getItem('user'));
 
+// Verificar si el usuario existe
+document.addEventListener("DOMContentLoaded", function() {
+    if (storedUser) {
+        // El usuario existe, puedes usarlo
+        console.log('Usuario recuperado:', storedUser);
+        document.getElementById('nameUser').textContent = 'Bienvenido '+storedUser['FirstName']+' '+storedUser['LastName'];
+    }
+})
 
 // Function to retrieve all products
 async function getProducts() {

@@ -22,3 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault(); // Evitar el comportamiento predeterminado del formulario
     });
 });
+
+
+function redirectBuy() {
+    window.location.href="pages/register/index.html"
+}
+document.addEventListener('DOMContentLoaded', () => {
+    var button = document.getElementById("redirectBuyButton")
+    button.addEventListener('click', function(event) {
+        redirectBuy();
+        event.preventDefault(); // Evitar el comportamiento predeterminado del formulario
+    });
+});
