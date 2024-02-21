@@ -101,7 +101,7 @@ CREATE TABLE ProductEntries (
 
 -- Creaci�n de la tabla ContactMessages
 CREATE TABLE ContactMessages (
-    MessageId INT PRIMARY KEY,
+    MessageId int IDENTITY(1,1),
     Message_text VARCHAR(250) NOT NULL
 );
 
