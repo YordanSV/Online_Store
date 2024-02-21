@@ -593,4 +593,14 @@ UPDATE Products
 
 	End;
 
+go
 
+	Create procedure Message_Users
+    @Message_text VARCHAR(250)
+
+
+	as
+	begin
+    Insert into ContactMessages(Message_text) values
+	(@Message_text)
+	end
