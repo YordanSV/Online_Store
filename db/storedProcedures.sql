@@ -603,4 +603,61 @@ go
 	begin
     Insert into ContactMessages(Message_text) values
 	(@Message_text)
-	end
+end
+
+
+go
+    CREATE PROCEDURE Product_Entries
+	@Answer char (2),
+	@ProductId int,
+	@ProductName varchar(100),
+	@Presentation varchar(100),
+	@Size varchar(20), 
+	@Pr_weight decimal(10, 2),
+	@Price decimal (10, 2),
+	@MinInventoryQuantity int,
+	@MaxWareHouseQuantity int,
+	@CategoryID int,
+	@EntryId int,
+	@EntryDate DATETIME,
+	@Quantity int
+AS
+BEGIN
+
+	----Select muestra los datos de los productos que entraron
+	IF @Answer = '1'
+	BEGIN
+		SELECT
+			PR.ProductID AS ProductID,
+			PR.ProductName AS productName,
+			PR.Presentation AS Presentation,
+			PR.Size AS Size,
+			PR.Pr_weight AS Pr_weight,
+			PR.Price AS Price,
+			PR.MinInventoryQuantity AS MinInventoryQuantity,
+			PR.MaxWareHouseQuantity AS MaxWareHouseQuantity,
+			PR.CategoryID AS CategoryID,
+			PE.EntryId AS EntryId,
+			PE.ProductId AS ProductId,
+			PE.EntryDate AS EntryDate,
+			PE.Quantity AS Quantity
+		FROM
+			ProductEntries PE
+		INNER JOIN
+			Products PR ON PE.ProductId = PR.ProductId
+	END
+	ELSE IF @Answer = '2'
+	BEGIN
+		INSERT INTO Products (ProductId, ProductName, Presentation, Size, Pr_weight, Price, MinInventoryQuantity, MaxWareHouseQuantity, CategoryID)
+		VALUES (@ProductId, @ProductName, @Presentation, @Size, @Pr_weight, @Price, @MinInventoryQuantity, @MaxWareHouseQuantity, @CategoryID);
+
+		INSERT INTO ProductEntries (EntryId, ProductId, EntryDate, Quantity)
+		VALUES (@EntryId, @ProductId, @EntryDate, @Quantity);
+	END
+	ELSE
+	BEGIN
+		PRINT 'Opción inválida';
+	END
+END;
+
+
