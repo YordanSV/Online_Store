@@ -606,6 +606,7 @@ go
 end
 
 
+
 go
     CREATE PROCEDURE Product_Entries
 	@Answer char (2),
