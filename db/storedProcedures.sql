@@ -662,3 +662,62 @@ BEGIN
 END;
 
 
+GO
+
+Create procedure GenerarCalculoyFactura 
+@PurchaseID INT
+
+AS
+BEGIN
+
+--Declara variables
+
+--Total de la compra
+Declare @TotalCompra Decimal(10,2)
+---Calculo del impuest
+Declare @TotalImpuesto Decimal(10,2)
+--Total envio
+Declare @TotalEnvio Decimal(10,2)
+--Total a pagar del cliente
+Declare @TotalPagar Decimal(10,2)
+
+--Calculo total de la compra
+-- Variable guarda la suma del resultado la cantidad de producto solicitado por el precio
+Select @TotalCompra = SUM(PD.Quantity * P.Price)
+FROM PurchaseDetails PD
+---Join de Purchase details con los productos
+INNER JOIN  Products P ON PD.ProductId = P.ProductId
+WHERE PD.ProductId = @PurchaseID
+
+----Cálculo del impuesto, donde el total del impuesto es el del total de la compra por el 0.13
+Set @TotalImpuesto = @TotalCompra * 0.13
+
+---Calculo del peso total del productos
+Declare @PesoTotal Decimal(10,2)
+---Variable peso total guarda la suma de la multiplicación de la cantidad por el pedo del producto
+Select @PesoTotal = Sum(PD.Quantity * P.Pr_weight)
+From PurchaseDetails PD
+---Join de Purchase details con los productos
+Inner Join Products P ON PD.ProductId = P.ProductId
+Where PD.Purchase_ID = @PurchaseID
+
+---El total del envio se declara como el peso total * 500
+SET @TotalEnvio = @PesoTotal * 500
+
+
+---Calculo del total a pagar que es el total de la compra, el impuesto y el total del envío
+SET @TotalPagar = @TotalCompra + @TotalImpuesto + @TotalEnvio
+
+
+--Inserta datos en la tabla de facturas
+INSERT INTO Facturas (PurchaseID, ProductName, Quantity, UnitPrice, TotalPrice, TotalCompra, TotalImpuesto, TotalEnvio, TotalPagar)
+    SELECT @PurchaseID, P.ProductName, PD.Quantity, P.Price, (PD.Quantity * P.Price) AS TotalPrice, @TotalCompra, @TotalImpuesto, @TotalEnvio, @TotalPagar
+    FROM PurchaseDetails PD
+    INNER JOIN Products p ON PD.ProductId = P.ProductId
+    WHERE PD.PurchaseId = @PurchaseID
+
+    -- Mostrar datos de la tabla de facturas
+    SELECT * FROM Facturas WHERE PurchaseID = @PurchaseID
+	
+	
+END

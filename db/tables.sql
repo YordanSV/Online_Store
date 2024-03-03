@@ -105,6 +105,19 @@ CREATE TABLE ContactMessages (
     Message_text VARCHAR(250) NOT NULL
 );
 
+CREATE TABLE Facturas (
+    FacturaID INT PRIMARY KEY IDENTITY(1,1),
+    PurchaseID INT,
+    ProductName VARCHAR(100),
+    Quantity INT,
+    UnitPrice DECIMAL(10, 2),
+    TotalPrice DECIMAL(10, 2),
+    TotalCompra DECIMAL(10, 2),
+    TotalImpuesto DECIMAL(10, 2),
+    TotalEnvio DECIMAL(10, 2),
+    TotalPagar DECIMAL(10, 2)
+);
+
 -- Inserci�n de datos en la tabla Ids
 INSERT INTO Ids (Identification, Identification_Desc) VALUES
 (1, 'ID001'),
