@@ -1,4 +1,10 @@
 use Tienda_Online
+select * from Costumers
+select * from IDs
+select * from Users
+select * from Employees
+select UserID from Users
+where Email = 'satdcov@outlook.com'
 
 DROP TABLE IF EXISTS PurchaseDetails;
 DROP TABLE IF EXISTS Purchases;
@@ -10,7 +16,7 @@ DROP TABLE IF EXISTS Employees;
 DROP TABLE IF EXISTS Costumers;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Ids;
-
+DROP TABLE IF EXISTS Facturas;
 
 -- Creaci�n de la tabla Ids
 CREATE TABLE Ids (
@@ -41,7 +47,7 @@ CREATE TABLE Costumers (
     Phone VARCHAR(20) NOT NULL,
     CardNumber VARCHAR(16) NOT NULL,
     CardType VARCHAR(20) NOT NULL,
-    Cs_status VARCHAR(20) NOT NULL
+    Cs_status VARCHAR(20) NOT NULL 
 );
 
 -- Creaci�n de la tabla Employees
@@ -120,16 +126,16 @@ CREATE TABLE Facturas (
 
 -- Inserci�n de datos en la tabla Ids
 INSERT INTO Ids (Identification, Identification_Desc) VALUES
-(1, 'ID001'),
-(2, 'ID002'),
-(3, 'ID003'),
-(4, 'ID004'),
-(5, 'ID005'),
-(6, 'ID001'),
-(7, 'ID002'),
-(8, 'ID003'),
-(9, 'ID004'),
-(10, 'ID005');
+(1, 'Jurídica'),
+(2, 'Pasaporte'),
+(3, 'Dimex'),
+(4, 'Jurídica'),
+(5, 'Dimex'),
+(6, 'Pasaporte'),
+(7, 'Jurídica'),
+(8, 'Dimex'),
+(9, 'Jurídica'),
+(10, 'Jurídica');
 
 -- Inserci�n de datos en la tabla Users
 INSERT INTO Users (Email, Pass_word, Position) VALUES
