@@ -1,10 +1,14 @@
 use Tienda_Online;
 
+
 DROP PROCEDURE IF EXISTS SP_Costumer_Update;
 DROP PROCEDURE IF EXISTS SP_Category_Maintenance;
 DROP PROCEDURE IF EXISTS SP_Product_Maintenance;
 DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update;
 DROP PROCEDURE IF EXISTS SP_Register_Clients;
+
+
+
 /*Procedimientos almacenados 
 --------------------------
 ----------------------------
@@ -200,8 +204,11 @@ GO
 ------------------------*/
 
 Create procedure SP_Register_Clients
-@UserID int,
-@ID_Desc varchar(20),
+@ID int,
+@ID_Desc int,
+@Email VARCHAR(50),
+@Pass_word VARCHAR(50),
+@Position VARCHAR(50),
 @FirstName VARCHAR(50),
 @LastName VARCHAR(50),
 @BirthDate date,
@@ -216,15 +223,43 @@ Create procedure SP_Register_Clients
 AS
 BEGIN
 
-INSERT INTO Ids(Identification, Identification_Desc)
-values(@UserID, @ID_Desc)
 
-INSERT INTO Costumers(UserID, FirstName, LastName, BirthDate, Province, District,
-Canton, NeighBorhood, Place_address, Phone, CardNumber, CardType)
+DECLARE @UserID INT;
 
-values (@UserID ,
-@FirstName, @LastName, @BirthDate, @Province, @District, @Canton, @NeighBorhood, @Place_address, @Phone ,@CardNumber, @CardType);
+-- Verifica si el correo electrónico ya existe en la tabla
+IF EXISTS (SELECT 1 FROM Costumers WHERE ID = @ID) OR EXISTS (SELECT 1 FROM Employees WHERE ID = @ID)
+BEGIN
+    return 2;
+END
+ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
+BEGIN
+    return 1;
+END
+BEGIN
+	INSERT INTO Users (Email, Pass_word, Position)
+	VALUES(@Email, @Pass_word, @Position)
+	--Obtenemos el id del nuevo user
+    SELECT @UserID = UserID
+    FROM Users
+    WHERE Email = @Email;
 
+	INSERT INTO Ids(Identification, Identification_Desc)
+	values(@ID, @ID_Desc)
+
+	if @Position = 'Costumer'
+	begin
+		INSERT INTO Costumers(ID, UserID, FirstName, LastName, BirthDate, Province, District,
+		Canton, NeighBorhood, Place_address, Phone, CardNumber, CardType,Cs_status)
+		values (@ID, @UserID ,
+		@FirstName, @LastName, @BirthDate, @Province, @District, @Canton, @NeighBorhood, @Place_address, @Phone ,@CardNumber, @CardType, 'Active');
+	END;
+		--values (4, 1 ,'FirstName', 'LastName', '1995-03-10', 'Province', 'District', 'Canton', 'NeighBorhood', 'Place_address', 'Phone' ,'CardNumber', 'CardType', 'Active');
+	Else if @Position = 'Employee'
+	begin
+		INSERT INTO Employees (ID, UserID, FirstName, LastName) VALUES
+		(@ID, @UserID, @FirstName, @LastName)
+	END;
+END;
 END;
 
 GO
