@@ -1,3 +1,5 @@
+// import registerController from '../../../backend/controllers/register.controller'
+
 const firtName = document.getElementById("name").value;
 const identification = document.getElementById("identification").value;
 const surname = document.getElementById("surname").value;
@@ -18,42 +20,42 @@ const newUser = {
     province: province,
     canton: canton,
     district: district
-  };
+};
 
-async function getUser() {
-    try {
-        const response = await axios.post('http://localhost:3000/register', newUser);
-        const users = response.data;
+// async function getUser() {
+//     try {
+//         const response = await axios.post('http://localhost:3000/register', newUser);
+//         const users = response.data;
 
-        users.forEach(user => {
-            if (emailInput.value === user.Email && passwordInput.value === user.Pass_word) {
-                selectUser = user;
-                // console.log('El usuario existe:', user);
-                // Almacenar el usuario en el LocalStorage
-                localStorage.setItem('user', JSON.stringify(selectUser));
-                // Redireccionar a otra página
-                window.location.href = "../../index.html";
-
-
-            }
-        });
-
-        if (!selectUser) {
-            console.log('El usuario no existe o la clave es incorrecta');
-        }
-    } catch (error) {
-        console.error('Error retrieving products:', error);
-    }
-}
+//         users.forEach(user => {
+//             if (emailInput.value === user.Email && passwordInput.value === user.Pass_word) {
+//                 selectUser = user;
+//                 // console.log('El usuario existe:', user);
+//                 // Almacenar el usuario en el LocalStorage
+//                 localStorage.setItem('user', JSON.stringify(selectUser));
+//                 // Redireccionar a otra página
+//                 window.location.href = "../../index.html";
 
 
-document.getElementById("submitButton").addEventListener('click', (event) => {
-    event.preventDefault();
-    getUser().then(() => {
-        console.log(selectUser)
-    });
-    //   renderFlightCards(products); //Muestra los vuelos al cargar
-})
+//             }
+//         });
+
+//         if (!selectUser) {
+//             console.log('El usuario no existe o la clave es incorrecta');
+//         }
+//     } catch (error) {
+//         console.error('Error retrieving products:', error);
+//     }
+// }
+
+
+// document.getElementById("submitButton").addEventListener('click', (event) => {
+//     event.preventDefault();
+//     getUser().then(() => {
+//         console.log(selectUser)
+//     });
+//     //   renderFlightCards(products); //Muestra los vuelos al cargar
+// })
 
 
 
@@ -137,9 +139,8 @@ function updateDistricts() {
 updateCantons();
 
 // Handle form submit event
-document.getElementById("registrationForm").addEventListener("submit", function (event) {
+document.getElementById("registerButton").addEventListener("click", function (event) {
     event.preventDefault(); // Prevent the form from being submitted by default
-
     // Here you can access the values of form fields and do whatever you need, for example:
     const name = document.getElementById("name").value;
     const identification = document.getElementById("identification").value;
@@ -147,10 +148,69 @@ document.getElementById("registrationForm").addEventListener("submit", function 
     const birthdate = document.getElementById("birthdate").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const position = document.getElementById("position").value;
     const province = document.getElementById("province").value;
     const canton = document.getElementById("canton").value;
     const district = document.getElementById("district").value;
+    const neighborhood = document.getElementById("neighborhood").value;
+    const address = document.getElementById("address").value;
+    const phone = document.getElementById("phone").value;
+    const cardNumber = document.getElementById("cardNumber").value;
+    const cardType = document.getElementById("cardType").value;
+    const idDesc = document.getElementById("idDesc").value;
 
+
+
+    // Send data to server
+    fetch('/register/customer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        ,
+        body: JSON.stringify({
+            name,
+            identification,
+            surname,
+            birthdate,
+            email,
+            password,
+            province,
+            canton,
+            district,
+            position,
+            neighborhood,
+            address,
+            phone,
+            cardNumber,
+            cardType,
+            idDesc
+        })
+    })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById("mensajeError").textContent = 'Se ha registrado exitosamente';
+                document.getElementById("mensajeError").style.display = 'inline';
+                console.log('Se ha registrado exitosamente');
+                // Handle success
+            } else {
+                // If response status is not okay, parse the error message from the response body
+                response.json().then(data => {
+                    document.getElementById("mensajeError").textContent = data.error;
+                    document.getElementById("mensajeError").style.display = 'block';
+                    console.error('Failed register:', data.error);
+                    // Handle failure
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle error
+        });
+
+    // if (errorOccurred != '') {
+
+    // }
 });
 
 

@@ -16,8 +16,6 @@ async function getUser() {
                 localStorage.setItem('user', JSON.stringify(selectUser));
                 // Redireccionar a otra página
                 window.location.href = "../../index.html";
-
-
             }
         });
 

@@ -73,7 +73,7 @@ function generateFlightCard(product) {
                     <strong class='price'>Price per kilogram:</strong> ${product.Pr_weight}<br>
                     <strong>Price:</strong> $${product.Price}
                 </p>
-                <a href="#" class="mt-auto btn btn-primary agregar-carrito">Book Now</a>
+                <a href="#" class="mt-auto btn btn-primary agregar-carrito">Add to cart</a>
             </div>
         </div>
     </div>
