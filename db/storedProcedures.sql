@@ -5,8 +5,8 @@ DROP PROCEDURE IF EXISTS SP_Category_Maintenance;
 DROP PROCEDURE IF EXISTS SP_Product_Maintenance;
 DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update;
 DROP PROCEDURE IF EXISTS SP_Register_Clients;
-DROP PROCEDURE IF EXISTS GenerarCalculoyFactura
-DROP PROCEDURE IF EXISTS Product_Entries
+DROP PROCEDURE IF EXISTS GenerarCalculoyFactura;
+DROP PROCEDURE IF EXISTS Product_Entries;
 DROP PROCEDURE IF EXISTS SP_Product_Maintenance
 DROP PROCEDURE IF EXISTS SP_Category_Maintenance
 DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update
@@ -480,153 +480,108 @@ END;
 ----------------------------
 ----------------------
 -------------------*/
-Create procedure SP_Product_Maintenance
-
-@Answer varchar(2),
-@ProductId int,
-@ProductName varchar(100),
-@Presentation varchar(50),
-@Size varchar(20),
-@Pr_weight decimal(10, 2),
-@Price decimal(10,2),
-@MinInventoryQuantity int,
-@MaxWareHouseQuantity int,
-@CategoryID int
-As
-
-----si la respuesta es 1, cambia el id
-if @Answer = '1'
-Begin
-
-SELECT ProductID from Products 
-where @ProductId = ProductId;
-
-UPDATE Products
-    SET @ProductId = ProductID
-    WHERE ProductID = @ProductId;
-
-	End;
-
-
-	---- si la respuesta es 2, cambia el nombre
-	Else if @Answer = '2'
-
-	Begin
-
-SELECT ProductID from Products 
-where @ProductId = ProductId;
-
-UPDATE Products
-    SET @ProductName = ProductName
-    WHERE ProductID = @ProductId;
-
-	End;
-
-	Else if @Answer = '3'
-
-	Begin
-
-SELECT ProductID from Products 
-where @ProductId = ProductId;
-
-UPDATE Products
-    SET @Presentation = Presentation
-    WHERE ProductID = @ProductId;
-
-	End;
-
-	Else if @Answer = '4'
-
-	Begin
-
-SELECT ProductID from Products 
-where @ProductId = ProductId;
-
-UPDATE Products
-    SET @Size = Size
-    WHERE ProductID = @ProductId;
-
-	End;
-
-	Else if @Answer = '5'
-
-	Begin
-
-SELECT ProductID from Products 
-where @ProductId = ProductId;
-
-UPDATE Products
-    SET @Pr_weight = Pr_weight
-    WHERE ProductID = @ProductId;
-
-	End;
-
-
-		Else if @Answer = '6'
-
-	Begin
-
-SELECT ProductID from Products 
-where @ProductId = ProductId;
-
-UPDATE Products
-    SET @Price = Price
-    WHERE ProductID = @ProductId;
-
-	End;
-
-
-Else if @Answer = '7'
-
-	Begin
-
-SELECT ProductID from Products 
-where @ProductId = ProductId;
-
-UPDATE Products
-    SET @MinInventoryQuantity = MinInventoryQuantity
-    WHERE ProductID = @ProductId;
-
-	End;
-
-Else if @Answer = '8'
-
-	Begin
-
-SELECT ProductID from Products 
-where @ProductId = ProductId;
-
-UPDATE Products
-    SET @MaxWareHouseQuantity = MaxWareHouseQuantity
-    WHERE ProductID = @ProductId;
-
-	End;
+CREATE PROCEDURE SP_Product_Maintenance
+    @Answer VARCHAR(2),
+    @ProductId INT = NULL,
+    @ProductName VARCHAR(100) = NULL,
+    @Presentation VARCHAR(50) = NULL,
+    @Size VARCHAR(20) = NULL,
+    @Pr_weight DECIMAL(10, 2) = NULL,
+    @Price DECIMAL(10, 2) = NULL,
+    @MinInventoryQuantity INT = NULL,
+    @MaxWareHouseQuantity INT = NULL,
+    @CategoryID INT = NULL
+AS
+BEGIN
+    BEGIN TRY
+        IF @Answer = '1' AND @ProductId IS NOT NULL
+        BEGIN
+            UPDATE Products
+            SET ProductId = @ProductId
+            WHERE ProductID = @ProductId;
+        END;
+        ELSE IF @Answer = '2' AND @ProductName IS NOT NULL
+        BEGIN
+            IF LEN(@ProductName) < 1 OR LEN(@ProductName) > 100
+            BEGIN
+                RAISERROR('La longitud del nombre del producto debe estar entre 1 y 100 caracteres', 16, 1);
+            END
+            ELSE
+            BEGIN
+                UPDATE Products
+                SET ProductName = @ProductName
+                WHERE ProductID = @ProductId;
+            END;
+        END;
+        ELSE IF @Answer = '3' AND @Presentation IS NOT NULL
+        BEGIN
+            IF LEN(@Presentation) < 1 OR LEN(@Presentation) > 50
+            BEGIN
+                RAISERROR('La longitud de la presentación debe estar entre 1 y 50 caracteres', 16, 1);
+            END
+            ELSE
+            BEGIN
+                UPDATE Products
+                SET Presentation = @Presentation
+                WHERE ProductID = @ProductId;
+            END;
+        END;
+        ELSE IF @Answer = '4' AND @Size IS NOT NULL
+        BEGIN
+            IF LEN(@Size) < 1 OR LEN(@Size) > 20
+            BEGIN
+                RAISERROR('La longitud del tamaño debe estar entre 1 y 20 caracteres', 16, 1);
+            END
+            ELSE
+            BEGIN
+                UPDATE Products
+                SET Size = @Size
+                WHERE ProductID = @ProductId;
+            END;
+        END;
+        ELSE IF @Answer = '5' AND @Pr_weight IS NOT NULL
+        BEGIN
+            UPDATE Products
+            SET Pr_weight = @Pr_weight
+            WHERE ProductID = @ProductId;
+        END;
+        ELSE IF @Answer = '6' AND @Price IS NOT NULL
+        BEGIN
+            UPDATE Products
+            SET Price = @Price
+            WHERE ProductID = @ProductId;
+        END;
+        ELSE IF @Answer = '7' AND @MinInventoryQuantity IS NOT NULL
+        BEGIN
+            UPDATE Products
+            SET MinInventoryQuantity = @MinInventoryQuantity
+            WHERE ProductID = @ProductId;
+        END;
+        ELSE IF @Answer = '8' AND @MaxWareHouseQuantity IS NOT NULL
+        BEGIN
+            UPDATE Products
+            SET MaxWareHouseQuantity = @MaxWareHouseQuantity
+            WHERE ProductID = @ProductId;
+        END;
+        ELSE IF @Answer = '9' AND @CategoryID IS NOT NULL
+        BEGIN
+            UPDATE Products
+            SET CategoryID = @CategoryID
+            WHERE ProductID = @ProductId;
+        END;
+        ELSE
+        BEGIN
+            RAISERROR('Error: Respuesta no válida o falta de datos', 16, 1);
+        END;
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        SELECT @ErrorMessage = ERROR_MESSAGE();
+        RAISERROR(@ErrorMessage, 16, 1);
+    END CATCH;
+END;
 
 
-Else if @Answer = '9'
-
-	Begin
-
-SELECT ProductID from Products 
-where @ProductId = ProductId;
-
-UPDATE Products
-    SET @CategoryID = CategoryID
-    WHERE ProductID = @ProductId;
-
-	End;
-
-go
-
-Create procedure Message_Users
-    @Message_text VARCHAR(250)
-
-
-	as
-	begin
-    Insert into ContactMessages(Message_text) values
-	(@Message_text)
-end
 
 
 
