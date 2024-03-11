@@ -94,7 +94,7 @@ CREATE TABLE PurchaseDetails (
     Quantity INT NOT NULL,
     UnitPrice DECIMAL(10, 2) NOT NULL,
     TotalPrice DECIMAL(10, 2) NOT NULL,
-    Purchase_ID INT FOREIGN KEY REFERENCES Purchases(PurchaseId)
+    --Purchase_ID INT FOREIGN KEY REFERENCES Purchases(PurchaseId)
 );
 
 -- Creaci�n de la tabla ProductEntries
