@@ -6,6 +6,8 @@ select * from Employees
 select UserID from Users
 where Email = 'satdcov@outlook.com'
 
+select * from Users
+
 DROP TABLE IF EXISTS PurchaseDetails;
 DROP TABLE IF EXISTS Purchases;
 DROP TABLE IF EXISTS ProductEntries;

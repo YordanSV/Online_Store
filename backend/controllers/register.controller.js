@@ -23,20 +23,19 @@ export const insertRegister = async (req, res) => {
         request.input('Phone', sql.VarChar(20), phone);
         request.input('CardNumber', sql.VarChar(16), cardNumber);
         request.input('CardType', sql.VarChar(20), cardType);
-        
-        const result = await request.execute('SP_Register_Clients');
+        console.log('result')
 
-        const returnValue = result.returnValue;
-        if (returnValue === 2) {
-            res.status(400).json({ error: 'La identificación ya existe' });
-        }else if (returnValue === 1) {
-            res.status(400).json({ error: 'El correo electrónico ya existe' });
-        } else{
-            res.json(result.recordset);
-        }
-    } catch (error) {
+        const result = await request.execute('SP_Register_Clients');
+        console.log(result)
+        } catch (error) {
+
         console.error('Error al insertar registro:', error);
-        res.status(500).json({ error: 'Error al insertar registro' });
+        if (error && error.message) {
+            // Aquí puedes usar el mensaje de error en tu respuesta al cliente
+            res.status(400).json({ error: error.message });
+        } else {
+            res.status(400).json({ error: 'Error al insertar registro' });
+        }
     }
 }
 

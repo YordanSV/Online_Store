@@ -10,57 +10,6 @@ const province = document.getElementById("province").value;
 const canton = document.getElementById("canton").value;
 const district = document.getElementById("district").value;
 
-const newUser = {
-    name: firtName,
-    identification: identification,
-    surname: surname,
-    birthdate: birthdate,
-    email: email,
-    password: password,
-    province: province,
-    canton: canton,
-    district: district
-};
-
-// async function getUser() {
-//     try {
-//         const response = await axios.post('http://localhost:3000/register', newUser);
-//         const users = response.data;
-
-//         users.forEach(user => {
-//             if (emailInput.value === user.Email && passwordInput.value === user.Pass_word) {
-//                 selectUser = user;
-//                 // console.log('El usuario existe:', user);
-//                 // Almacenar el usuario en el LocalStorage
-//                 localStorage.setItem('user', JSON.stringify(selectUser));
-//                 // Redireccionar a otra página
-//                 window.location.href = "../../index.html";
-
-
-//             }
-//         });
-
-//         if (!selectUser) {
-//             console.log('El usuario no existe o la clave es incorrecta');
-//         }
-//     } catch (error) {
-//         console.error('Error retrieving products:', error);
-//     }
-// }
-
-
-// document.getElementById("submitButton").addEventListener('click', (event) => {
-//     event.preventDefault();
-//     getUser().then(() => {
-//         console.log(selectUser)
-//     });
-//     //   renderFlightCards(products); //Muestra los vuelos al cargar
-// })
-
-
-
-
-
 
 const cantonsByProvince = {
     "San José": ["San José", "Escazú", "Desamparados", "Alajuelita", "Montes de Oca"],
@@ -198,7 +147,7 @@ document.getElementById("registerButton").addEventListener("click", function (ev
                 response.json().then(data => {
                     document.getElementById("mensajeError").textContent = data.error;
                     document.getElementById("mensajeError").style.display = 'block';
-                    console.error('Failed register:', data.error);
+                    console.error('Failed registerasd:', data.error);
                     // Handle failure
                 });
             }

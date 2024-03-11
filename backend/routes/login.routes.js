@@ -3,7 +3,7 @@ import { getUserDB } from "../controllers/login.controller";
 
 const router = Router()
 
-router.get('/login', getUserDB);
+router.post('/login', getUserDB);
 
 // router.post('/login')
 

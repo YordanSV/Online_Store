@@ -12,6 +12,7 @@ DROP PROCEDURE IF EXISTS SP_Category_Maintenance
 DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update
 DROP PROCEDURE IF EXISTS Message_Users
 DROP PROCEDURE IF EXISTS SP_Customer_Update
+DROP PROCEDURE IF EXISTS SP_Login
 
 /*Procedimientos almacenados 
 --------------------------
@@ -732,3 +733,48 @@ INSERT INTO Facturas (PurchaseID, ProductName, Quantity, UnitPrice, TotalPrice, 
 	
 	
 END
+
+go
+create procedure SP_Login
+    @Email VARCHAR(50),
+    @Password VARCHAR(50)
+AS
+BEGIN
+    BEGIN TRY
+        DECLARE @UserID INT;
+
+        -- Verifica si el correo electrónico y la contraseña coinciden en la tabla de Usuarios
+        IF LEN(@Email) > 50 OR LEN(@Password) > 50
+        BEGIN
+            RAISERROR ('El tamaño del correo electrónico o la contraseña excede el máximo permitido.', 16, 1);
+        END
+        ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email AND Pass_word = @Password)
+        BEGIN
+            SELECT @UserID = UserID
+            FROM Users
+            WHERE Email = @Email AND Pass_word = @Password;
+
+            -- Envía un mensaje de éxito junto con el UserID
+            SELECT 'Login exitoso.' AS Message, @UserID AS UserID;
+        END
+        ELSE
+        BEGIN
+            RAISERROR ('Correo electrónico o contraseña incorrectos.', 16, 1);
+        END
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
+
+        SELECT @ErrorMessage = ERROR_MESSAGE(),
+               @ErrorSeverity = ERROR_SEVERITY(),
+               @ErrorState = ERROR_STATE();
+
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH;
+END;
+go
+exec SP_Login
+@Email = 'user2@example.com',
+@Password = 'password2';
