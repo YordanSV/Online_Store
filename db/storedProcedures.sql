@@ -13,7 +13,7 @@ DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update
 DROP PROCEDURE IF EXISTS Message_Users
 DROP PROCEDURE IF EXISTS SP_Customer_Update
 DROP PROCEDURE IF EXISTS SP_Login
-
+drop procedure GenerateCalculusPurchase;
 /*Procedimientos almacenados 
 --------------------------
 ----------------------------
@@ -741,3 +741,63 @@ go
 exec SP_Login
 @Email = 'user2@example.com',
 @Password = 'password2';
+
+
+---------------------------
+-------------------------
+go
+CREATE PROCEDURE GenerateCalculusPurchase
+    @PurchaseId INT
+AS
+BEGIN
+    DECLARE @TotalCompra DECIMAL(10, 2)
+    DECLARE @TotalImpuesto DECIMAL(10, 2)
+    DECLARE @TotalEnvio DECIMAL(10, 2)
+    DECLARE @TotalPagar DECIMAL(10, 2)
+
+    -- Verificar si ya existen registros en PurchaseDetails para el PurchaseId
+    IF NOT EXISTS (SELECT 1 FROM PurchaseDetails WHERE PurchaseId = @PurchaseId)
+    BEGIN
+        -- Insertar datos de la compra en PurchaseDetails
+        INSERT INTO PurchaseDetails (PurchaseId, ProductId, Quantity, UnitPrice)
+        SELECT PurchaseId, ProductId, Quantity, UnitPrice
+        FROM Purchases
+        WHERE PurchaseId = @PurchaseId;
+    END
+
+    -- Calcular el monto total de la compra
+    SELECT @TotalCompra = SUM(Quantity * UnitPrice)
+    FROM Purchases
+    WHERE PurchaseId = @PurchaseId;
+
+    -- Calcular el monto total del impuesto (por ejemplo, 15%)
+    SET @TotalImpuesto = @TotalCompra * 0.13;
+
+    -- Obtener el costo de envío de la tabla Purchases
+    SELECT @TotalEnvio = Shippingcost * 500
+    FROM Purchases
+    WHERE PurchaseID = @PurchaseId;
+
+    -- Calcular el total a pagar
+    SET @TotalPagar = @TotalCompra + @TotalImpuesto + @TotalEnvio;
+
+    -- Actualizar los montos calculados en la tabla PurchaseDetails
+    UPDATE PD
+    SET PD.ProductId = P.ProductId,
+        PD.ProductName = P.ProductName,
+        PD.Quantity = PU.Quantity,
+        PD.UnitPrice = PU.UnitPrice,
+        PD.TotalPrice = PU.Quantity * PU.UnitPrice,
+        PD.TotalCompra = @TotalCompra,
+        PD.TotalImpuesto = @TotalImpuesto,
+        PD.TotalEnvio = @TotalEnvio,
+        PD.TotalPagar = @TotalPagar
+    FROM PurchaseDetails PD
+    INNER JOIN Purchases PU ON PD.PurchaseId = PU.PurchaseID
+    INNER JOIN Products P ON PD.ProductId = P.ProductId
+    WHERE PD.PurchaseId = @PurchaseId;
+
+    -- Mostrar la factura al usuario
+    SELECT * FROM PurchaseDetails WHERE PurchaseId = @PurchaseId;
+END;
+

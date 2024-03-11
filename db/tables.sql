@@ -66,7 +66,7 @@ CREATE TABLE Categories (
     CategoryName VARCHAR(50) NOT NULL
 );
 
--- Creaci�n de la tabla Products
+-- Creaci?n de la tabla Products
 CREATE TABLE Products (
     ProductId INT PRIMARY KEY,
     ProductName VARCHAR(100) NOT NULL,
@@ -79,44 +79,21 @@ CREATE TABLE Products (
     CategoryID INT FOREIGN KEY REFERENCES Categories(CategoryID)
 );
 
--- Creaci�n de la tabla Purchases
+-- Creaci?n de la tabla Purchases
 CREATE TABLE Purchases (
-    PurchaseId INT PRIMARY KEY,
+    PurchaseID INT IDENTITY(1,1) PRIMARY KEY,
     UserId INT FOREIGN KEY REFERENCES Ids(Identification),
     Purchasedate DATETIME NOT NULL,
     Totalpurchase DECIMAL(10, 2) NOT NULL,
     Shippingcost DECIMAL(10, 2) NOT NULL
 );
 
--- Creaci�n de la tabla PurchaseDetails
+-- Creaci?n de la tabla PurchaseDetails
 CREATE TABLE PurchaseDetails (
-    PurchasedetailId INT PRIMARY KEY,
-    PurchaseId INT FOREIGN KEY REFERENCES Purchases(PurchaseId),
-    ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
-    Quantity INT NOT NULL,
-    UnitPrice DECIMAL(10, 2) NOT NULL,
-    TotalPrice DECIMAL(10, 2) NOT NULL,
-    --Purchase_ID INT FOREIGN KEY REFERENCES Purchases(PurchaseId)
-);
-
--- Creaci�n de la tabla ProductEntries
-CREATE TABLE ProductEntries (
-    EntryId INT PRIMARY KEY,
-    ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
-    EntryDate DATETIME NOT NULL,
-    Quantity INT NOT NULL
-);
-
--- Creaci�n de la tabla ContactMessages
-CREATE TABLE ContactMessages (
-    MessageId int IDENTITY(1,1),
-    Message_text VARCHAR(250) NOT NULL
-);
-
-CREATE TABLE Facturas (
     FacturaID INT PRIMARY KEY IDENTITY(1,1),
-    PurchaseID INT,
-    ProductName VARCHAR(100),
+	PurchaseId INT FOREIGN KEY REFERENCES Purchases(PurchaseId),
+    ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
+	ProductName VARCHAR(100),
     Quantity INT,
     UnitPrice DECIMAL(10, 2),
     TotalPrice DECIMAL(10, 2),
@@ -124,7 +101,37 @@ CREATE TABLE Facturas (
     TotalImpuesto DECIMAL(10, 2),
     TotalEnvio DECIMAL(10, 2),
     TotalPagar DECIMAL(10, 2)
+    --Quantity INT NOT NULL,
+    --UnitPrice DECIMAL(10, 2) NOT NULL,
+    --TotalPrice DECIMAL(10, 2) NOT NULL,
+    --Purchase_ID INT FOREIGN KEY REFERENCES Purchases(PurchaseId)
 );
+
+-- Creaci?n de la tabla ProductEntries
+CREATE TABLE ProductEntries (
+    EntryId INT PRIMARY KEY,
+    ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
+    EntryDate DATETIME NOT NULL,
+    Quantity INT NOT NULL
+);
+
+-- Creaci?n de la tabla ContactMessages
+CREATE TABLE ContactMessages (
+    MessageId int IDENTITY(1,1),
+    Message_text VARCHAR(250) NOT NULL
+);
+-- CREATE TABLE Facturas (
+--     FacturaID INT PRIMARY KEY IDENTITY(1,1),
+--     PurchaseID INT,
+--     ProductName VARCHAR(100),
+--     Quantity INT,
+--     UnitPrice DECIMAL(10, 2),
+--     TotalPrice DECIMAL(10, 2),
+--     TotalCompra DECIMAL(10, 2),
+--     TotalImpuesto DECIMAL(10, 2),
+--     TotalEnvio DECIMAL(10, 2),
+--     TotalPagar DECIMAL(10, 2)
+-- );
 
 -- Inserci�n de datos en la tabla Ids
 INSERT INTO Ids (Identification, Identification_Desc) VALUES
