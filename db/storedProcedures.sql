@@ -439,40 +439,41 @@ GO
 CREATE PROCEDURE SP_Category_Maintenance
     @Answer VARCHAR(2),
     @CategoryId INT = NULL,
-    @CategoryName VARCHAR(50) NULL
+    @CategoryName VARCHAR(50) = NULL
 AS
 BEGIN
     BEGIN TRY
-        IF @Answer = '1' AND @CategoryId is not null
+        IF @Answer = '1' AND @CategoryId IS NOT NULL
         BEGIN
             UPDATE Categories
             SET CategoryId = @CategoryId
             WHERE CategoryId = @CategoryId;
         END;
-        ELSE IF @Answer = '2'
+        ELSE IF @Answer = '2' AND @CategoryName IS NOT NULL
         BEGIN
-		 IF LEN(@CategoryName) < 2 OR LEN(@CategoryName) > 50
-		 Begin
-		 Raiserror('Error: La longitud del nombre debe estar entre 2 y 50 caracteres', 16, 1);
-		 End
-		 Begin
-            UPDATE Categories
-            SET CategoryName = @CategoryName
-            WHERE CategoryId = @CategoryId;
-			End;
+            IF LEN(@CategoryName) < 2 OR LEN(@CategoryName) > 50
+            BEGIN
+                RAISERROR('Error: La longitud del nombre debe estar entre 2 y 50 caracteres', 16, 1);
+            END
+            ELSE
+            BEGIN
+                UPDATE Categories
+                SET CategoryName = @CategoryName
+                WHERE CategoryId = @CategoryId;
+            END;
         END;
         ELSE
         BEGIN
-
-            Raiserror('Error: Respuesta no válida', 16, 1 );
+            RAISERROR('Error: Respuesta no válida', 16, 1);
         END;
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(300);
         SELECT @ErrorMessage = ERROR_MESSAGE();
-        RAISERROR (@ErrorMessage, 16, 1);
-    END CATCH
+        RAISERROR(@ErrorMessage, 16, 1);
+    END CATCH;
 END;
+
 /*-------------------------
 ----------------------
 ---------------------------
