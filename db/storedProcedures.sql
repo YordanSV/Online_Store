@@ -140,46 +140,55 @@ GO
 ------------------------*/
 
 CREATE PROCEDURE SP_Employee_Update
-@Answer VARCHAR(50),
-@UserID INT,
-@FirstName VARCHAR(50) = NULL,
-@LastName VARCHAR(50) = NULL
-
-As
-
-Begin
-
- BEGIN TRY
+    @Answer VARCHAR(50),
+    @UserID INT,
+    @FirstName VARCHAR(50) = NULL,
+    @LastName VARCHAR(50) = NULL
+AS
+BEGIN
+    BEGIN TRY
         IF @Answer = '1' AND @FirstName IS NOT NULL
         BEGIN
-            UPDATE Employees
+            IF LEN(@FirstName) < 2 OR LEN(@FirstName) > 50
+            BEGIN
+                RAISERROR ('Error: La longitud del nombre debe estar entre 2 y 50 caracteres', 16, 1);
+            END
+            ELSE
+            BEGIN
+                UPDATE Employees
                 SET FirstName = @FirstName
                 WHERE UserID = @UserID;
-
-		END;
+            END
+        END;
         ELSE IF @Answer = '2' AND @LastName IS NOT NULL
         BEGIN
-             UPDATE Employees
+            IF LEN(@LastName) < 2 OR LEN(@LastName) > 50
+            BEGIN
+                RAISERROR ('Error: La longitud del apellido debe estar entre 2 y 50 caracteres', 16, 1);
+            END
+            ELSE
+            BEGIN
+                UPDATE Employees
                 SET LastName = @LastName
                 WHERE UserID = @UserID;
-		End;
-	   Else if @Answer = '3'
-		Begin
-			delete from Employees
-			where UserID = @UserID;
-			end;
-END TRY
-   BEGIN CATCH
-    DECLARE @ErrorMessage NVARCHAR(300);
-    
-    SELECT 
-        @ErrorMessage = ERROR_MESSAGE()
-
-    RAISERROR (@ErrorMessage, 16, 1 ); -- Mensaje de error personalizado
-
-END CATCH
-End;
-
+            END
+        END;
+        ELSE IF @Answer = '3'
+        BEGIN
+            DELETE FROM Employees
+            WHERE UserID = @UserID;
+        END;
+        ELSE
+        BEGIN
+            RAISERROR ('Error: Respuesta no válida', 16, 1);
+        END;
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        SELECT @ErrorMessage = ERROR_MESSAGE();
+        RAISERROR (@ErrorMessage, 16, 1); -- Mensaje de error personalizado
+    END CATCH;
+END;
 
 
 
