@@ -582,9 +582,6 @@ BEGIN
 END;
 
 
-
-
-
 go
     CREATE PROCEDURE Product_Entries
 	@Answer char (2),
