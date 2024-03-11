@@ -12,6 +12,7 @@ DROP PROCEDURE IF EXISTS SP_Category_Maintenance
 DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update
 DROP PROCEDURE IF EXISTS Message_Users
 DROP PROCEDURE IF EXISTS SP_Customer_Update
+drop procedure if exists SP_Employee_Update
 
 /*Procedimientos almacenados 
 --------------------------
@@ -137,6 +138,50 @@ GO
 -----------------------
 --------------------------
 ------------------------*/
+
+CREATE PROCEDURE SP_Employee_Update
+@Answer VARCHAR(50),
+@UserID INT,
+@FirstName VARCHAR(50) = NULL,
+@LastName VARCHAR(50) = NULL
+
+As
+
+Begin
+
+ BEGIN TRY
+        IF @Answer = '1' AND @FirstName IS NOT NULL
+        BEGIN
+            UPDATE Employees
+                SET FirstName = @FirstName
+                WHERE UserID = @UserID;
+
+		END;
+        ELSE IF @Answer = '2' AND @LastName IS NOT NULL
+        BEGIN
+             UPDATE Employees
+                SET LastName = @LastName
+                WHERE UserID = @UserID;
+		End;
+	   Else if @Answer = '3'
+		Begin
+			delete from Employees
+			where UserID = @UserID;
+			end;
+END TRY
+   BEGIN CATCH
+    DECLARE @ErrorMessage NVARCHAR(300);
+    
+    SELECT 
+        @ErrorMessage = ERROR_MESSAGE()
+
+    RAISERROR (@ErrorMessage, 16, 1 ); -- Mensaje de error personalizado
+
+END CATCH
+End;
+
+
+
 
 
 Create procedure SP_Register_Clients
