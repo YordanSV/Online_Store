@@ -481,41 +481,43 @@ End;
 End;
 GO
 /**/
-Create procedure SP_Category_Maintenance
+CREATE PROCEDURE SP_Category_Maintenance
+    @Answer VARCHAR(2),
+    @CategoryId INT = NULL,
+    @CategoryName VARCHAR(50) NULL
+AS
+BEGIN
+    BEGIN TRY
+        IF @Answer = '1' AND @CategoryId is not null
+        BEGIN
+            UPDATE Categories
+            SET CategoryId = @CategoryId
+            WHERE CategoryId = @CategoryId;
+        END;
+        ELSE IF @Answer = '2'
+        BEGIN
+		 IF LEN(@CategoryName) < 2 OR LEN(@CategoryName) > 50
+		 Begin
+		 Raiserror('Error: La longitud del nombre debe estar entre 2 y 50 caracteres', 16, 1);
+		 End
+		 Begin
+            UPDATE Categories
+            SET CategoryName = @CategoryName
+            WHERE CategoryId = @CategoryId;
+			End;
+        END;
+        ELSE
+        BEGIN
 
-@Answer varchar(2),
-@CategoryId int,
-@CategoryName varchar(50)
-As
-
-----si la respuesta es 1, cambia el id
-if @Answer = '1'
-Begin
-
-SELECT CategoryID from Categories 
-where @CategoryId = CategoryId;
-
-UPDATE Categories
-    SET @CategoryId = CategoryId
-    WHERE CategoryId = @CategoryId;
-
-	End;
-
-
-	---- si la respuesta es 2, cambia el nombre
-	Else if @Answer = '2'
-
-	BEgin
-	SELECT CategoryID from Categories 
-where @CategoryId = CategoryId;
-
-UPDATE Categories
-    SET @CategoryName = CategoryName
-    WHERE CategoryId = @CategoryId;
-	End;
-GO
-
-
+            Raiserror('Error: Respuesta no válida', 16, 1 );
+        END;
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(300);
+        SELECT @ErrorMessage = ERROR_MESSAGE();
+        RAISERROR (@ErrorMessage, 16, 1);
+    END CATCH
+END;
 /*-------------------------
 ----------------------
 ---------------------------
