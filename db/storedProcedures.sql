@@ -1,13 +1,17 @@
 use Tienda_Online;
 
-
 DROP PROCEDURE IF EXISTS SP_Costumer_Update;
 DROP PROCEDURE IF EXISTS SP_Category_Maintenance;
 DROP PROCEDURE IF EXISTS SP_Product_Maintenance;
 DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update;
 DROP PROCEDURE IF EXISTS SP_Register_Clients;
-
-
+DROP PROCEDURE IF EXISTS GenerarCalculoyFactura
+DROP PROCEDURE IF EXISTS Product_Entries
+DROP PROCEDURE IF EXISTS SP_Product_Maintenance
+DROP PROCEDURE IF EXISTS SP_Category_Maintenance
+DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update
+DROP PROCEDURE IF EXISTS Message_Users
+DROP PROCEDURE IF EXISTS SP_Customer_Update
 
 /*Procedimientos almacenados 
 --------------------------
@@ -18,183 +22,114 @@ DROP PROCEDURE IF EXISTS SP_Register_Clients;
 ----------------------------
 --------------------------*/
 go
-Create Procedure SP_Costumer_Update
-@Answer varchar(50),
-@UserID int,
-@FirstName VARCHAR(50),
-@LastName VARCHAR(50),
-@BirthDate date,
-@Province VARCHAR(50),
-@District VARCHAR(50),
-@Canton VARCHAR(50),
-@NeighBorhood varchar(50),
-@Place_address varchar(255),
-@Phone varchar (20),
-@CardNumber varchar(16),
-@CardType varchar(20)
+CREATE PROCEDURE SP_Customer_Update
+@Answer VARCHAR(50),
+@UserID INT,
+@FirstName VARCHAR(50) = NULL,
+@LastName VARCHAR(50) = NULL,
+@BirthDate DATE = NULL,
+@Province VARCHAR(50) = NULL,
+@District VARCHAR(50) = NULL,
+@Canton VARCHAR(50) = NULL,
+@Neighborhood VARCHAR(50) = NULL,
+@Place_address VARCHAR(255) = NULL,
+@Phone VARCHAR(20) = NULL,
+@CardNumber VARCHAR(16) = NULL,
+@CardType VARCHAR(20) = NULL
 AS
-Begin
+BEGIN
+DECLARE @ErrorMessage NVARCHAR(300);
+    DECLARE @ErrorSeverity INT;
+    DECLARE @ErrorState INT;
 
-/*Si se escoge el numero 1, cambia el nombre*/
-
-If @Answer = '1'
-
-Begin
-
-SELECT UserID from costumers 
-where @FirstName = FirstName;
-
-UPDATE Costumers
-    SET FirstName = @FirstName
-    WHERE UserID = @UserID;
-
+    BEGIN TRY
+        IF @Answer = '1' AND @FirstName IS NOT NULL
+        BEGIN
+            UPDATE Costumers
+                SET FirstName = @FirstName
+                WHERE UserID = @UserID;
+        END;
+        ELSE IF @Answer = '2' AND @LastName IS NOT NULL
+        BEGIN
+             UPDATE Costumers
+                SET LastName = @LastName
+                WHERE UserID = @UserID;
+        END;
+        ELSE IF @Answer = '3' AND @BirthDate IS NOT NULL
+        BEGIN
+            UPDATE Costumers
+                SET BirthDate = @BirthDate
+                WHERE UserID = @UserID;
+        END;
+        Else if @Answer = '4' AND @Province IS NOT NULL
+		Begin
+			
+			UPDATE Costumers
+			SET Province = @Province
+			WHERE UserID = @UserID;
 End;
-/*Si se escoge el numero 2, cambia el apellido*/
-
-Else if @Answer = '2'
-Begin
-
-SELECT UserID from costumers 
-where @LastName = LastName;
-
-UPDATE Costumers
-    SET FirstName = @FirstName
-    WHERE UserID = @UserID;
-
+		Else if @Answer = '5' AND @District IS NOT NULL
+		Begin
+			UPDATE Costumers
+			SET District = @District
+			WHERE UserID = @UserID;
 End;
-/*Si se escoge el numero 3, cambia la fecha de nacimiento*/
-
-Else if @Answer = '3'
-Begin
-
-SELECT UserID from costumers 
-where @BirthDate = BirthDate;
-
-UPDATE Costumers
-    SET BirthDate = @BirthDate
-    WHERE UserID = @UserID;
-
-End;
-/*Si se escoge el numero 4, cambia la provincia*/
-Else if @Answer = '4'
-Begin
-
-SELECT UserID from costumers 
-where @Province = Province;
-
-UPDATE Costumers
-    SET @Province = Province
-    WHERE UserID = @UserID;
-End;
-/*Si se escoge el numero 5, cambia el distrito*/
-Else if @Answer = '5'
-Begin
-
-SELECT UserID from costumers 
-where @District = District;
-
-UPDATE Costumers
-    SET @District = District
-    WHERE UserID = @UserID;
-
-End;
-/*Si se escoge el numero 6, cambia el canton*/
-Else if @Answer = '6'
-Begin
-
-SELECT UserID from costumers 
-where @Canton = Canton;
-
-UPDATE Costumers
-    SET @Canton = Canton
-    WHERE UserID = @UserID;
-
-
+			Else if @Answer = '6' AND @Canton IS NOT NULL
+		Begin
+			UPDATE Costumers
+			SET Canton = @Canton
+			 WHERE UserID = @UserID;
 End;
 
-/*Si se escoge el numero 7, cambia el barrio*/
-
-Else if @Answer = '7'
-Begin
-SELECT UserID from costumers 
-where @Neighborhood = NeighBorhood;
-
-UPDATE Costumers
-    SET @NeighBorhood = NeighBorhood
-    WHERE UserID = @UserID;
-
+		Else if @Answer = '7' AND @Neighborhood IS NOT NULL
+		Begin
+			UPDATE Costumers
+			SET NeighBorhood = @NeighBorhood
+			WHERE UserID = @UserID;
+End;
+			Else if @Answer = '8' AND @Place_address IS NOT NULL
+		Begin
+			UPDATE Costumers
+			SET Place_address = @Place_address
+			WHERE UserID = @UserID;
+End;
+			Else if @Answer = '9' AND @Phone IS NOT NULL
+		Begin
+			UPDATE Costumers
+			SET Phone = @Phone
+			WHERE UserID = @UserID;
 End;
 
-/*Si se escoge el numero 8, cambia la direccion*/
-
-Else if @Answer = '8'
-Begin
-SELECT UserID from costumers 
-where @Place_address = Place_address;
-
-UPDATE Costumers
-    SET @Place_address = Place_address
-    WHERE UserID = @UserID;
-
-	End;
-
-/*Si se escoge el numero 9, cambia el telefono*/
-Else if @Answer = '9'
-Begin
-
-SELECT UserID from costumers 
-where @Phone = Phone;
-
-UPDATE Costumers
-    SET Phone = @Phone
-    WHERE UserID = @UserID;
-
+Else if @Answer = '10' AND @CardNumber IS NOT NULL
+		Begin
+			UPDATE Costumers
+			SET CardNumber = @CardNumber
+			WHERE UserID = @UserID;
 End;
 
-/*Si se escoge el numero 10, cambia el numero de tarjeta*/
-
-Else if @Answer = '10'
-Begin
-SELECT UserID from costumers 
-where @CardNumber = CardNumber;
-
-UPDATE Costumers
-    SET @CardNumber = Place_address
-    WHERE UserID = @UserID;
-
+Else if @Answer = '11' AND @CardType IS NOT NULL
+		Begin
+			UPDATE Costumers
+			SET CardType = @CardType
+			WHERE UserID = @UserID;
 End;
 
-/*Si se escoge el numero 11, cambia la el tipo de tarjeta*/
-Else if @Answer = '11'
-Begin
-
-SELECT UserID from costumers 
-where @CardType = CardType;
-
-UPDATE Costumers
-    SET @CardType = CardType
-    WHERE UserID = @UserID;
-
+	Else if @Answer = '12'
+		Begin
+			delete from Costumers
+			where UserID = @UserID;
 End;
 
-/*Si se escoge el numero 12, elimina el cliente*/
+    END TRY
+    BEGIN CATCH
+        SELECT 
+            @ErrorMessage = ERROR_MESSAGE(),
+            @ErrorSeverity = ERROR_SEVERITY(),
+            @ErrorState = ERROR_STATE();
 
-Else if @Answer = '12'
-Begin
-SELECT UserID from costumers 
-where UserID = @UserID;
-
-delete from Costumers
-where UserID = @UserID;
-End;
-
-
-Else
-Begin
-Print 'Opción inválida'
-
-End;
-End;
+        RAISERROR ('Error: ', @ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH
+END;
 GO
 /*----------------------
 ----------------------
@@ -203,9 +138,10 @@ GO
 --------------------------
 ------------------------*/
 
+
 Create procedure SP_Register_Clients
 @ID int,
-@ID_Desc int,
+@ID_Desc VARCHAR(50),
 @Email VARCHAR(50),
 @Pass_word VARCHAR(50),
 @Position VARCHAR(50),
@@ -223,18 +159,27 @@ Create procedure SP_Register_Clients
 AS
 BEGIN
 
-
+BEGIN TRY
 DECLARE @UserID INT;
-
 -- Verifica si el correo electrónico ya existe en la tabla
-IF EXISTS (SELECT 1 FROM Costumers WHERE ID = @ID) OR EXISTS (SELECT 1 FROM Employees WHERE ID = @ID)
+IF LEN(@ID_Desc) > 49 OR LEN(@Email) > 49 OR LEN(@Pass_word) > 49 OR LEN(@Position) > 49 OR
+       LEN(@FirstName) > 49 OR LEN(@LastName) > 49 OR LEN(@Province) > 49 OR LEN(@District) > 49 OR
+       LEN(@Canton) > 49 OR LEN(@NeighBorhood) > 49 OR LEN(@Place_address) > 254 OR
+       LEN(@Phone) > 19 OR LEN(@CardNumber) > 15 OR LEN(@CardType) > 19
 BEGIN
-    return 2;
+         RAISERROR ( 'El parámetro excede el tamaño máximo permitido.', 16, 1);
+END;
+Else IF EXISTS (SELECT 1 FROM Costumers WHERE ID = @ID) OR EXISTS (SELECT 1 FROM Employees WHERE ID = @ID)
+BEGIN
+	RAISERROR ('La identificación ya existe ', 16, 1);
 END
+
 ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
 BEGIN
-    return 1;
+
+	RAISERROR ('El Email ya existe', 16, 1);
 END
+ELSE
 BEGIN
 	INSERT INTO Users (Email, Pass_word, Position)
 	VALUES(@Email, @Pass_word, @Position)
@@ -260,14 +205,45 @@ BEGIN
 		(@ID, @UserID, @FirstName, @LastName)
 	END;
 END;
+END TRY
+BEGIN CATCH
+    DECLARE @ErrorMessage NVARCHAR(4000);
+    DECLARE @ErrorSeverity INT;
+    DECLARE @ErrorState INT;
+
+    SELECT @ErrorMessage = ERROR_MESSAGE(),
+           @ErrorSeverity = ERROR_SEVERITY(),
+           @ErrorState = ERROR_STATE();
+
+    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH;
 END;
 
 GO
+EXEC SP_Register_Clients 
+    @ID = 86,
+    @ID_Desc = 'juridico',
+    @Email = 'exame@example.com',
+    @Pass_word = 'password123',
+    @Position = 'Employee',
+    @FirstName = 'John',
+    @LastName = 'Doe',
+    @BirthDate = '1990-01-01',
+    @Province = 'Example Province',
+    @District = 'Example District',
+    @Canton = 'Example Canton',
+    @NeighBorhood = 'Example Neighborhood',
+    @Place_address = '123 Example Street',
+    @Phone = '123-456-7890',
+    @CardNumber = '12345678',
+    @CardType = 'Visa';
+	go
 /*----------------------------
 -----------------------------
 ----------------------------
 ----------------------------
 -----------------------------*/
+
 
 Create Procedure SP_Employee_to_Costumer_Update
 @Answer varchar,
@@ -630,7 +606,7 @@ UPDATE Products
 
 go
 
-	Create procedure Message_Users
+Create procedure Message_Users
     @Message_text VARCHAR(250)
 
 
@@ -699,7 +675,7 @@ END;
 
 GO
 
-Create procedure GenerarCalculoyFactura 
+Create procedure GenerarCalculoyFactura
 @PurchaseID INT
 
 AS
