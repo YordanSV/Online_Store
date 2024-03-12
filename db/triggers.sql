@@ -3,7 +3,6 @@ use Tienda_Online
 DROP TRIGGER IF EXISTS Trg_Login_log
 DROP TRIGGER IF EXISTS Calcular_totales
 DROP TRIGGER IF EXISTS  TR_Products_CheckInventory
-DROP TRIGGER IF EXISTS CheckCustomerAge
 
 /*Trigger
 ------------------
@@ -68,58 +67,35 @@ GO
 ------------------------*/
 
 CREATE TRIGGER Calcular_totales
-ON Factura
+ON ProductsXFactura
 AFTER INSERT
 AS
 BEGIN
-    DECLARE @PrecioTotal DECIMAL(10, 2);
+    -- Declarar variables para almacenar los totales
+    DECLARE @FacturaID INT;
+    DECLARE @TotalBruto DECIMAL(10, 2);
+    DECLARE @TotalImpuesto DECIMAL(10, 2);
+    DECLARE @TotalEnvio DECIMAL(10, 2);
+    DECLARE @TotalPagar DECIMAL(10, 2);
 
-    -- Calcula el precio total de la factura
-    SELECT @PrecioTotal = SUM(P.Price * pxf.Quantity)
-    FROM ProductsXFactura pxf
-    JOIN Products P ON P.ProductId = pxf.ProductId
-	JOIN inserted i on i.FacturaID = pxf.FacturaID;
+    -- Obtener el ID de la factura insertada
+    SELECT @FacturaID = FacturaID FROM ProductsXFactura;
 
+    -- Calcular el precio total de la factura
+    SELECT @TotalBruto = SUM(P.Price * PXF.Quantity),
+           @TotalImpuesto = SUM(P.Price * PXF.Quantity) * 0.18, -- Suponiendo un impuesto del 18%
+           @TotalEnvio = 10, -- Suponiendo un costo de envío fijo de $10
+           @TotalPagar = SUM(P.Price * PXF.Quantity) + (SUM(P.Price * PXF.Quantity) * 0.18) + 10 -- Suma del precio total, impuesto y envío
+    FROM ProductsXFactura PXF
+    JOIN Products P ON P.ProductId = PXF.ProductId;
 
-	DECLARE @TotalBruto DECIMAL(10, 2);
-	@TotalBruto = @PrecioTotal
-
-    -- Actualiza los campos de total en la tabla factura
+    -- Actualizar los campos de total en la tabla factura
     UPDATE Factura
     SET TotalBruto = @TotalBruto,
-		TotalImpuesto = @PrecioTotal * 0.18, -- Suponiendo un impuesto del 18%
-        TotalEnvio = 10, -- Suponiendo un costo de envío fijo de $10
-        TotalPagar = @PrecioTotal + (@PrecioTotal * 0.18) + 10 -- Suma del precio total, impuesto y envío
-    WHERE FacturaID IN (SELECT FacturaID FROM inserted);
+        TotalImpuesto = @TotalImpuesto,
+        TotalEnvio = @TotalEnvio,
+        TotalPagar = @TotalPagar
+    WHERE FacturaID = @FacturaID;
 END;
 
-go
 
-
-CREATE TRIGGER CheckCustomerAge
-ON Costumers
-AFTER INSERT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DECLARE @CxAge INT;
-    DECLARE @Today DATE;
-    DECLARE @BirthDate DATE;
-    
-    -- Obtener la fecha actual
-    SET @Today = GETDATE();
-    -- Obtener la fecha de nacimiento del cliente
-    SELECT @BirthDate = BirthDate FROM inserted;
-    
-    -- Calcular la edad del cliente
-    SET @CxAge = DATEDIFF(YEAR, @BirthDate, @Today);
-    
-    -- Verificar si la edad es menor a 18 años
-    IF @CxAge < 18
-    BEGIN
-        RAISERROR('El cliente debe tener al menos 18 años.', 16, 1);
-        ROLLBACK TRANSACTION;
-        RETURN;
-    END
-END;
