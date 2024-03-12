@@ -59,9 +59,11 @@ go
 
 go
 
+
 CREATE PROCEDURE SP_Employee_Registration
     @FirstName VARCHAR(50),
-    @LastName VARCHAR(50)
+    @LastName VARCHAR(50),
+    @Em_Status VARCHAR(20) = 'Active' -- Establece 'Active' como valor predeterminado
 AS
 BEGIN
     BEGIN TRY
@@ -75,8 +77,8 @@ BEGIN
         END
         ELSE
         BEGIN
-            INSERT INTO Employees (FirstName, LastName)
-            VALUES (@FirstName, @LastName);
+            INSERT INTO Employees (FirstName, LastName, Em_Status)
+            VALUES (@FirstName, @LastName, @Em_Status);
         END
     END TRY
     BEGIN CATCH
@@ -85,6 +87,7 @@ BEGIN
         RAISERROR (@ErrorMessage, 16, 1); -- Mensaje de error personalizado
     END CATCH;
 END;
+
 --############################################
 --############################################
 --############################################
@@ -98,7 +101,8 @@ go
 CREATE PROCEDURE SP_Employee_Update
     @UserID INT,
     @FirstName VARCHAR(50) = NULL,
-    @LastName VARCHAR(50) = NULL
+    @LastName VARCHAR(50) = NULL,
+    @Em_Status VARCHAR(20) = NULL
 AS
 BEGIN
     BEGIN TRY
@@ -130,7 +134,21 @@ BEGIN
             END
         END;
 
-        IF @FirstName IS NULL AND @LastName IS NULL
+        IF @Em_Status IS NOT NULL
+        BEGIN
+            IF @Em_Status NOT IN ('Active', 'Inactive')
+            BEGIN
+                RAISERROR ('Error: El estado del empleado debe ser "Active" o "Inactive"', 16, 1);
+            END
+            ELSE
+            BEGIN
+                UPDATE Employees
+                SET Em_Status = @Em_Status
+                WHERE UserID = @UserID;
+            END
+        END;
+
+        IF @FirstName IS NULL AND @LastName IS NULL AND @Em_Status IS NULL
         BEGIN
             RAISERROR ('Error: No se proporcionaron datos para actualizar', 16, 1);
         END;
