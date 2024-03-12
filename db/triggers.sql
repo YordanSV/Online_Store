@@ -85,31 +85,3 @@ BEGIN
     WHERE FacturaID IN (SELECT FacturaID FROM inserted);
 END;
 
-go
-    	CREATE TRIGGER TR_Products_CheckInventory
-ON Products
-AFTER UPDATE
-AS
-BEGIN
-    IF EXISTS (
-        SELECT *
-        FROM inserted i
-        INNER JOIN deleted d ON i.ProductId = d.ProductId
-        WHERE i.MinInventoryQuantity = 0 AND d.MinInventoryQuantity > 0
-    )
-    BEGIN
-        -- Producto que ha llegado a cero inventario
-        DECLARE @ProductId INT;
-
-        -- Obtener el ProductId afectado
-        SELECT @ProductId = ProductId FROM inserted;
-
-        -- Obtener el máximo inventario del producto
-        DECLARE @MaxInventory INT;
-        SELECT @MaxInventory = MaxWareHouseQuantity FROM Products WHERE ProductId = @ProductId;
-
-        -- Generar una solicitud de compra en ProductEntries
-        INSERT INTO ProductEntries (ProductId, EntryDate, Quantity)
-        VALUES (@ProductId, GETDATE(), @MaxInventory);
-    END
-END;
