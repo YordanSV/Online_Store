@@ -98,7 +98,8 @@ go
 CREATE PROCEDURE SP_Employee_Update
     @UserID INT,
     @FirstName VARCHAR(50) = NULL,
-    @LastName VARCHAR(50) = NULL
+    @LastName VARCHAR(50) = NULL,
+    @Em_Status VARCHAR(20) = NULL
 AS
 BEGIN
     BEGIN TRY
@@ -130,7 +131,21 @@ BEGIN
             END
         END;
 
-        IF @FirstName IS NULL AND @LastName IS NULL
+        IF @Em_Status IS NOT NULL
+        BEGIN
+            IF @Em_Status NOT IN ('Active', 'Inactive')
+            BEGIN
+                RAISERROR ('Error: El estado del empleado debe ser "Active" o "Inactive"', 16, 1);
+            END
+            ELSE
+            BEGIN
+                UPDATE Employees
+                SET Em_Status = @Em_Status
+                WHERE UserID = @UserID;
+            END
+        END;
+
+        IF @FirstName IS NULL AND @LastName IS NULL AND @Em_Status IS NULL
         BEGIN
             RAISERROR ('Error: No se proporcionaron datos para actualizar', 16, 1);
         END;
