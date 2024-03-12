@@ -162,17 +162,17 @@ IF LEN(@ID_Desc) > 49 OR LEN(@Email) > 49 OR LEN(@Pass_word) > 49 OR LEN(@Positi
        LEN(@Phone) > 19 OR LEN(@CardNumber) > 15 OR LEN(@CardType) > 19
 DECLARE @UserID INT;
 
--- Verifica si el correo electrónico ya existe en la tabla
+-- Verifica si el correo electrï¿½nico ya existe en la tabla
 
 IF EXISTS (SELECT 1 FROM Costumers WHERE ID = @ID) OR EXISTS (SELECT 1 FROM Employees WHERE ID = @ID)
 BEGIN
-	RAISERROR ('La identificación ya existe ', 16, 1);
+	RAISERROR ('La identificaciï¿½n ya existe ',ï¿½16, 1);
 END
 
 ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
 BEGIN
 
-	RAISERROR ('El Email ya existe', 16, 1);
+	RAISERROR ('El Email ya existe',ï¿½16,ï¿½1);
 END
 ELSE
 BEGIN
@@ -211,7 +211,7 @@ BEGIN CATCH
            @ErrorState = ERROR_STATE();
 
     RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
-END CATCH;
+ENDï¿½CATCH;
 END;
 
 go
@@ -308,7 +308,7 @@ BEGIN
                 END
                 ELSE
                 BEGIN
-                    RAISERROR ('Error: El número de teléfono ya está en uso por otro usuario', 16, 1);
+                    RAISERROR ('Error: El nï¿½mero de telï¿½fono ya estï¿½ en uso por otro usuario', 16, 1);
                 END;
             END;
             
@@ -327,6 +327,9 @@ BEGIN
             END;
             
             IF @CS_Status IS NOT NULL AND @CS_Status IN ('Active', 'Inactive')
+            Begin
+            RAISERROR ('Error: El estado del empleado debe ser "Active" o "Inactive"', 16, 1);
+            End
             BEGIN
                 UPDATE Costumers
                 SET Cs_status = @CS_Status
