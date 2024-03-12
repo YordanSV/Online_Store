@@ -5,7 +5,6 @@ DROP TABLE IF EXISTS PurchaseDetails;
 DROP TABLE IF EXISTS Purchases;
 DROP TABLE IF EXISTS ProductEntries;
 DROP TABLE IF EXISTS ContactMessages;
-DROP TABLE IF EXISTS Factura;
 DROP TABLE IF EXISTS ProductsXFactura
 DROP TABLE IF EXISTS Products;
 DROP TABLE IF EXISTS History;
@@ -14,6 +13,7 @@ DROP TABLE IF EXISTS Employees;
 DROP TABLE IF EXISTS Costumers;
 DROP TABLE IF EXISTS Ids;
 DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Factura;
 
 -- Creaci?n de la tabla Ids
 CREATE TABLE Ids (
@@ -80,7 +80,7 @@ CREATE TABLE Products (
 -- Creaci?n de la tabla PurchaseDetails
 CREATE TABLE Factura (
     FacturaID INT PRIMARY KEY IDENTITY(1,1),
-    TotalBruto DECIMAL(10, 2),
+    TotalBruto DECIMAL(10, 2) ,
     TotalImpuesto DECIMAL(10, 2),
     TotalEnvio DECIMAL(10, 2),
     TotalPagar DECIMAL(10, 2)
