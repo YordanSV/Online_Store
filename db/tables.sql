@@ -1,25 +1,19 @@
 use Tienda_Online
-select * from Costumers
-select * from IDs
-select * from Users
-select * from Employees
-select UserID from Users
-where Email = 'satdcov@outlook.com'
 
-select * from Users
 
 DROP TABLE IF EXISTS PurchaseDetails;
 DROP TABLE IF EXISTS Purchases;
 DROP TABLE IF EXISTS ProductEntries;
 DROP TABLE IF EXISTS ContactMessages;
+DROP TABLE IF EXISTS Factura;
+DROP TABLE IF EXISTS ProductsXFactura
 DROP TABLE IF EXISTS Products;
+DROP TABLE IF EXISTS History;
 DROP TABLE IF EXISTS Categories;
 DROP TABLE IF EXISTS Employees;
 DROP TABLE IF EXISTS Costumers;
-DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Ids;
-DROP TABLE IF EXISTS Facturas;
-DROP TABLE IF EXISTS productsx
+DROP TABLE IF EXISTS Users;
 
 -- Creaci?n de la tabla Ids
 CREATE TABLE Ids (
@@ -86,19 +80,10 @@ CREATE TABLE Products (
 -- Creaci?n de la tabla PurchaseDetails
 CREATE TABLE Factura (
     FacturaID INT PRIMARY KEY IDENTITY(1,1),
-    ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
-	ProductName VARCHAR(100),
-    Quantity INT,
-    UnitPrice DECIMAL(10, 2),
-    TotalPrice DECIMAL(10, 2),
-    TotalCompra DECIMAL(10, 2),
+    TotalBruto DECIMAL(10, 2),
     TotalImpuesto DECIMAL(10, 2),
     TotalEnvio DECIMAL(10, 2),
     TotalPagar DECIMAL(10, 2)
-    --Quantity INT NOT NULL,
-    --UnitPrice DECIMAL(10, 2) NOT NULL,
-    --TotalPrice DECIMAL(10, 2) NOT NULL,
-    --Purchase_ID INT FOREIGN KEY REFERENCES Purchases(PurchaseId)
 );
 
 -- Creaci?n de la tabla Purchases
@@ -220,13 +205,13 @@ INSERT INTO Products (ProductId, ProductName, Presentation, Size, Pr_weight, Pri
 (17, 'Yoga Mat', 'Piece', 'Standard', 1.5, 19.99, 15,  30, 150, 5);
 -- Inserci?n de datos en la tabla Purchases
 -- Insertar datos de factura de ejemplo
-INSERT INTO Factura (ProductId, ProductName, Quantity, UnitPrice, TotalPrice, TotalCompra, TotalImpuesto, TotalEnvio, TotalPagar)
+INSERT INTO Factura (TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar)
 VALUES
-    (1, 'Producto A', 2, 10.99, 21.98, 21.98, 2.50, 5.00, 29.48),
-    (2, 'Producto B', 1, 15.99, 15.99, 15.99, 1.60, 3.00, 20.59),
-    (3, 'Producto C', 3, 20.99, 62.97, 62.97, 6.30, 8.00, 77.27),
-    (4, 'Producto D', 1, 25.99, 25.99, 25.99, 2.60, 4.00, 32.59),
-    (5, 'Producto E', 4, 5.99, 23.96, 23.96, 2.40, 6.00, 32.36);
+    (21.98, 2.50, 5.00, 29.48),
+    (15.99, 1.60, 3.00, 20.59),
+    (62.97, 6.30, 8.00, 77.27),
+    (25.99, 2.60, 4.00, 32.59),
+    (23.96, 2.40, 6.00, 32.36);
 
 
 -- Inserci?n de datos en la tabla ProductEntries
