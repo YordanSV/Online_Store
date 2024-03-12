@@ -11,24 +11,25 @@ AS
 BEGIN
     BEGIN TRY
         DECLARE @UserID INT;
-
-        -- Verifica si el correo electrónico y la contraseña coinciden en la tabla de Usuarios
+		DECLARE @Position varchar(50);
+        -- Verifica si el correo electrÃ³nico y la contraseÃ±a coinciden en la tabla de Usuarios
         IF LEN(@Email) > 50 OR LEN(@Password) > 50
         BEGIN
-            RAISERROR ('El tamaño del correo electrónico o la contraseña excede el máximo permitido.', 16, 1);
+            RAISERROR ('El tamaÃ±o del correo electrÃ³nico o la contraseÃ±a excede el mÃ¡ximo permitido.', 16, 1);
         END
         ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email AND Pass_word = @Password)
         BEGIN
-            SELECT @UserID = UserID
-            FROM Users
-            WHERE Email = @Email AND Pass_word = @Password;
-
-            -- Envía un mensaje de éxito junto con el UserID
-            SELECT 'Login exitoso.' AS Message, @UserID AS UserID;
+			SELECT @Position = Position, @UserID = UserID
+			FROM Users
+			WHERE Email = @Email AND Pass_word = @Password;
+			
+			SELECT @Position as Puesto , @UserID AS UserID;
+			
+            -- EnvÃ­a un mensaje de Ã©xito junto con el UserID
         END
         ELSE
         BEGIN
-            RAISERROR ('Correo electrónico o contraseña incorrectos.', 16, 1);
+            RAISERROR ('Correo electrÃ³nico o contraseÃ±a incorrectos.', 16, 1);
         END
     END TRY
     BEGIN CATCH
@@ -43,6 +44,8 @@ BEGIN
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
     END CATCH;
 END;
+go
+
 
 
 --############################################
