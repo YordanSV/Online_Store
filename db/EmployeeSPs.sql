@@ -12,10 +12,10 @@ BEGIN
     BEGIN TRY
         DECLARE @UserID INT;
 
-        -- Verifica si el correo electrónico y la contraseña coinciden en la tabla de Usuarios
+        -- Verifica si el correo electrï¿½nico y la contraseï¿½a coinciden en la tabla de Usuarios
         IF LEN(@Email) > 50 OR LEN(@Password) > 50
         BEGIN
-            RAISERROR ('El tamaño del correo electrónico o la contraseña excede el máximo permitido.', 16, 1);
+            RAISERROR ('El tamaï¿½o del correo electrï¿½nico o la contraseï¿½a excede el mï¿½ximo permitido.', 16, 1);
         END
         ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email AND Pass_word = @Password)
         BEGIN
@@ -23,12 +23,12 @@ BEGIN
             FROM Users
             WHERE Email = @Email AND Pass_word = @Password;
 
-            -- Envía un mensaje de éxito junto con el UserID
+            -- Envï¿½a un mensaje de ï¿½xito junto con el UserID
             SELECT 'Login exitoso.' AS Message, @UserID AS UserID;
         END
         ELSE
         BEGIN
-            RAISERROR ('Correo electrónico o contraseña incorrectos.', 16, 1);
+            RAISERROR ('Correo electrï¿½nico o contraseï¿½a incorrectos.', 16, 1);
         END
     END TRY
     BEGIN CATCH
@@ -56,9 +56,11 @@ END;
 
 go
 
+
 CREATE PROCEDURE SP_Employee_Registration
     @FirstName VARCHAR(50),
-    @LastName VARCHAR(50)
+    @LastName VARCHAR(50),
+    @Em_Status VARCHAR(20) = 'Active' -- Establece 'Active' como valor predeterminado
 AS
 BEGIN
     BEGIN TRY
@@ -72,8 +74,8 @@ BEGIN
         END
         ELSE
         BEGIN
-            INSERT INTO Employees (FirstName, LastName)
-            VALUES (@FirstName, @LastName);
+            INSERT INTO Employees (FirstName, LastName, Em_Status)
+            VALUES (@FirstName, @LastName, @Em_Status);
         END
     END TRY
     BEGIN CATCH
@@ -82,6 +84,7 @@ BEGIN
         RAISERROR (@ErrorMessage, 16, 1); -- Mensaje de error personalizado
     END CATCH;
 END;
+
 --############################################
 --############################################
 --############################################
