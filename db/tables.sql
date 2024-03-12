@@ -21,7 +21,6 @@ DROP TABLE IF EXISTS Ids;
 DROP TABLE IF EXISTS Facturas;
 
 
--- Creaci?n de la tabla Ids
 CREATE TABLE Ids (
     Identification INT PRIMARY KEY,
     Identification_Desc VARCHAR(20)
@@ -110,13 +109,12 @@ CREATE TABLE Purchases (
 );
 
 -- Creaci?n de la tabla ProductEntries
-INSERT INTO ProductEntries (EntryId, ProductId, Quantity)
-VALUES
-    (1, 1,  20),
-    (2, 2,  30),
-    (3, 3,  25),
-    (4, 4,  15),
-    (5, 5, 35);
+CREATE TABLE ProductEntries (
+    EntryId INT PRIMARY KEY,
+    ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
+    Quantity INT NOT NULL
+);
+
 
 
 -- Creaci?n de la tabla ContactMessages
@@ -134,7 +132,8 @@ CREATE TABLE ContactMessages (
 
 		Create table ProductsXFactura(
 	 ProductId INT FOREIGN KEY REFERENCES Products(ProductId) ,
-		FacturaID INT FOREIGN KEY REFERENCES Factura(FacturaId)
+		FacturaID INT FOREIGN KEY REFERENCES Factura(FacturaId), 
+		Quantity int 
 	);
 
 
@@ -235,3 +234,4 @@ INSERT INTO ProductEntries (EntryId, ProductId, Quantity) VALUES
 (3, 3, 5),
 (4, 4, 30),
 (5, 5, 15);
+
