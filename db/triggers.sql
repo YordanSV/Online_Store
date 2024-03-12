@@ -1,7 +1,8 @@
 use Tienda_Online
 
 DROP TRIGGER IF EXISTS Trg_Login_log ON Users;
-DROP TRIGGER IF EXISTS Historial_Compras ON Purchases;
+DROP TRIGGER IF EXISTS Calcular_totales ON Factura;
+DROP TRIGGER IF EXISTS  TR_Products_CheckInventory On Products;
 
 /*Trigger
 ------------------
@@ -64,33 +65,23 @@ GO
 ----------------------
 ------------------------*/
 
-	Create trigger Historial_Compras
-	On Purchases
-	After insert
-	as 
-	begin
+CREATE TRIGGER Calcular_totales
+ON Factura
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @PrecioTotal DECIMAL(10, 2);
 
-	If exists (select * from deleted)
+    -- Calcula el precio total de la factura
+    SELECT @PrecioTotal = SUM(P.Price * F.Quantity)
+    FROM inserted F
+    JOIN Products P ON P.ProductId = F.ProductId;
 
-	----inserta los datos en el historial, obteniendo los datos de un join
+    -- Actualiza los campos de total en la tabla factura
+    UPDATE Factura
+    SET TotalImpuesto = @PrecioTotal * 0.18, -- Suponiendo un impuesto del 18%
+        TotalEnvio = 10, -- Suponiendo un costo de envío fijo de $10
+        TotalPagar = @PrecioTotal + (@PrecioTotal * 0.18) + 10 -- Suma del precio total, impuesto y envío
+    WHERE FacturaID IN (SELECT FacturaID FROM inserted);
+END;
 
-	INSERT INTO Historial(UserID, ProductName, ProductId, FirstName, PurchaseID, PurchaseDate)
-
-	SELECT
-        C.UserID,
-        P.ProductName,
-        P.ProductId,
-        C.FirstName,
-        I.PurchaseID,
-        I.PurchaseDate
-    FROM
-        inserted AS I
-    INNER JOIN
-        Costumers AS C ON I.UserID = C.UserID
-    INNER JOIN
-        Products AS P ON P.ProductId = I.PurchaseID;
-
-
-	End;
-
-    
