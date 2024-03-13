@@ -1,3 +1,5 @@
+use Tienda_Online
+
 DROP PROCEDURE IF EXISTS SP_Product_Maintenance;
 DROP PROCEDURE IF EXISTS SP_Category_Maintenance;
 DROP PROCEDURE IF EXISTS Product_Entries;
