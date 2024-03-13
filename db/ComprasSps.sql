@@ -15,20 +15,11 @@ End;
 
 
 Create procedure Realizar_Compra
-AS 
-Begin
-INSERT INTO Factura(TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar)
-VALUES (0, 0, 0, 0);
-
-End;
-
-
-Create procedure Realizar_Compra
 @ID int
 AS 
 Begin
-INSERT INTO Factura(Identification, TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar)
-VALUES (@ID, 0, 0, 0);
+INSERT INTO Factura(Identification, TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar, Fecha)
+VALUES (@ID, 0, 0, 0, GETDATE());
 
 End;
 

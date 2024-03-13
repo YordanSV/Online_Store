@@ -18,6 +18,7 @@ BEGIN
         f.TotalImpuesto AS 'Total Impuesto',
         f.TotalEnvio AS 'Total Envío',
         f.TotalPagar AS 'Total a Pagar',
+        f.Fecha As 'Fecha de compra',
         p.ProductName AS 'Nombre del Producto',
         p.Price AS 'Precio Unitario',
         pf.Quantity AS 'Cantidad',
