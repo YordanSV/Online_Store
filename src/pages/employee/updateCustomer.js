@@ -1,16 +1,13 @@
 
-// Update Customer
 
 document.getElementById("customerUpdatebtn").addEventListener("click", function () {
-    if(column == ''){
-        return
-    }
-    var customerID = document.getElementById("customerID").value;
-    var newValue = document.getElementById("newValue").value;
+    var selectedValue = selectElement.value;
+    var userID = document.getElementById("updateUserID").value;
+    var newValue = document.getElementById("updateNewValue").value;
     // event.preventDefault(); // Prevent form submission
     updateCustomer = {
-        column: column,
-        customerID: customerID,
+        column: selectedValue,
+        userID: customerID,
         newValue: newValue
     };
     // Gather form data

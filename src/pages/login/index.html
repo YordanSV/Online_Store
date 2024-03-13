@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,33 +11,37 @@
   <!-- Estilos CSS personalizados -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="container">
-      <div class="row justify-content-center align-items-center vh-100">
-        <div class="col-md-6">
-          <div class="form-container">
-            <h2>Welcome</h2>
-            <form action="#">
-              <div class="form-group">
-                <label for="email">Email address</label>
-                <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required>
-              </div>
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
-              </div>
-              <button type="submit" id="submitButton" class="btn btn-primary btn-block">Submit</button>
-            </form>
-            <hr>
-            <p>Already have an account? <a href="index.html">Login here</a>.</p>
+  <div class="container">
+    <div class="row justify-content-center align-items-center vh-100">
+      <div class="col-md-6">
+        <div class="form-container">
+          <h2>Welcome</h2>
+          <form>
+            <div class="form-group">
+              <label for="email">Email address</label>
+              <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+            </div>
+            <button type="submit" id="submitButton" class="btn btn-primary btn-block">Submit</button>
+          </form>
+          <hr>
+          <div id="mensajeError" style="display: none; color: red;">
+            Ha ocurrido un error. Por favor, inténtalo de nuevo más tarde.
           </div>
         </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
-  </html>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

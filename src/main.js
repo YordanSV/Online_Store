@@ -52,11 +52,11 @@ function filterCategory(idCategory) {
 function generateFlightCard(product) {
 
 
-    const category = product.CategoryID == 1 ? "Electronics" :
-        product.CategoryID == 2 ? "Clothing and Accessories" :
-            product.CategoryID == 3 ? "Home and Garden" :
-                product.CategoryID == 4 ? "Health and Beauty" :
-                    "Sports and Outdoor Activitie";
+    const category = product.CategoryID == 1 ? "Electronica" :
+        product.CategoryID == 2 ? "Ropa y Accesorios" :
+            product.CategoryID == 3 ? "Hogar y Jardín" :
+                product.CategoryID == 4 ? "Salud y Belleza" :
+                    "Deportes y Actividades al Aire Libre";
 
 
 
@@ -68,12 +68,12 @@ function generateFlightCard(product) {
                 <h5 class="card-title">${category}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">${product.ProductName}</h6>
                 <p class="card-text">
-                    <strong>Presentation:</strong> ${product.Presentation}<br>
-                    <strong>Size:</strong> ${product.Size}<br>
-                    <strong class='price'>Price per kilogram:</strong> ${product.Pr_weight}<br>
-                    <strong>Price:</strong> $${product.Price}
+                    <strong>Presentación:</strong> ${product.Presentation}<br>
+                    <strong>Tamaño:</strong> ${product.Size}<br>
+                    <strong class='price'>Precio por kilogramo:</strong> ${product.Pr_weight}<br>
+                    <strong>Precio:</strong> $${product.Price}
                 </p>
-                <a href="#" class="mt-auto btn btn-primary agregar-carrito">Add to cart</a>
+                <a href="#" class="mt-auto btn btn-primary agregar-carrito">Agregar al carrito</a>
             </div>
         </div>
     </div>

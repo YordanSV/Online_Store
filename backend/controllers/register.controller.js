@@ -26,8 +26,8 @@ export const insertRegister = async (req, res) => {
         console.log('result')
 
         const result = await request.execute('SP_Register_Clients');
-        console.log(result)
-        } catch (error) {
+        
+    } catch (error) {
 
         console.error('Error al insertar registro:', error);
         if (error && error.message) {
