@@ -177,7 +177,7 @@ go
 --#################################################
 
 
-Create procedure SP_Register_Clients
+CREATE PROCEDURE SP_Register_Clients
 @ID int,
 @ID_Desc VARCHAR(50),
 @Email VARCHAR(50),
@@ -196,66 +196,73 @@ Create procedure SP_Register_Clients
 @CardType varchar(20)
 AS
 BEGIN
+    BEGIN TRY
+        IF LEN(@ID_Desc) > 49 OR LEN(@Email) > 49 OR LEN(@Pass_word) > 49 OR LEN(@Position) > 49 OR
+           LEN(@FirstName) > 49 OR LEN(@LastName) > 49 OR LEN(@Province) > 49 OR LEN(@District) > 49 OR
+           LEN(@Canton) > 49 OR LEN(@NeighBorhood) > 49 OR LEN(@Place_address) > 254 OR
+           LEN(@Phone) > 19 OR LEN(@CardNumber) > 15 OR LEN(@CardType) > 19
+        BEGIN
+            RAISERROR ('La longitud de algún parámetro excede el límite permitido.', 16, 1);
+            RETURN;
+        END;
 
+        IF DATEDIFF(YEAR, @BirthDate, GETDATE()) < 18
+        BEGIN
+            RAISERROR ('El cliente debe tener al menos 18 años para registrarse.', 16, 1);
+            RETURN;
+        END;
 
-BEGIN TRY
-IF LEN(@ID_Desc) > 49 OR LEN(@Email) > 49 OR LEN(@Pass_word) > 49 OR LEN(@Position) > 49 OR
-       LEN(@FirstName) > 49 OR LEN(@LastName) > 49 OR LEN(@Province) > 49 OR LEN(@District) > 49 OR
-       LEN(@Canton) > 49 OR LEN(@NeighBorhood) > 49 OR LEN(@Place_address) > 254 OR
-       LEN(@Phone) > 19 OR LEN(@CardNumber) > 15 OR LEN(@CardType) > 19
-DECLARE @UserID INT;
+        DECLARE @UserID INT;
 
--- Verifica si el correo electr�nico ya existe en la tabla
+        -- Verifica si el correo electrónico ya existe en la tabla
+        IF EXISTS (SELECT 1 FROM Costumers WHERE ID = @ID) OR EXISTS (SELECT 1 FROM Employees WHERE ID = @ID)
+        BEGIN
+            RAISERROR ('La identificación ya existe.', 16, 1);
+            RETURN;
+        END
+        ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
+        BEGIN
+            RAISERROR ('El correo electrónico ya existe.', 16, 1);
+            RETURN;
+        END
+        ELSE
+        BEGIN
+            INSERT INTO Users (Email, Pass_word, Position)
+            VALUES(@Email, @Pass_word, @Position);
 
-IF EXISTS (SELECT 1 FROM Costumers WHERE ID = @ID) OR EXISTS (SELECT 1 FROM Employees WHERE ID = @ID)
-BEGIN
-	RAISERROR ('La identificacion ya existe ', 16, 1);
-END
+            --Obtenemos el id del nuevo usuario
+            SELECT @UserID = UserID
+            FROM Users
+            WHERE Email = @Email;
 
-ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
-BEGIN
+            INSERT INTO Ids(Identification, Identification_Desc)
+            VALUES(@ID, @ID_Desc);
 
-	RAISERROR ('El Email ya existe', 16, 1);
-END
-ELSE
-BEGIN
-	INSERT INTO Users (Email, Pass_word, Position)
-	VALUES(@Email, @Pass_word, @Position)
-	--Obtenemos el id del nuevo user
-    SELECT @UserID = UserID
-    FROM Users
-    WHERE Email = @Email;
+            IF @Position = 'Costumer'
+            BEGIN
+                INSERT INTO Costumers(ID, UserID, FirstName, LastName, BirthDate, Province, District,
+                Canton, NeighBorhood, Place_address, Phone, CardNumber, CardType, Cs_status)
+                VALUES (@ID, @UserID,
+                @FirstName, @LastName, @BirthDate, @Province, @District, @Canton, @NeighBorhood, @Place_address, @Phone ,@CardNumber, @CardType, 'Active');
+            END
+            ELSE IF @Position = 'Employee'
+            BEGIN
+                INSERT INTO Employees (ID, UserID, FirstName, LastName) VALUES
+                (@ID, @UserID, @FirstName, @LastName);
+            END;
+        END;
+    END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        DECLARE @ErrorSeverity INT;
+        DECLARE @ErrorState INT;
 
-	INSERT INTO Ids(Identification, Identification_Desc)
-	values(@ID, @ID_Desc)
+        SELECT @ErrorMessage = ERROR_MESSAGE(),
+               @ErrorSeverity = ERROR_SEVERITY(),
+               @ErrorState = ERROR_STATE();
 
-	if @Position = 'Costumer'
-	begin
-		INSERT INTO Costumers(ID, UserID, FirstName, LastName, BirthDate, Province, District,
-		Canton, NeighBorhood, Place_address, Phone, CardNumber, CardType,Cs_status)
-		values (@ID, @UserID ,
-		@FirstName, @LastName, @BirthDate, @Province, @District, @Canton, @NeighBorhood, @Place_address, @Phone ,@CardNumber, @CardType, 'Active');
-	END;
-		--values (4, 1 ,'FirstName', 'LastName', '1995-03-10', 'Province', 'District', 'Canton', 'NeighBorhood', 'Place_address', 'Phone' ,'CardNumber', 'CardType', 'Active');
-	Else if @Position = 'Employee'
-	begin
-		INSERT INTO Employees (ID, UserID, FirstName, LastName) VALUES
-		(@ID, @UserID, @FirstName, @LastName)
-	END;
-END;
-END TRY
-BEGIN CATCH
-    DECLARE @ErrorMessage NVARCHAR(4000);
-    DECLARE @ErrorSeverity INT;
-    DECLARE @ErrorState INT;
-
-    SELECT @ErrorMessage = ERROR_MESSAGE(),
-           @ErrorSeverity = ERROR_SEVERITY(),
-           @ErrorState = ERROR_STATE();
-
-    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
-END 
-CATCH;
+        RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+    END CATCH;
 END;
 
 go
