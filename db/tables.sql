@@ -1,6 +1,5 @@
 use Tienda_Online
 
-
 DROP TABLE IF EXISTS PurchaseDetails;
 DROP TABLE IF EXISTS Purchases;
 DROP TABLE IF EXISTS ProductEntries;
@@ -214,4 +213,16 @@ INSERT INTO ProductEntries ( ProductId, Quantity) VALUES
 ( 2, 20),
 ( 3, 5),
 ( 4, 30),
-( 5, 15);
+( 5, 15),
+( 6, 10),
+(7, 20),
+( 8, 5),
+( 9, 30),
+( 10, 15),
+( 11, 10),
+( 12, 20),
+( 13, 5),
+( 14, 30),
+( 15, 15),
+( 16, 30),
+( 17, 15);
