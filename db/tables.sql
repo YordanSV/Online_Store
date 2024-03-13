@@ -84,7 +84,8 @@ CREATE TABLE Factura (
     TotalBruto DECIMAL(10, 2) ,
     TotalImpuesto DECIMAL(10, 2),
     TotalEnvio DECIMAL(10, 2),
-    TotalPagar DECIMAL(10, 2)
+    TotalPagar DECIMAL(10, 2),
+    Fecha DATETIME
 );
 
 -- Creaci?n de la tabla Purchases
