@@ -96,30 +96,3 @@ END;
 go
 
 
-CREATE TRIGGER CheckCustomerAge
-ON Costumers
-AFTER INSERT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    DECLARE @CxAge INT;
-    DECLARE @Today DATE;
-    DECLARE @BirthDate DATE;
-    
-    -- Obtener la fecha actual
-    SET @Today = GETDATE();
-    -- Obtener la fecha de nacimiento del cliente
-    SELECT @BirthDate = BirthDate FROM inserted;
-    
-    -- Calcular la edad del cliente
-    SET @CxAge = DATEDIFF(YEAR, @BirthDate, @Today);
-    
-    -- Verificar si la edad es menor a 18 años
-    IF @CxAge < 18
-    BEGIN
-        RAISERROR('El cliente debe tener al menos 18 años.', 16, 1);
-        ROLLBACK TRANSACTION;
-        RETURN;
-    END
-END;

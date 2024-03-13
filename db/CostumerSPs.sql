@@ -134,7 +134,7 @@ go
 --#################################################
 
 
-Create procedure SP_Register_Clients
+CREATE PROCEDURE SP_Register_Clients
 @ID int,
 @ID_Desc VARCHAR(50),
 @Email VARCHAR(50),
@@ -153,53 +153,67 @@ Create procedure SP_Register_Clients
 @CardType varchar(20)
 AS
 BEGIN
-
-
 BEGIN TRY
-IF LEN(@ID_Desc) > 49 OR LEN(@Email) > 49 OR LEN(@Pass_word) > 49 OR LEN(@Position) > 49 OR
+    IF LEN(@ID_Desc) > 49 OR LEN(@Email) > 49 OR LEN(@Pass_word) > 49 OR LEN(@Position) > 49 OR
        LEN(@FirstName) > 49 OR LEN(@LastName) > 49 OR LEN(@Province) > 49 OR LEN(@District) > 49 OR
        LEN(@Canton) > 49 OR LEN(@NeighBorhood) > 49 OR LEN(@Place_address) > 254 OR
        LEN(@Phone) > 19 OR LEN(@CardNumber) > 15 OR LEN(@CardType) > 19
-DECLARE @UserID INT;
+    BEGIN
+        RAISERROR ('Longitud máxima excedida para uno o más campos.', 16, 1);
+        RETURN;
+    END
 
--- Verifica si el correo electr�nico ya existe en la tabla
+    DECLARE @UserID INT;
 
-IF EXISTS (SELECT 1 FROM Costumers WHERE ID = @ID) OR EXISTS (SELECT 1 FROM Employees WHERE ID = @ID)
-BEGIN
-	RAISERROR ('La identificaci�n ya existe ',�16, 1);
-END
+    -- Verifica si el correo electrónico ya existe en la tabla
+    IF EXISTS (SELECT 1 FROM Customers WHERE ID = @ID) OR EXISTS (SELECT 1 FROM Employees WHERE ID = @ID)
+    BEGIN
+        RAISERROR ('La identificación ya existe.', 16, 1);
+        RETURN;
+    END
+    ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
+    BEGIN
+        RAISERROR ('El correo electrónico ya existe.', 16, 1);
+        RETURN;
+    END
+    ELSE
+    BEGIN
+        -- Inserta el nuevo usuario
+        INSERT INTO Users (Email, Pass_word, Position)
+        VALUES(@Email, @Pass_word, @Position);
 
-ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
-BEGIN
+        -- Obtiene el ID del nuevo usuario
+        SELECT @UserID = SCOPE_IDENTITY();
 
-	RAISERROR ('El Email ya existe',�16,�1);
-END
-ELSE
-BEGIN
-	INSERT INTO Users (Email, Pass_word, Position)
-	VALUES(@Email, @Pass_word, @Position)
-	--Obtenemos el id del nuevo user
-    SELECT @UserID = UserID
-    FROM Users
-    WHERE Email = @Email;
+        -- Valida la edad si el usuario es un cliente
+        IF @Position = 'Customer'
+        BEGIN
+            DECLARE @CustomerAge INT;
+            DECLARE @Today DATE;
+            SET @Today = GETDATE();
+            SET @CustomerAge = DATEDIFF(YEAR, @BirthDate, @Today);
 
-	INSERT INTO Ids(Identification, Identification_Desc)
-	values(@ID, @ID_Desc)
+            IF @CustomerAge < 18
+            BEGIN
+                RAISERROR ('El cliente debe tener al menos 18 años.', 16, 1);
+                RETURN;
+            END
+        END;
 
-	if @Position = 'Costumer'
-	begin
-		INSERT INTO Costumers(ID, UserID, FirstName, LastName, BirthDate, Province, District,
-		Canton, NeighBorhood, Place_address, Phone, CardNumber, CardType,Cs_status)
-		values (@ID, @UserID ,
-		@FirstName, @LastName, @BirthDate, @Province, @District, @Canton, @NeighBorhood, @Place_address, @Phone ,@CardNumber, @CardType, 'Active');
-	END;
-		--values (4, 1 ,'FirstName', 'LastName', '1995-03-10', 'Province', 'District', 'Canton', 'NeighBorhood', 'Place_address', 'Phone' ,'CardNumber', 'CardType', 'Active');
-	Else if @Position = 'Employee'
-	begin
-		INSERT INTO Employees (ID, UserID, FirstName, LastName) VALUES
-		(@ID, @UserID, @FirstName, @LastName)
-	END;
-END;
+        -- Inserta el cliente o empleado según corresponda
+        IF @Position = 'Customer'
+        BEGIN
+            INSERT INTO Customers(ID, UserID, FirstName, LastName, BirthDate, Province, District,
+            Canton, NeighBorhood, Place_address, Phone, CardNumber, CardType, Cs_status)
+            VALUES (@ID, @UserID,
+            @FirstName, @LastName, @BirthDate, @Province, @District, @Canton, @NeighBorhood, @Place_address, @Phone, @CardNumber, @CardType, 'Active');
+        END
+        ELSE IF @Position = 'Employee'
+        BEGIN
+            INSERT INTO Employees (ID, UserID, FirstName, LastName)
+            VALUES (@ID, @UserID, @FirstName, @LastName);
+        END;
+    END;
 END TRY
 BEGIN CATCH
     DECLARE @ErrorMessage NVARCHAR(4000);
@@ -211,8 +225,9 @@ BEGIN CATCH
            @ErrorState = ERROR_STATE();
 
     RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
-END�CATCH;
+END CATCH;
 END;
+
 
 go
 --############################################
