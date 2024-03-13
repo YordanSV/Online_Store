@@ -51,13 +51,20 @@ BEGIN
     DECLARE @ErrorSeverity INT;
     DECLARE @ErrorState INT;
 
-    
     BEGIN TRY
+        -- Verificar si el cliente existe
+        IF NOT EXISTS (SELECT 1 FROM Costumers WHERE UserID = @UserID)
+        BEGIN
+            RAISERROR ('Error: El cliente no existe', 16, 1);
+            RETURN;
+        END;
+
         IF @FirstName IS NOT NULL
         BEGIN
             IF LEN(@FirstName) > 50
             BEGIN
                 RAISERROR ('Error: La longitud del nombre no puede ser mayor a 50 caracteres', 16, 1);
+                RETURN;
             END;
             
             UPDATE Costumers
@@ -70,13 +77,13 @@ BEGIN
             IF LEN(@LastName) > 50
             BEGIN
                 RAISERROR ('Error: La longitud del apellido no puede ser mayor a 50 caracteres', 16, 1);
+                RETURN;
             END;
             
             UPDATE Costumers
             SET LastName = @LastName
             WHERE UserID = @UserID;
         END;
-
 
         IF @BirthDate IS NOT NULL
         BEGIN
@@ -122,6 +129,12 @@ BEGIN
 
         IF @Phone IS NOT NULL
         BEGIN
+            IF LEN(@Phone) > 20
+            BEGIN
+                RAISERROR ('Error: La longitud del número de teléfono no puede ser mayor a 20 caracteres', 16, 1);
+                RETURN;
+            END;
+            
             UPDATE Costumers
             SET Phone = @Phone
             WHERE UserID = @UserID;
