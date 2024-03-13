@@ -11,9 +11,9 @@ DROP TABLE IF EXISTS History;
 DROP TABLE IF EXISTS Categories;
 DROP TABLE IF EXISTS Employees;
 DROP TABLE IF EXISTS Costumers;
+DROP TABLE IF EXISTS Factura;
 DROP TABLE IF EXISTS Ids;
 DROP TABLE IF EXISTS Users;
-DROP TABLE IF EXISTS Factura;
 
 -- Creaci?n de la tabla Ids
 CREATE TABLE Ids (
@@ -80,6 +80,7 @@ CREATE TABLE Products (
 -- Creaci?n de la tabla PurchaseDetails
 CREATE TABLE Factura (
     FacturaID INT PRIMARY KEY IDENTITY(1,1),
+	Identification INT FOREIGN KEY REFERENCES IDs(Identification),
     TotalBruto DECIMAL(10, 2) ,
     TotalImpuesto DECIMAL(10, 2),
     TotalEnvio DECIMAL(10, 2),
@@ -205,14 +206,6 @@ INSERT INTO Products (ProductId, ProductName, Presentation, Size, Pr_weight, Pri
 (17, 'Yoga Mat', 'Piece', 'Standard', 1.5, 19.99, 15,  30, 150, 5);
 -- Inserci?n de datos en la tabla Purchases
 -- Insertar datos de factura de ejemplo
-INSERT INTO Factura (TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar)
-VALUES
-    (21.98, 2.50, 5.00, 29.48),
-    (15.99, 1.60, 3.00, 20.59),
-    (62.97, 6.30, 8.00, 77.27),
-    (25.99, 2.60, 4.00, 32.59),
-    (23.96, 2.40, 6.00, 32.36);
-
 
 -- Inserci?n de datos en la tabla ProductEntries
 INSERT INTO ProductEntries ( ProductId, Quantity) VALUES
