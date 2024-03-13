@@ -2,9 +2,9 @@
 // Update Customer
 
 document.getElementById("customerUpdatebtn").addEventListener("click", function () {
-    if(column == ''){
-        return
-    }
+
+
+
     var customerID = document.getElementById("customerID").value;
     var newValue = document.getElementById("newValue").value;
     // event.preventDefault(); // Prevent form submission
@@ -13,7 +13,6 @@ document.getElementById("customerUpdatebtn").addEventListener("click", function 
         customerID: customerID,
         newValue: newValue
     };
-    // Gather form data
 
     // Construct product object
     console.log(updateCustomer);

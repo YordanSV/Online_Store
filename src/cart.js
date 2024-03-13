@@ -21,6 +21,12 @@ function loadEventListener() {
 }
 
 
+document.getElementById('redirectBuyButton').addEventListener('click', () => {
+    console.log(cartItems)
+    window.location.href = `/pages/buy/index.html?cart=${JSON.stringify(cartItems)}`;
+})
+
+
 function removeProduct(e) {
     console.log(e.target.classList)
     if(e.target.classList.contains('borrar-curso')){
@@ -82,9 +88,9 @@ function cartHTML() {
         const row = document.createElement('tr')
         row.innerHTML = `
         <td><img src="${product.img}" width=100 class="producto-imagen"></td>
-        <td>${product.name}</td>
-        <td>${product.price}</td>
-        <td>${product.amount}</td>
+        <td id='name' >${product.name}</td>
+        <td id='id' >${product.price}</td>
+        <td id='amount'>${product.amount}</td>
         <td>
             <a href="#" class="borrar-curso" data-id="${product.id}">X</a>
         </td>

@@ -14,10 +14,10 @@ export const getUserDB = async (req, res) => {
 
         const result = await request.execute('SP_Login');
         const userData = result.recordset[0];
-
+        console.log(userData)
         // Enviar una respuesta con los datos del usuario al cliente
         // res.status(200).json(userData);
-        res.status(200).json(userData);
+        res.json(userData);
 
 
     } catch (error) {
@@ -31,5 +31,25 @@ export const getUserDB = async (req, res) => {
         } else {
             res.status(400).json({ error: 'hacer Login a la DB' });
         }
+    }
+}
+
+export const getCustomer = async (req, res) => {
+    const { userID } = req.body;
+    console.log(userID)
+    try {
+        const pool = await getConnection();
+        await pool.request()
+            .input("ID", int, userID)
+            .query("select * from Costumers c where @ID = c.ID");
+
+            if (result.recordset.length === 0) {
+            res.status(404).json({ error: "No se encontraron productos" });
+        } else {
+            res.json(result.recordset);
+        }
+    } catch (error) {
+        console.error("Error al obtener productos:", error);
+        res.status(503).json({ error: "Error interno del servidor" });
     }
 }

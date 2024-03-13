@@ -23,8 +23,6 @@ export const insertRegister = async (req, res) => {
         request.input('Phone', sql.VarChar(20), phone);
         request.input('CardNumber', sql.VarChar(16), cardNumber);
         request.input('CardType', sql.VarChar(20), cardType);
-        console.log('result')
-
         const result = await request.execute('SP_Register_Clients');
         
     } catch (error) {
