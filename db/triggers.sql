@@ -81,13 +81,16 @@ BEGIN
     -- Obtener el ID de la factura insertada
     SELECT @FacturaID = FacturaID FROM ProductsXFactura;
 
+
     -- Calcular el precio total de la factura
     SELECT @TotalBruto = SUM(P.Price * PXF.Quantity),
            @TotalImpuesto = SUM(P.Price * PXF.Quantity) * 0.18, -- Suponiendo un impuesto del 18%
            @TotalEnvio = 10, -- Suponiendo un costo de envío fijo de $10
            @TotalPagar = SUM(P.Price * PXF.Quantity) + (SUM(P.Price * PXF.Quantity) * 0.18) + 10 -- Suma del precio total, impuesto y envío
     FROM ProductsXFactura PXF
-    JOIN Products P ON P.ProductId = PXF.ProductId;
+    JOIN Products P ON P.ProductId = PXF.ProductId
+	join Factura f on f.FacturaID = PXF.FacturaID
+	where @FacturaID = PXF.FacturaID;
 
     -- Actualizar los campos de total en la tabla factura
     UPDATE Factura
@@ -96,6 +99,18 @@ BEGIN
         TotalEnvio = @TotalEnvio,
         TotalPagar = @TotalPagar
     WHERE FacturaID = @FacturaID;
+
+
+	--Actualizar inventario
+	DECLARE @Quantity INT
+	DECLARE @ProductId INT;
+
+	-- Obtener el ID del producto yy cantidad
+    SELECT @Quantity = Quantity, @ProductId = ProductId FROM ProductsXFactura;
+
+	UPDATE ProductEntries
+    SET Quantity = Quantity - @Quantity
+    WHERE ProductId = @ProductId;
 END;
 
 
