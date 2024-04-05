@@ -6,7 +6,7 @@ DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update
 DROP PROCEDURE IF EXISTS ObtenerFacturas
 
 
-
+---cambiar nombre a GetInvoice
 go
 CREATE PROCEDURE ObtenerFacturas
     @Identification INT
