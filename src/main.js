@@ -1,14 +1,50 @@
 let products = [];
-const storedUser = JSON.parse(localStorage.getItem('user'));
+function getURLParams() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    console.log(urlParams)
+    return Object.fromEntries(urlParams.entries());
+}
+
 
 // Verificar si el usuario existe
 document.addEventListener("DOMContentLoaded", function() {
-    if (storedUser) {
-        // El usuario existe, puedes usarlo
-        console.log('Usuario recuperado:', storedUser);
-        document.getElementById('nameUser').textContent = 'Bienvenido '+storedUser['FirstName']+' '+storedUser['LastName'];
-    }
+        const params = getURLParams();
+        console.log(params)
+        document.getElementById('nameUser').textContent = 'Bienvenido '+params.firstName+' '+params.lastName;
 })
+
+
+// Function to retrieve all products
+async function getCustomer(userID) {
+    var customer = {}
+    fetch('/getCustomer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        ,
+        body: JSON.stringify({
+            userID
+        })
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('exito')
+                response.json().then(data => {
+                    console.log(data)
+                    customer=data
+                });
+            } else {
+                console.error('Error:', error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:');
+            // Handle error
+        });
+    return customer
+}
 
 // Function to retrieve all products
 async function getProducts() {
@@ -100,3 +136,4 @@ function cleanHTML() {
         productCardRow.removeChild(productCardRow.firstChild);
     }
 }
+

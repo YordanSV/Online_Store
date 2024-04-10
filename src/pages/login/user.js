@@ -28,10 +28,11 @@ async function getUser() {
     .then(user => {
         console.log(user);
         if (user && user.UserID) {
-            if(user.Position == 'Costumer'){
-                window.location.href = `../../index.html?userID=${user.UserID}&position=${user.Position}`;
-            }else if(user.Position == 'Employee'){
-                window.location.href = `../employee/index.html?userID=${user.UserID}&position=${user.Position}`;
+            
+            if(user.Puesto == 'Costumer'){
+                window.location.href = `../../index.html?userID=${user.UserID}&position=${user.Puesto}&lastName=${user.LastName}$firstName=${user.FirstName}`;
+            }else if(user.Puesto == 'Employee'){
+                window.location.href = `../employee/index.html?userID=${user.UserID}&position=${user.Puesto}&lastName=${user.LastName}$firstName=${user.FirstName}`;
             }
         } else {
             throw new Error('Formato de respuesta inválido');

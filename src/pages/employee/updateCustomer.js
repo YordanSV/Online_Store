@@ -1,13 +1,14 @@
 
 
 document.getElementById("customerUpdatebtn").addEventListener("click", function () {
+    var selectElement = document.getElementById('valores');
     var selectedValue = selectElement.value;
     var userID = document.getElementById("updateUserID").value;
     var newValue = document.getElementById("updateNewValue").value;
     // event.preventDefault(); // Prevent form submission
-    updateCustomer = {
+    const updateCustomer = {
         column: selectedValue,
-        userID: customerID,
+        userID: userID,
         newValue: newValue
     };
     // Gather form data
@@ -25,16 +26,21 @@ document.getElementById("customerUpdatebtn").addEventListener("click", function 
     })
         .then(response => {
             if (response.ok) {
+                document.getElementById("customerMessageUpdate").textContent = 'Se ha actualizado exitosamente';
+                document.getElementById("customerMessageUpdate").style.display = 'inline';
                 console.log('Customer update successfully');
                 // Handle success
             } else {
-                console.error('Failed to update customer');
-                // Handle failure
+                response.json().then(data => {
+                    document.getElementById("customerMessageUpdate").textContent = data.error;
+                    document.getElementById("customerMessageUpdate").style.display = 'inline';
+                    console.error('Failed update:', data.error);
+                    // Handle failure
+                });
             }
         })
         .catch(error => {
             console.error('Error:', error);
             // Handle error
         });
-
 });
