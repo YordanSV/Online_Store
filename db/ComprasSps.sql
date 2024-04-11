@@ -2,6 +2,9 @@ DROP PROCEDURE IF EXISTS AgregarCompra;
 DROP PROCEDURE IF EXISTS Realizar_Compra;
 DROP PROCEDURE IF EXISTS SP_InsertProductEntry;
 
+
+-----Cambiar nombre a add purchase
+go
 Create Procedure AgregarCompra
 @IdProducto Int,
 @IdFactura Int,
@@ -14,14 +17,17 @@ insert into  ProductsXFactura(ProductId, FacturaID, Quantity) values
 End;
 
 
+---- Cambiar nombre a Complete_Purchase
+go
 Create procedure Realizar_Compra
 @ID int
 AS 
 Begin
 INSERT INTO Factura(Identification, TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar, Fecha)
-VALUES (@ID, 0, 0, 0, GETDATE());
+VALUES (@ID,0, 0, 0, 0, CONVERT(DATE, GETDATE()));
 
 End;
+go
 
 
 

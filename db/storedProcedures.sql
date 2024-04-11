@@ -639,6 +639,8 @@ END;
 
 GO
 
+
+----cambiar nombre a GenerateCalcAndInvoice
 Create procedure GenerarCalculoyFactura
 @PurchaseID INT
 

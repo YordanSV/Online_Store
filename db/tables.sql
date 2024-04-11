@@ -1,6 +1,5 @@
 use Tienda_Online
 
-
 DROP TABLE IF EXISTS PurchaseDetails;
 DROP TABLE IF EXISTS Purchases;
 DROP TABLE IF EXISTS ProductEntries;
@@ -16,17 +15,20 @@ DROP TABLE IF EXISTS Ids;
 DROP TABLE IF EXISTS Users;
 
 -- Creaci?n de la tabla Ids
+
 CREATE TABLE Ids (
     Identification INT PRIMARY KEY,
     Identification_Desc VARCHAR(20)
 );
 
+---ocupa campo timestamp
 -- Creaci?n de la tabla Users
 CREATE TABLE Users (
     UserID INT PRIMARY KEY IDENTITY (1, 1),
     Email VARCHAR(50) NOT NULL,
     Pass_word VARCHAR(25) NOT NULL,
     Position VARCHAR(50) NOT NULL
+	 ---LastModUs TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Creaci?n de la tabla Costumers
@@ -56,12 +58,15 @@ CREATE TABLE Employees (
 	Em_status VARCHAR(20) NOT NULL
 );
 
+---ocupa timestamp
 -- Creaci?n de la tabla Categories
 CREATE TABLE Categories (
     CategoryId INT PRIMARY KEY,
     CategoryName VARCHAR(50) NOT NULL
+	 ---LastModCat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+---ocupa timestamp
 -- Creaci?n de la tabla Products
 CREATE TABLE Products (
     ProductId INT PRIMARY KEY,
@@ -74,10 +79,13 @@ CREATE TABLE Products (
 	ActualInventoryInt INT NOT NULL,
     MaxWareHouseQuantity INT NOT NULL,
     CategoryID INT FOREIGN KEY REFERENCES Categories(CategoryID)
+	---LastModProd TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
+---ocupa timestamp
+---cambiar nombres a inglés
 -- Creaci?n de la tabla PurchaseDetails
+---Cambiar nombre a Factura por Invoice y el id por invoiceid
 CREATE TABLE Factura (
     FacturaID INT PRIMARY KEY IDENTITY(1,1),
 	Identification INT FOREIGN KEY REFERENCES IDs(Identification),
@@ -86,8 +94,10 @@ CREATE TABLE Factura (
     TotalEnvio DECIMAL(10, 2),
     TotalPagar DECIMAL(10, 2),
     Fecha DATETIME
+	---LastModInvoice TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+---ocupa timestamp
 -- Creaci?n de la tabla Purchases
 CREATE TABLE Purchases (
     PurchaseID INT IDENTITY(1,1) PRIMARY KEY,
@@ -95,21 +105,25 @@ CREATE TABLE Purchases (
     Purchasedate DATETIME NOT NULL,
     Totalpurchase DECIMAL(10, 2) NOT NULL,
     Shippingcost DECIMAL(10, 2) NOT NULL
+	---LastModPur TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+---ocupa timestamp
 -- Creaci?n de la tabla ProductEntries
 CREATE TABLE ProductEntries (
     EntryId INT IDENTITY(1,1) PRIMARY KEY,
     ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
     Quantity INT NOT NULL
+	---LastModPE TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
-
+---ocupa timestamp
 -- Creaci?n de la tabla ContactMessages
 CREATE TABLE ContactMessages (
     MessageId int IDENTITY(1,1),
     Message_text VARCHAR(250) NOT NULL
+	---LastModMessage TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -118,11 +132,13 @@ CREATE TABLE ContactMessages (
 	FacturaID INT PRIMARY KEY IDENTITY(1,1),
 	);
 
-
+---ocupa timestamp
+---cambiar nombre a ProductsxInvoice
 		Create table ProductsXFactura(
 	 ProductId INT FOREIGN KEY REFERENCES Products(ProductId) ,
 		FacturaID INT FOREIGN KEY REFERENCES Factura(FacturaId), 
 		Quantity int 
+	---LastModPXI TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	);
 
 
@@ -214,4 +230,16 @@ INSERT INTO ProductEntries ( ProductId, Quantity) VALUES
 ( 2, 20),
 ( 3, 5),
 ( 4, 30),
-( 5, 15);
+( 5, 15),
+( 6, 10),
+(7, 20),
+( 8, 5),
+( 9, 30),
+( 10, 15),
+( 11, 10),
+( 12, 20),
+( 13, 5),
+( 14, 30),
+( 15, 15),
+( 16, 30),
+( 17, 15);

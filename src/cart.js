@@ -23,7 +23,11 @@ function loadEventListener() {
 
 document.getElementById('redirectBuyButton').addEventListener('click', () => {
     console.log(cartItems)
+<<<<<<< HEAD
     // window.location.href = `/pages/buy/index.html?cart=${JSON.stringify(cartItems)}`;
+=======
+    window.location.href = `/pages/buy/index.html?cart=${JSON.stringify(cartItems)}`;
+>>>>>>> 45ebe19c6213616dcbe9b46f7a42cad14ac0acd6
 })
 
 

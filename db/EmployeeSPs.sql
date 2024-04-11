@@ -1,20 +1,54 @@
-use Tienda_Online
-
 DROP PROCEDURE IF EXISTS SP_Login;
 DROP PROCEDURE IF EXISTS SP_Employee_Registration;
 DROP PROCEDURE IF EXISTS SP_Employee_Update;
 DROP PROCEDURE IF EXISTS SP_Employee_Registration;
-go
+DROP PROCEDURE IF EXISTS SP_SelectProductInventory;
+DROP PROCEDURE IF EXISTS SP_InsertProductEntry;
+DROP PROCEDURE IF EXISTS addInventory;
 
+go
+CREATE PROCEDURE addInventory
+    @ProductId INT,
+    @Quantity INT
+as
+BEGIN
+    UPDATE ProductEntries
+    SET Quantity = Quantity + @Quantity
+    WHERE ProductId = @ProductId;
+END
+go
+CREATE PROCEDURE SP_SelectProductInventory
+AS
+BEGIN
+    SELECT 
+        P.ProductId,
+        P.ProductName,
+        P.Presentation,
+        P.Size,
+        P.Pr_weight,
+        P.Price,
+        P.MinInventoryQuantity,
+		P.MaxWareHouseQuantity,
+        PE.Quantity
+    FROM 
+        Products P
+    INNER JOIN 
+        ProductEntries PE ON P.ProductId = PE.ProductId;
+END;
+
+
+go
 create procedure SP_Login
     @Email VARCHAR(50),
     @Password VARCHAR(50)
-
 AS
 BEGIN
     BEGIN TRY
         DECLARE @UserID INT;
 		DECLARE @Position varchar(50);
+		
+		DECLARE @LastName varchar(50);
+		DECLARE @FirstName varchar(50);
         -- Verifica si el correo electrónico y la contraseña coinciden en la tabla de Usuarios
         IF LEN(@Email) > 50 OR LEN(@Password) > 50
         BEGIN
@@ -22,11 +56,12 @@ BEGIN
         END
         ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email AND Pass_word = @Password)
         BEGIN
-			SELECT @Position = Position, @UserID = UserID
-			FROM Users
+			SELECT @Position = u.Position, @UserID = u.UserID, @LastName = c.LastName, @FirstName = c.FirstName
+			FROM Users u
+			join Costumers c on c.UserID = u.UserID
 			WHERE Email = @Email AND Pass_word = @Password;
 			
-			SELECT @Position as Puesto , @UserID AS UserID;
+			SELECT @Position as Puesto , @UserID AS UserID, @LastName as LastName, @FirstName as FirstName;
 			
             -- Envía un mensaje de éxito junto con el UserID
         END
