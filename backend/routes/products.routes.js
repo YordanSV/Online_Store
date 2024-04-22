@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { getProducts, createNewProduct } from "../controllers/products.controller";
+import { Router } from "express"; //Nos permite crear URLs
+import { createNewProduct, getProducts } from "../controllers/products.controller";
 
 const router = Router()
 

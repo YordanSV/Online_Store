@@ -5,7 +5,7 @@ const router = Router()
 
 // router.get('/login', getUserDB);
 
-router.post('/register', insertRegister)
+router.post('/register/customer', insertRegister)
 
 // router.get('/login')
 

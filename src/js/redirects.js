@@ -34,3 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault(); // Evitar el comportamiento predeterminado del formulario
     });
 });
+
+function redirectLoginEmployee() {
+    window.location.href="../employee/index.html"
+}
+document.addEventListener('DOMContentLoaded', () => {
+    var button = document.getElementById("redirectEmployeeButton")
+    button.addEventListener('click', function(event) {
+        redirectLoginEmployee();
+        event.preventDefault(); // Evitar el comportamiento predeterminado del formulario
+    });
+});
