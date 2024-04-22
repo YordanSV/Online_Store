@@ -12,6 +12,7 @@ CREATE PROCEDURE SP_Category_Maintenance
     @CategoryName VARCHAR(50) = NULL
 AS
 BEGIN
+BEGIN TRANSACTION;
     BEGIN TRY
         IF @CategoryId IS NOT NULL
         BEGIN
@@ -35,12 +36,15 @@ BEGIN
         ELSE
         BEGIN
             RAISERROR('Error: Respuesta no válida', 16, 1);
+			COMMIT TRANSACTION;
         END;
+
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(300);
         SELECT @ErrorMessage = ERROR_MESSAGE();
         RAISERROR(@ErrorMessage, 16, 1);
+		ROLLBACK TRANSACTION;
     END CATCH;
 END;
 
@@ -68,6 +72,7 @@ CREATE PROCEDURE SP_Product_Maintenance
     @CategoryID INT = NULL
 AS
 BEGIN
+BEGIN TRANSACTION;
     BEGIN TRY
        If @ProductId IS NOT NULL
         BEGIN
@@ -148,6 +153,7 @@ BEGIN
         BEGIN
             RAISERROR('Error: Respuesta no válida o falta de datos', 16, 1);
         END;
+		ROLLBACK TRANSACTION;
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(4000);
@@ -182,7 +188,7 @@ go
 	@Quantity int
 AS
 BEGIN
-
+BEGIN TRANSACTION;
 	----Select muestra los datos de los productos que entraron
 	IF @Answer = '1'
 	BEGIN
@@ -212,6 +218,7 @@ BEGIN
 
 		INSERT INTO ProductEntries (EntryId, ProductId, EntryDate, Quantity)
 		VALUES (@EntryId, @ProductId, @EntryDate, @Quantity);
+		COMMIT TRANSACTION;
 	END
 	ELSE
 	BEGIN

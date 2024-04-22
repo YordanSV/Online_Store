@@ -67,5 +67,12 @@ QuitWithRollback:
     IF (@@TRANCOUNT > 0) ROLLBACK TRANSACTION
 EndSave:
 GO
+------------------
+USE msdb;  
+GO  
+EXEC dbo.sp_start_job N'RespaldoAutoTiendaOnline';  
+GO
+---------------------------------------------------------
+-----------------------------------
 
 

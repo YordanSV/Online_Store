@@ -12,14 +12,17 @@ CREATE PROCEDURE addInventory
     @Quantity INT
 as
 BEGIN
+BEGIN TRANSACTION;
     UPDATE ProductEntries
     SET Quantity = Quantity + @Quantity
     WHERE ProductId = @ProductId;
+	COMMIT TRANSACTION;
 END
 go
 CREATE PROCEDURE SP_SelectProductInventory
 AS
 BEGIN
+BEGIN TRANSACTION;
     SELECT 
         P.ProductId,
         P.ProductName,
@@ -34,6 +37,7 @@ BEGIN
         Products P
     INNER JOIN 
         ProductEntries PE ON P.ProductId = PE.ProductId;
+		COMMIT TRANSACTION;
 END;
 
 
@@ -44,6 +48,7 @@ create procedure SP_Login
 AS
 BEGIN
     BEGIN TRY
+	BEGIN TRANSACTION;
         DECLARE @UserID INT;
 		DECLARE @Position varchar(50);
 		
@@ -64,6 +69,8 @@ BEGIN
 			SELECT @Position as Puesto , @UserID AS UserID, @LastName as LastName, @FirstName as FirstName;
 			
             -- Envía un mensaje de éxito junto con el UserID
+
+			COMMIT TRANSACTION;
         END
         ELSE
         BEGIN
@@ -80,6 +87,7 @@ BEGIN
                @ErrorState = ERROR_STATE();
 
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+		ROLLBACK TRANSACTION;
     END CATCH;
 END;
 go
@@ -104,6 +112,7 @@ CREATE PROCEDURE SP_Employee_Registration
     @Em_Status VARCHAR(20) = 'Active' -- Establece 'Active' como valor predeterminado
 AS
 BEGIN
+BEGIN TRANSACTION;
     BEGIN TRY
         IF LEN(@FirstName) < 2 OR LEN(@FirstName) > 50
         BEGIN
@@ -113,16 +122,20 @@ BEGIN
         BEGIN
             RAISERROR ('Error: La longitud del apellido debe estar entre 2 y 50 caracteres', 16, 1);
         END
+		
         ELSE
         BEGIN
             INSERT INTO Employees (FirstName, LastName, Em_Status)
             VALUES (@FirstName, @LastName, @Em_Status);
         END
+		COMMIT TRANSACTION;
     END TRY
+
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(4000);
         SELECT @ErrorMessage = ERROR_MESSAGE();
         RAISERROR (@ErrorMessage, 16, 1); -- Mensaje de error personalizado
+		ROLLBACK TRANSACTION;
     END CATCH;
 END;
 
@@ -143,6 +156,7 @@ CREATE PROCEDURE SP_Employee_Update
     @Em_Status VARCHAR(20) = NULL
 AS
 BEGIN
+BEGIN TRANSACTION;
     BEGIN TRY
         IF @FirstName IS NOT NULL
         BEGIN
@@ -190,11 +204,13 @@ BEGIN
         BEGIN
             RAISERROR ('Error: No se proporcionaron datos para actualizar', 16, 1);
         END;
+		COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(4000);
         SELECT @ErrorMessage = ERROR_MESSAGE();
         RAISERROR (@ErrorMessage, 16, 1); -- Mensaje de error personalizado
+		ROLLBACK TRANSACTION;
     END CATCH;
 END;
 
@@ -206,6 +222,7 @@ CREATE PROCEDURE SP_InsertProductEntry
     @Quantity INT
 AS
 BEGIN
+BEGIN TRANSACTION;
     DECLARE @MinInventory INT, @MaxInventory INT, @ActualInventory INT;
 
     -- Obtener el mínimo inventario y el máximo inventario del producto
@@ -233,7 +250,7 @@ BEGIN
         RAISERROR ('La cantidad a añadir no puede ser negativa.', 16, 1);
         RETURN;
     END;
-
+	COMMIT TRANSACTION;
     -- Insertar la entrada del producto
     INSERT INTO ProductEntries (ProductId, Quantity)
     VALUES (@ProductId, @Quantity);
