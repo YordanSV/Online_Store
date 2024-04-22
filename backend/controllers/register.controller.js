@@ -23,6 +23,7 @@ export const insertRegister = async (req, res) => {
         request.input('Phone', sql.VarChar(20), phone);
         request.input('CardNumber', sql.VarChar(16), cardNumber);
         request.input('CardType', sql.VarChar(20), cardType);
+<<<<<<< HEAD
         
         const result = await request.execute('SP_Register_Clients');
 
@@ -37,6 +38,19 @@ export const insertRegister = async (req, res) => {
     } catch (error) {
         console.error('Error al insertar registro:', error);
         res.status(500).json({ error: 'Error al insertar registro' });
+=======
+        const result = await request.execute('SP_Register_Clients');
+        
+    } catch (error) {
+
+        console.error('Error al insertar registro:', error);
+        if (error && error.message) {
+            // Aquí puedes usar el mensaje de error en tu respuesta al cliente
+            res.status(400).json({ error: error.message });
+        } else {
+            res.status(400).json({ error: 'Error al insertar registro' });
+        }
+>>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
     }
 }
 

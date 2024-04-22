@@ -1,14 +1,54 @@
 let products = [];
-const storedUser = JSON.parse(localStorage.getItem('user'));
+function getURLParams() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    console.log(urlParams)
+    return Object.fromEntries(urlParams.entries());
+}
+
 
 // Verificar si el usuario existe
 document.addEventListener("DOMContentLoaded", function() {
-    if (storedUser) {
-        // El usuario existe, puedes usarlo
-        console.log('Usuario recuperado:', storedUser);
-        document.getElementById('nameUser').textContent = 'Bienvenido '+storedUser['FirstName']+' '+storedUser['LastName'];
-    }
+        const params = getURLParams();
+        console.log(params)
+        document.getElementById('nameUser').textContent = 'Bienvenido '+params.firstName+' '+params.lastName;
 })
+
+
+// Function to retrieve all products
+async function getCustomer(userID) {
+    var customer = {}
+    fetch('/getCustomer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        ,
+        body: JSON.stringify({
+            userID
+        })
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('exito')
+                response.json().then(data => {
+                    console.log(data)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 45ebe19c6213616dcbe9b46f7a42cad14ac0acd6
+                    customer=data
+                });
+            } else {
+                console.error('Error:', error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:');
+            // Handle error
+        });
+    return customer
+}
 
 // Function to retrieve all products
 async function getProducts() {
@@ -52,11 +92,11 @@ function filterCategory(idCategory) {
 function generateFlightCard(product) {
 
 
-    const category = product.CategoryID == 1 ? "Electronics" :
-        product.CategoryID == 2 ? "Clothing and Accessories" :
-            product.CategoryID == 3 ? "Home and Garden" :
-                product.CategoryID == 4 ? "Health and Beauty" :
-                    "Sports and Outdoor Activitie";
+    const category = product.CategoryID == 1 ? "Electronica" :
+        product.CategoryID == 2 ? "Ropa y Accesorios" :
+            product.CategoryID == 3 ? "Hogar y Jardín" :
+                product.CategoryID == 4 ? "Salud y Belleza" :
+                    "Deportes y Actividades al Aire Libre";
 
 
 
@@ -68,12 +108,16 @@ function generateFlightCard(product) {
                 <h5 class="card-title">${category}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">${product.ProductName}</h6>
                 <p class="card-text">
-                    <strong>Presentation:</strong> ${product.Presentation}<br>
-                    <strong>Size:</strong> ${product.Size}<br>
-                    <strong class='price'>Price per kilogram:</strong> ${product.Pr_weight}<br>
-                    <strong>Price:</strong> $${product.Price}
+                    <strong>Presentación:</strong> ${product.Presentation}<br>
+                    <strong>Tamaño:</strong> ${product.Size}<br>
+                    <strong class='price'>Precio por kilogramo:</strong> ${product.Pr_weight}<br>
+                    <strong>Precio:</strong> $${product.Price}
                 </p>
+<<<<<<< HEAD
                 <a href="#" class="mt-auto btn btn-primary agregar-carrito">Add to cart</a>
+=======
+                <a href="#" class="mt-auto btn btn-primary agregar-carrito">Agregar al carrito</a>
+>>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
             </div>
         </div>
     </div>
@@ -100,3 +144,4 @@ function cleanHTML() {
         productCardRow.removeChild(productCardRow.firstChild);
     }
 }
+

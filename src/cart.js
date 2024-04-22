@@ -21,6 +21,16 @@ function loadEventListener() {
 }
 
 
+document.getElementById('redirectBuyButton').addEventListener('click', () => {
+    console.log(cartItems)
+<<<<<<< HEAD
+    // window.location.href = `/pages/buy/index.html?cart=${JSON.stringify(cartItems)}`;
+=======
+    window.location.href = `/pages/buy/index.html?cart=${JSON.stringify(cartItems)}`;
+>>>>>>> 45ebe19c6213616dcbe9b46f7a42cad14ac0acd6
+})
+
+
 function removeProduct(e) {
     console.log(e.target.classList)
     if(e.target.classList.contains('borrar-curso')){
@@ -82,9 +92,9 @@ function cartHTML() {
         const row = document.createElement('tr')
         row.innerHTML = `
         <td><img src="${product.img}" width=100 class="producto-imagen"></td>
-        <td>${product.name}</td>
-        <td>${product.price}</td>
-        <td>${product.amount}</td>
+        <td id='name' >${product.name}</td>
+        <td id='id' >${product.price}</td>
+        <td id='amount'>${product.amount}</td>
         <td>
             <a href="#" class="borrar-curso" data-id="${product.id}">X</a>
         </td>

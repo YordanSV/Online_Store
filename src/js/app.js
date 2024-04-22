@@ -3,8 +3,12 @@ import config from './config'
 import productsRotes from '../../backend/routes/products.routes'
 import customerRotes from '../../backend/routes/customer.routes'
 import registerRotes from '../../backend/routes/register.routes'
+<<<<<<< HEAD
 
+=======
+>>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
 import loginRotes from '../../backend/routes/login.routes'
+
 import cors from 'cors'; // Importa el middleware CORS
 import path from 'path';
 //const cors = require('cors');
@@ -28,6 +32,10 @@ app.get('/', function(req, res) {
 app.use(customerRotes)
 app.use(productsRotes)
 app.use(registerRotes)
+<<<<<<< HEAD
+=======
+app.use(loginRotes)
+>>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
 
 export default app;
 

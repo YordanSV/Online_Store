@@ -1,6 +1,7 @@
 
 // Update Customer
 
+<<<<<<< HEAD
 
 var column = ''
 
@@ -20,6 +21,12 @@ document.getElementById("customerUpdatebtn").addEventListener("click", function 
     if(column == ''){
         return
     }
+=======
+document.getElementById("customerUpdatebtn").addEventListener("click", function () {
+
+
+
+>>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
     var customerID = document.getElementById("customerID").value;
     var newValue = document.getElementById("newValue").value;
     // event.preventDefault(); // Prevent form submission
@@ -28,7 +35,10 @@ document.getElementById("customerUpdatebtn").addEventListener("click", function 
         customerID: customerID,
         newValue: newValue
     };
+<<<<<<< HEAD
     // Gather form data
+=======
+>>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
 
     // Construct product object
     console.log(updateCustomer);
