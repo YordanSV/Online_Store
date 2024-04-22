@@ -1,3 +1,4 @@
+use Tienda_Online
 DROP PROCEDURE IF EXISTS AgregarCompra;
 DROP PROCEDURE IF EXISTS Realizar_Compra;
 DROP PROCEDURE IF EXISTS SP_InsertProductEntry;

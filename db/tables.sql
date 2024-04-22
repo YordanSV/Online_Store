@@ -1,7 +1,6 @@
 use Tienda_Online
+--select * from Factura
 
-DROP TABLE IF EXISTS PurchaseDetails;
-DROP TABLE IF EXISTS Purchases;
 DROP TABLE IF EXISTS ProductEntries;
 DROP TABLE IF EXISTS ContactMessages;
 DROP TABLE IF EXISTS ProductsXFactura
@@ -88,13 +87,7 @@ CREATE TABLE Factura (
 );
 
 -- Creaci?n de la tabla Purchases
-CREATE TABLE Purchases (
-    PurchaseID INT IDENTITY(1,1) PRIMARY KEY,
-    UserId INT FOREIGN KEY REFERENCES Ids(Identification),
-    Purchasedate DATETIME NOT NULL,
-    Totalpurchase DECIMAL(10, 2) NOT NULL,
-    Shippingcost DECIMAL(10, 2) NOT NULL
-);
+
 
 -- Creaci?n de la tabla ProductEntries
 CREATE TABLE ProductEntries (
@@ -134,8 +127,8 @@ CREATE TABLE ContactMessages (
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
-*/ 
-
+*/
+/*
 INSERT INTO Ids (Identification, Identification_Desc) VALUES
 (1, 'Jurídica'),
 (2, 'Pasaporte'),
@@ -226,3 +219,112 @@ INSERT INTO ProductEntries ( ProductId, Quantity) VALUES
 ( 15, 15),
 ( 16, 30),
 ( 17, 15);
+*/
+
+
+-- Insertar datos en la tabla Ids
+INSERT INTO Ids (Identification, Identification_Desc) 
+VALUES 
+(1, 'ID Tipo A'), 
+(2, 'ID Tipo B'),
+(3, 'ID Tipo C');
+
+-- Insertar datos en la tabla Users
+INSERT INTO Users (Email, Pass_word, Position) 
+VALUES 
+('usuario1@example.com', 'contraseña1', 'Puesto A'), 
+('usuario2@example.com', 'contraseña2', 'Puesto B'),
+('usuario3@example.com', 'contraseña3', 'Puesto C');
+
+-- Insertar datos en la tabla Costumers
+INSERT INTO Costumers (ID, UserID, FirstName, LastName, BirthDate, Province, District, Canton, NeighBorhood, Place_address, Phone, CardNumber, CardType, Cs_status) 
+VALUES 
+(1, 1, 'Juan', 'Pérez', '1990-05-15', 'San José', 'Central', 'San José', 'Barrio A', 'Dirección 123', '12345678', '1234567890123456', 'Visa', 'Activo'), 
+(2, 2, 'María', 'González', '1985-09-20', 'Heredia', 'Heredia', '', 'Barrio B', 'Dirección 456', '98765432', '9876543210987654', 'Mastercard', 'Activo');
+
+-- Insertar datos en la tabla Employees
+INSERT INTO Employees (ID, UserID, FirstName, LastName, Em_status) 
+VALUES 
+(2, 3, 'Pedro', 'Martínez', 'Activo'), 
+(3, 4, 'Ana', 'López', 'Activo');
+select * from Users
+
+-- Inserci?n de datos en la tabla Categories
+INSERT INTO Categories (CategoryId, CategoryName) VALUES
+(1, 'Electr?nica'),
+(2, 'Ropa y Accesorios'),
+(3, 'Hogar y Jard?n'),
+(4, 'Salud y Belleza'),
+(5, 'Deportes y Actividades al Aire Libre');
+
+-- Inserci?n de datos en la tabla Products
+INSERT INTO Products (ProductId, ProductName, Presentation, Size, Pr_weight, Price, MinInventoryQuantity, ActualInventoryInt, MaxWareHouseQuantity, CategoryID) VALUES
+(1, 'Adidas Essentials 3-Stripes Fleece Hoodie', 'Piece', 'M', 0.8, 49.99, 20, 30, 200, 2),
+(2, 'Aloe Shampoo', 'Bottle', '250 ml', 0.3, 5.99, 30,  30, 300, 4),
+(3, 'Android 154', 'Piece', 'One Size', 0.2, 299.99, 10,  30, 100, 1),
+(4, 'Char-Broil Performance 4-Burner Gas Grill', 'Piece', 'Large', 50, 499.99, 5,  30, 50, 3),
+(5, 'Dove Men+Care Antiperspirant Deodorant Stick', 'Piece', '50 g', 0.1, 3.49, 50,  30, 500, 4),
+(6, 'Fiskars Steel Bypass Pruning Shears', 'Piece', 'One Size', 0.3, 12.99, 20,  30, 200, 3),
+(7, 'Fitbit Charge 5 Fitness and Activity Tracker', 'Piece', 'One Size', 0.1, 149.99, 15,  30, 150, 1),
+(8, 'Garden Hose', 'Roll', '100 ft', 3.0, 49.99, 10,  30, 100, 3),
+(9, 'Levis Jeans', 'Piece', 'M', 0.8, 59.99, 20,  30, 200, 2),
+(10, 'Nike Air Force 1 Low', 'Piece', '9', 1.0, 89.99, 10,  30, 100, 2),
+(11, 'Olay Regenerist Micro-Sculpting Cream', 'Jar', '50 ml', 0.2, 24.99, 25,  30, 250, 4),
+(12, 'Samsung 65-Inch QLED 4K Smart TV', 'Box', '65 inches', 20.0, 1499.99, 5,  30, 50, 1),
+(13, 'Sony WH-1000XM4 Wireless Noise Cancelling Headphones', 'Piece', 'One Size', 0.3, 279.99, 10,  30, 100, 1),
+(14, 'Samsung Galaxy ZFlip', 'Box', '6.7 inches', 0.2, 999.99, 10,  30, 100, 1),
+(15, 'Spalding NBA Street Basketball', 'Piece', 'Official Size', 1.0, 14.99, 30,  30, 300, 5),
+(16, 'Under Armour Shoes', 'Pair', '9', 1.2, 79.99, 15,  30, 150, 2),
+(17, 'Yoga Mat', 'Piece', 'Standard', 1.5, 19.99, 15,  30, 150, 5);
+-- Inserci?n de datos en la tabla Purchases
+-- Insertar datos de factura de ejemplo
+
+-- Inserci?n de datos en la tabla ProductEntries
+INSERT INTO ProductEntries ( ProductId, Quantity) VALUES
+( 1, 10),
+( 2, 20),
+( 3, 5),
+( 4, 30),
+( 5, 15),
+( 6, 10),
+(7, 20),
+( 8, 5),
+( 9, 30),
+( 10, 15),
+( 11, 10),
+( 12, 20),
+( 13, 5),
+( 14, 30),
+( 15, 15),
+( 16, 30),
+( 17, 15);
+
+
+-- Insertar datos en la tabla Factura
+INSERT INTO Factura (Identification, TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar, Fecha) 
+VALUES 
+(1, 100.00, 13.00, 5.00, 118.00, '2024-04-21 10:30:00'), 
+(2, 50.00, 6.50, 3.00, 59.50, '2024-04-20 15:45:00');
+
+-- Insertar datos en la tabla ProductEntries
+
+
+-- Insertar datos en la tabla ContactMessages
+INSERT INTO ContactMessages (Message_text) 
+VALUES 
+('Mensaje de contacto 1'), 
+('Mensaje de contacto 2');
+
+-- Insertar datos en la tabla History
+INSERT INTO History (UserID) 
+VALUES 
+(1), 
+(2);
+
+-- Insertar datos en la tabla ProductsXFactura
+INSERT INTO ProductsXFactura (ProductId, FacturaID, Quantity) 
+VALUES 
+(1, 1, 5), 
+(2, 1, 10),
+(1, 2, 3),
+(2, 2, 5);
