@@ -6,12 +6,13 @@ DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update
 DROP PROCEDURE IF EXISTS ObtenerFacturas
 
 
-
+---cambiar nombre a GetInvoice
 go
 CREATE PROCEDURE ObtenerFacturas
     @Identification INT
 AS
 BEGIN
+BEGIN TRANSACTION;
     SELECT 
         f.FacturaID AS 'ID de Factura',
         f.TotalBruto AS 'Total Bruto',
@@ -31,6 +32,7 @@ BEGIN
         Products p ON pf.ProductId = p.ProductId
     WHERE 
         f.Identification = @Identification;
+		COMMIT TRANSACTION;
 END;
 go
 CREATE PROCEDURE SP_Customer_Update
@@ -48,6 +50,7 @@ CREATE PROCEDURE SP_Customer_Update
     @CardType VARCHAR(20) = NULL
 AS
 BEGIN
+BEGIN TRANSACTION;
     DECLARE @ErrorMessage NVARCHAR(300);
     DECLARE @ErrorSeverity INT;
     DECLARE @ErrorState INT;
@@ -154,7 +157,9 @@ BEGIN
             SET CardType = @CardType
             WHERE UserID = @UserID;
         END;
+		COMMIT TRANSACTION;
     END TRY
+
     BEGIN CATCH
         SELECT 
             @ErrorMessage = ERROR_MESSAGE(),
@@ -162,6 +167,7 @@ BEGIN
             @ErrorState = ERROR_STATE();
 
         RAISERROR ('Error: ', @ErrorMessage, @ErrorSeverity, @ErrorState);
+		ROLLBACK TRANSACTION;
     END CATCH;
 END;
 go
@@ -196,6 +202,7 @@ CREATE PROCEDURE SP_Register_Clients
 @CardType varchar(20)
 AS
 BEGIN
+BEGIN TRANSACTION;
     BEGIN TRY
         IF LEN(@ID_Desc) > 49 OR LEN(@Email) > 49 OR LEN(@Pass_word) > 49 OR LEN(@Position) > 49 OR
            LEN(@FirstName) > 49 OR LEN(@LastName) > 49 OR LEN(@Province) > 49 OR LEN(@District) > 49 OR
@@ -251,7 +258,9 @@ BEGIN
                 (@ID, @UserID, @FirstName, @LastName);
             END;
         END;
+		COMMIT TRANSACTION;
     END TRY
+
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(4000);
         DECLARE @ErrorSeverity INT;
@@ -262,6 +271,7 @@ BEGIN
                @ErrorState = ERROR_STATE();
 
         RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+		ROLLBACK TRANSACTION;
     END CATCH;
 END;
 
@@ -291,6 +301,7 @@ CREATE PROCEDURE SP_Employee_to_Costumer_Update
     @CS_Status VARCHAR(20) = NULL
 AS
 BEGIN
+BEGIN TRANSACTION;
     BEGIN TRY
         IF EXISTS (SELECT 1 FROM Costumers WHERE UserID = @UserID)
         BEGIN
@@ -392,11 +403,13 @@ BEGIN
         BEGIN
             RAISERROR ('Error: El usuario no existe', 16, 1);
         END;
+		COMMIT TRANSACTION;
     END TRY
     BEGIN CATCH
         DECLARE @ErrorMessage NVARCHAR(4000);
         SELECT @ErrorMessage = ERROR_MESSAGE();
         RAISERROR (@ErrorMessage, 16, 1);
+		ROLLBACK TRANSACTION;
     END CATCH;
 END;
 

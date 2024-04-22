@@ -66,6 +66,8 @@ GO
 ----------------------
 ------------------------*/
 
+
+----cambiar nombre Calc_Total
 CREATE TRIGGER Calcular_totales
 ON ProductsXFactura
 AFTER INSERT
