@@ -263,3 +263,34 @@ END;
 --###########################################
 --#################################################
 --#################################################
+
+CREATE PROCEDURE SP_AddInventoryToMax
+AS
+BEGIN
+BEGIN TRANSACTION;
+    DECLARE @ProductId INT;
+    DECLARE @QuantityToAdd INT;
+
+    DECLARE curProducts CURSOR FOR
+    SELECT ProductId, MaxWareHouseQuantity - ActualInventoryInt AS QuantityToAdd
+    FROM Products
+    WHERE ActualInventoryInt < MaxWareHouseQuantity;
+
+    OPEN curProducts;
+    FETCH NEXT FROM curProducts INTO @ProductId, @QuantityToAdd;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Añadir la cantidad necesaria para alcanzar el máximo inventario
+        INSERT INTO ProductEntries (ProductId, Quantity)
+        VALUES (@ProductId, @QuantityToAdd);
+
+        FETCH NEXT FROM curProducts INTO @ProductId, @QuantityToAdd;
+		
+    END;
+
+    CLOSE curProducts;
+    DEALLOCATE curProducts;
+
+	COMMIT TRANSACTION;
+END;

@@ -11,9 +11,10 @@ Create Procedure AgregarCompra
 @Quantity Int
 As 
 Begin
-insert into  ProductsXFactura(ProductId, FacturaID, Quantity) values
-(@IdProducto, @IdFactura, @Quantity)
-
+Begin transaction;
+insert into  ProductsXFactura(ProductId, FacturaID, Quantity, LastModPXI) values
+(@IdProducto, @IdFactura, @Quantity, default)
+Commit transaction;
 End;
 
 
@@ -23,9 +24,10 @@ Create procedure Realizar_Compra
 @ID int
 AS 
 Begin
-INSERT INTO Factura(Identification, TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar, Fecha)
-VALUES (@ID,0, 0, 0, 0, CONVERT(DATE, GETDATE()));
-
+Begin transaction;
+INSERT INTO Factura(Identification, TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar, Fecha, LastModInvoice )
+VALUES (@ID,0, 0, 0, 0, CONVERT(DATE, GETDATE()), default);
+Commit transaction;
 End;
 go
 
@@ -36,6 +38,7 @@ CREATE PROCEDURE SP_InsertProductEntry
     @Quantity INT
 AS
 BEGIN
+	Begin transaction;
     DECLARE @MinInventory INT, @MaxInventory INT, @ActualInventory INT;
 
     -- Obtener el mínimo inventario y el máximo inventario del producto
@@ -65,7 +68,9 @@ BEGIN
     END;
 
     -- Insertar la entrada del producto
-    INSERT INTO ProductEntries (ProductId, Quantity)
-    VALUES (@ProductId, @Quantity);
+    INSERT INTO ProductEntries (ProductId, Quantity, LastModPE)
+    VALUES (@ProductId, @Quantity, default);
+
+	Commit transaction;
 END;
 

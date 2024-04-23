@@ -100,6 +100,7 @@ BEGIN
         TotalImpuesto = @TotalImpuesto,
         TotalEnvio = @TotalEnvio,
         TotalPagar = @TotalPagar
+		
     WHERE FacturaID = @FacturaID;
 
 
@@ -113,6 +114,8 @@ BEGIN
 	UPDATE ProductEntries
     SET Quantity = Quantity - @Quantity
     WHERE ProductId = @ProductId;
+
+
 END;
 
 

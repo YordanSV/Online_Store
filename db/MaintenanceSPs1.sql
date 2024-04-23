@@ -31,6 +31,8 @@ BEGIN TRANSACTION;
                 UPDATE Categories
                 SET CategoryName = @CategoryName
                 WHERE CategoryId = @CategoryId;
+
+				
             END;
         END;
         ELSE
@@ -79,6 +81,9 @@ BEGIN TRANSACTION;
             UPDATE Products
             SET ProductId = @ProductId
             WHERE ProductID = @ProductId;
+
+			
+
         END;
         ELSE IF @ProductName IS NOT NULL
         BEGIN
@@ -91,6 +96,8 @@ BEGIN TRANSACTION;
                 UPDATE Products
                 SET ProductName = @ProductName
                 WHERE ProductID = @ProductId;
+
+				
             END;
         END;
         ELSE IF  @Presentation IS NOT NULL
@@ -104,6 +111,8 @@ BEGIN TRANSACTION;
                 UPDATE Products
                 SET Presentation = @Presentation
                 WHERE ProductID = @ProductId;
+
+				
             END;
         END;
         ELSE IF @Size IS NOT NULL
@@ -117,6 +126,8 @@ BEGIN TRANSACTION;
                 UPDATE Products
                 SET Size = @Size
                 WHERE ProductID = @ProductId;
+
+				
             END;
         END;
         ELSE IF @Pr_weight IS NOT NULL
@@ -130,25 +141,34 @@ BEGIN TRANSACTION;
             UPDATE Products
             SET Price = @Price
             WHERE ProductID = @ProductId;
+
+			
         END;
         ELSE if @MinInventoryQuantity IS NOT NULL
         BEGIN
             UPDATE Products
             SET MinInventoryQuantity = @MinInventoryQuantity
             WHERE ProductID = @ProductId;
+
+			
         END;
         ELSE IF @MaxWareHouseQuantity IS NOT NULL
         BEGIN
             UPDATE Products
             SET MaxWareHouseQuantity = @MaxWareHouseQuantity
             WHERE ProductID = @ProductId;
+
+			
         END;
         ELSE IF @CategoryID IS NOT NULL
         BEGIN
             UPDATE Products
             SET CategoryID = @CategoryID
             WHERE ProductID = @ProductId;
+
+			
         END;
+
         ELSE
         BEGIN
             RAISERROR('Error: Respuesta no válida o falta de datos', 16, 1);
@@ -204,8 +224,9 @@ BEGIN TRANSACTION;
 			PR.CategoryID AS CategoryID,
 			PE.EntryId AS EntryId,
 			PE.ProductId AS ProductId,
-			PE.EntryDate AS EntryDate,
-			PE.Quantity AS Quantity
+			--PE.EntryDate AS EntryDate,
+			PE.Quantity AS Quantity,
+			PE.LastModPE As TimestampMod
 		FROM
 			ProductEntries PE
 		INNER JOIN
@@ -216,8 +237,8 @@ BEGIN TRANSACTION;
 		INSERT INTO Products (ProductId, ProductName, Presentation, Size, Pr_weight, Price, MinInventoryQuantity, MaxWareHouseQuantity, CategoryID)
 		VALUES (@ProductId, @ProductName, @Presentation, @Size, @Pr_weight, @Price, @MinInventoryQuantity, @MaxWareHouseQuantity, @CategoryID);
 
-		INSERT INTO ProductEntries (EntryId, ProductId, EntryDate, Quantity)
-		VALUES (@EntryId, @ProductId, @EntryDate, @Quantity);
+		INSERT INTO ProductEntries (EntryId, ProductId, /*EntryDate,*/ Quantity, LastModPE)
+		VALUES (@EntryId, @ProductId, @Quantity, default);
 		COMMIT TRANSACTION;
 	END
 	ELSE

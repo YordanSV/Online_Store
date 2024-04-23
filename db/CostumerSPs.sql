@@ -74,6 +74,9 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET FirstName = @FirstName
             WHERE UserID = @UserID;
+
+			
+
         END;
 
         IF @LastName IS NOT NULL
@@ -87,6 +90,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET LastName = @LastName
             WHERE UserID = @UserID;
+
+			
         END;
 
         IF @BirthDate IS NOT NULL
@@ -94,6 +99,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET BirthDate = @BirthDate
             WHERE UserID = @UserID;
+
+			
         END;
 
         IF @Province IS NOT NULL
@@ -101,6 +108,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET Province = @Province
             WHERE UserID = @UserID;
+
+			
         END;
 
         IF @District IS NOT NULL
@@ -108,6 +117,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET District = @District
             WHERE UserID = @UserID;
+
+			
         END;
 
         IF @Canton IS NOT NULL
@@ -115,6 +126,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET Canton = @Canton
             WHERE UserID = @UserID;
+
+			
         END;
 
         IF @Neighborhood IS NOT NULL
@@ -122,6 +135,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET Neighborhood = @Neighborhood
             WHERE UserID = @UserID;
+
+			
         END;
 
         IF @Place_address IS NOT NULL
@@ -129,6 +144,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET Place_address = @Place_address
             WHERE UserID = @UserID;
+
+			
         END;
 
         IF @Phone IS NOT NULL
@@ -142,6 +159,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET Phone = @Phone
             WHERE UserID = @UserID;
+
+			
         END;
 
         IF @CardNumber IS NOT NULL
@@ -149,6 +168,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET CardNumber = @CardNumber
             WHERE UserID = @UserID;
+
+			
         END;
 
         IF @CardType IS NOT NULL
@@ -156,6 +177,8 @@ BEGIN TRANSACTION;
             UPDATE Costumers
             SET CardType = @CardType
             WHERE UserID = @UserID;
+
+			
         END;
 		COMMIT TRANSACTION;
     END TRY
@@ -234,8 +257,8 @@ BEGIN TRANSACTION;
         END
         ELSE
         BEGIN
-            INSERT INTO Users (Email, Pass_word, Position)
-            VALUES(@Email, @Pass_word, @Position);
+            INSERT INTO Users (Email, Pass_word, Position, LastModUs)
+            VALUES(@Email, @Pass_word, @Position, default);
 
             --Obtenemos el id del nuevo usuario
             SELECT @UserID = UserID
@@ -310,6 +333,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET FirstName = @FirstName
                 WHERE UserID = @UserID;
+
+				
             END;
             
             IF @LastName IS NOT NULL
@@ -317,6 +342,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET LastName = @LastName
                 WHERE UserID = @UserID;
+
+				
             END;
             
             IF @BirthDate IS NOT NULL
@@ -324,6 +351,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET BirthDate = @BirthDate
                 WHERE UserID = @UserID;
+
+				
             END;
             
             IF @Province IS NOT NULL
@@ -331,6 +360,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET Province = @Province
                 WHERE UserID = @UserID;
+
+				
             END;
             
             IF @District IS NOT NULL
@@ -338,6 +369,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET District = @District
                 WHERE UserID = @UserID;
+
+			
             END;
             
             IF @Canton IS NOT NULL
@@ -345,6 +378,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET Canton = @Canton
                 WHERE UserID = @UserID;
+
+				
             END;
             
             IF @Neighborhood IS NOT NULL
@@ -352,6 +387,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET Neighborhood = @Neighborhood
                 WHERE UserID = @UserID;
+
+				
             END;
             
             IF @Place_address IS NOT NULL
@@ -359,6 +396,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET Place_address = @Place_address
                 WHERE UserID = @UserID;
+
+				
             END;
             
             IF @Phone IS NOT NULL AND ISNUMERIC(@Phone) = 1
@@ -368,6 +407,8 @@ BEGIN TRANSACTION;
                     UPDATE Costumers
                     SET Phone = @Phone
                     WHERE UserID = @UserID;
+
+					
                 END
                 ELSE
                 BEGIN
@@ -380,6 +421,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET CardNumber = @CardNumber
                 WHERE UserID = @UserID;
+
+				
             END;
             
             IF @CardType IS NOT NULL
@@ -387,6 +430,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET CardType = @CardType
                 WHERE UserID = @UserID;
+
+				
             END;
             
             IF @CS_Status IS NOT NULL AND @CS_Status IN ('Active', 'Inactive')
@@ -397,6 +442,8 @@ BEGIN TRANSACTION;
                 UPDATE Costumers
                 SET Cs_status = @CS_Status
                 WHERE UserID = @UserID;
+
+				
             END;
         END
         ELSE
@@ -422,3 +469,23 @@ go
 --###########################################
 --#################################################
 --#################################################
+
+Create procedure SPD_Messaging
+
+@Message_text VARCHAR(250) 
+AS
+BEgin
+Begin transaction;
+Begin try 
+Insert into ContactMessages (Message_text, LastModMessage) values 
+(@Message_text, default)
+
+Commit transaction;
+END TRY
+    BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);
+        SELECT @ErrorMessage = ERROR_MESSAGE();
+        RAISERROR (@ErrorMessage, 16, 1);
+		ROLLBACK TRANSACTION;
+		End catch;
+End;

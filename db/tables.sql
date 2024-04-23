@@ -27,8 +27,8 @@ CREATE TABLE Users (
     UserID INT PRIMARY KEY IDENTITY (1, 1),
     Email VARCHAR(50) NOT NULL,
     Pass_word VARCHAR(25) NOT NULL,
-    Position VARCHAR(50) NOT NULL
-	 ---LastModUs TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    Position VARCHAR(50) NOT NULL,
+	LastModUs TIMESTAMP 
 );
 
 -- Creaci?n de la tabla Costumers
@@ -62,8 +62,8 @@ CREATE TABLE Employees (
 -- Creaci?n de la tabla Categories
 CREATE TABLE Categories (
     CategoryId INT PRIMARY KEY,
-    CategoryName VARCHAR(50) NOT NULL
-	 ---LastModCat TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CategoryName VARCHAR(50) NOT NULL,
+	 LastModCat TIMESTAMP 
 );
 
 ---ocupa timestamp
@@ -78,8 +78,8 @@ CREATE TABLE Products (
     MinInventoryQuantity INT NOT NULL,
 	ActualInventoryInt INT NOT NULL,
     MaxWareHouseQuantity INT NOT NULL,
-    CategoryID INT FOREIGN KEY REFERENCES Categories(CategoryID)
-	---LastModProd TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CategoryID INT FOREIGN KEY REFERENCES Categories(CategoryID),
+	LastModProd TIMESTAMP 
 );
 
 ---ocupa timestamp
@@ -93,8 +93,8 @@ CREATE TABLE Factura (
     TotalImpuesto DECIMAL(10, 2),
     TotalEnvio DECIMAL(10, 2),
     TotalPagar DECIMAL(10, 2),
-    Fecha DATETIME
-	---LastModInvoice TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    Fecha DATETIME,
+	LastModInvoice TIMESTAMP 
 );
 
 ---ocupa timestamp
@@ -104,8 +104,8 @@ CREATE TABLE Purchases (
     UserId INT FOREIGN KEY REFERENCES Ids(Identification),
     Purchasedate DATETIME NOT NULL,
     Totalpurchase DECIMAL(10, 2) NOT NULL,
-    Shippingcost DECIMAL(10, 2) NOT NULL
-	---LastModPur TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    Shippingcost DECIMAL(10, 2) NOT NULL,
+	LastModPur TIMESTAMP 
 );
 
 ---ocupa timestamp
@@ -113,8 +113,8 @@ CREATE TABLE Purchases (
 CREATE TABLE ProductEntries (
     EntryId INT IDENTITY(1,1) PRIMARY KEY,
     ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
-    Quantity INT NOT NULL
-	---LastModPE TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    Quantity INT NOT NULL,
+	LastModPE TIMESTAMP 
 );
 
 
@@ -122,8 +122,8 @@ CREATE TABLE ProductEntries (
 -- Creaci?n de la tabla ContactMessages
 CREATE TABLE ContactMessages (
     MessageId int IDENTITY(1,1),
-    Message_text VARCHAR(250) NOT NULL
-	---LastModMessage TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    Message_text VARCHAR(250) NOT NULL,
+	LastModMessage TIMESTAMP
 );
 
 
@@ -137,8 +137,8 @@ CREATE TABLE ContactMessages (
 		Create table ProductsXFactura(
 	 ProductId INT FOREIGN KEY REFERENCES Products(ProductId) ,
 		FacturaID INT FOREIGN KEY REFERENCES Factura(FacturaId), 
-		Quantity int 
-	---LastModPXI TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+		Quantity int,
+		LastModPXI TIMESTAMP 
 	);
 
 
@@ -166,17 +166,17 @@ INSERT INTO Ids (Identification, Identification_Desc) VALUES
 (10, 'Jurídica');
 
 -- Inserci?n de datos en la tabla Users
-INSERT INTO Users (Email, Pass_word, Position) VALUES
-('user1@example.com', 'password1', 'Employee'),
-('user2@example.com', 'password2', 'Costumer'),
-('user3@example.com', 'password3', 'Employee'),
-('user4@example.com', 'password4', 'Employee'),
-('user5@example.com', 'password5', 'Costumer'),
-('user6@example.com', 'password6', 'Employee'),
-('user7@example.com', 'password7', 'Costumer'),
-('user8@example.com', 'password8', 'Employee'),
-('user9@example.com', 'password9', 'Employee'),
-('user10@example.com', 'password10', 'Costumer');
+INSERT INTO Users (Email, Pass_word, Position, LastModUs) VALUES
+('user1@example.com', 'password1', 'Employee', default),
+('user2@example.com', 'password2', 'Costumer', default),
+('user3@example.com', 'password3', 'Employee', default),
+('user4@example.com', 'password4', 'Employee', default),
+('user5@example.com', 'password5', 'Costumer', default),
+('user6@example.com', 'password6', 'Employee', default),
+('user7@example.com', 'password7', 'Costumer', default), 
+('user8@example.com', 'password8', 'Employee', default),
+('user9@example.com', 'password9', 'Employee', default),
+('user10@example.com', 'password10', 'Costumer', default);
 
 -- Inserci?n de datos en la tabla Costumers
 INSERT INTO Costumers (ID, UserID, FirstName, LastName, BirthDate, Province, District, Canton, NeighBorhood, Place_address, Phone, CardNumber, CardType, Cs_status) VALUES
@@ -195,51 +195,91 @@ INSERT INTO Employees (ID, FirstName, LastName, Em_Status) VALUES
 (10, 'Diego', 'S?nchez', 'Inactive');
 
 -- Inserci?n de datos en la tabla Categories
-INSERT INTO Categories (CategoryId, CategoryName) VALUES
-(1, 'Electr?nica'),
-(2, 'Ropa y Accesorios'),
-(3, 'Hogar y Jard?n'),
-(4, 'Salud y Belleza'),
-(5, 'Deportes y Actividades al Aire Libre');
+INSERT INTO Categories (CategoryId, CategoryName, LastModCat) VALUES
+(1, 'Electr?nica', default),
+(2, 'Ropa y Accesorios', default),
+(3, 'Hogar y Jard?n', default),
+(4, 'Salud y Belleza', default),
+(5, 'Deportes y Actividades al Aire Libre', default);
 
 -- Inserci?n de datos en la tabla Products
-INSERT INTO Products (ProductId, ProductName, Presentation, Size, Pr_weight, Price, MinInventoryQuantity, ActualInventoryInt, MaxWareHouseQuantity, CategoryID) VALUES
-(1, 'Adidas Essentials 3-Stripes Fleece Hoodie', 'Piece', 'M', 0.8, 49.99, 20, 30, 200, 2),
-(2, 'Aloe Shampoo', 'Bottle', '250 ml', 0.3, 5.99, 30,  30, 300, 4),
-(3, 'Android 154', 'Piece', 'One Size', 0.2, 299.99, 10,  30, 100, 1),
-(4, 'Char-Broil Performance 4-Burner Gas Grill', 'Piece', 'Large', 50, 499.99, 5,  30, 50, 3),
-(5, 'Dove Men+Care Antiperspirant Deodorant Stick', 'Piece', '50 g', 0.1, 3.49, 50,  30, 500, 4),
-(6, 'Fiskars Steel Bypass Pruning Shears', 'Piece', 'One Size', 0.3, 12.99, 20,  30, 200, 3),
-(7, 'Fitbit Charge 5 Fitness and Activity Tracker', 'Piece', 'One Size', 0.1, 149.99, 15,  30, 150, 1),
-(8, 'Garden Hose', 'Roll', '100 ft', 3.0, 49.99, 10,  30, 100, 3),
-(9, 'Levis Jeans', 'Piece', 'M', 0.8, 59.99, 20,  30, 200, 2),
-(10, 'Nike Air Force 1 Low', 'Piece', '9', 1.0, 89.99, 10,  30, 100, 2),
-(11, 'Olay Regenerist Micro-Sculpting Cream', 'Jar', '50 ml', 0.2, 24.99, 25,  30, 250, 4),
-(12, 'Samsung 65-Inch QLED 4K Smart TV', 'Box', '65 inches', 20.0, 1499.99, 5,  30, 50, 1),
-(13, 'Sony WH-1000XM4 Wireless Noise Cancelling Headphones', 'Piece', 'One Size', 0.3, 279.99, 10,  30, 100, 1),
-(14, 'Samsung Galaxy ZFlip', 'Box', '6.7 inches', 0.2, 999.99, 10,  30, 100, 1),
-(15, 'Spalding NBA Street Basketball', 'Piece', 'Official Size', 1.0, 14.99, 30,  30, 300, 5),
-(16, 'Under Armour Shoes', 'Pair', '9', 1.2, 79.99, 15,  30, 150, 2),
-(17, 'Yoga Mat', 'Piece', 'Standard', 1.5, 19.99, 15,  30, 150, 5);
+INSERT INTO Products (ProductId, ProductName, Presentation, Size, Pr_weight, Price, MinInventoryQuantity, ActualInventoryInt, MaxWareHouseQuantity, CategoryID, LastModProd) VALUES
+(1, 'Adidas Essentials 3-Stripes Fleece Hoodie', 'Piece', 'M', 0.8, 49.99, 20, 30, 200, 2, default),
+(2, 'Aloe Shampoo', 'Bottle', '250 ml', 0.3, 5.99, 30,  30, 300, 4, default),
+(3, 'Android 154', 'Piece', 'One Size', 0.2, 299.99, 10,  30, 100, 1, default),
+(4, 'Char-Broil Performance 4-Burner Gas Grill', 'Piece', 'Large', 50, 499.99, 5,  30, 50, 3, default),
+(5, 'Dove Men+Care Antiperspirant Deodorant Stick', 'Piece', '50 g', 0.1, 3.49, 50,  30, 500, 4, default),
+(6, 'Fiskars Steel Bypass Pruning Shears', 'Piece', 'One Size', 0.3, 12.99, 20,  30, 200, 3, default),
+(7, 'Fitbit Charge 5 Fitness and Activity Tracker', 'Piece', 'One Size', 0.1, 149.99, 15,  30, 150, 1, default),
+(8, 'Garden Hose', 'Roll', '100 ft', 3.0, 49.99, 10,  30, 100, 3, default),
+(9, 'Levis Jeans', 'Piece', 'M', 0.8, 59.99, 20,  30, 200, 2, default),
+(10, 'Nike Air Force 1 Low', 'Piece', '9', 1.0, 89.99, 10,  30, 100, 2, default),
+(11, 'Olay Regenerist Micro-Sculpting Cream', 'Jar', '50 ml', 0.2, 24.99, 25,  30, 250, 4, default),
+(12, 'Samsung 65-Inch QLED 4K Smart TV', 'Box', '65 inches', 20.0, 1499.99, 5,  30, 50, 1, default),
+(13, 'Sony WH-1000XM4 Wireless Noise Cancelling Headphones', 'Piece', 'One Size', 0.3, 279.99, 10,  30, 100, 1, default),
+(14, 'Samsung Galaxy ZFlip', 'Box', '6.7 inches', 0.2, 999.99, 10,  30, 100, 1, default),
+(15, 'Spalding NBA Street Basketball', 'Piece', 'Official Size', 1.0, 14.99, 30,  30, 300, 5, default),
+(16, 'Under Armour Shoes', 'Pair', '9', 1.2, 79.99, 15,  30, 150, 2, default),
+(17, 'Yoga Mat', 'Piece', 'Standard', 1.5, 19.99, 15,  30, 150, 5, default);
 -- Inserci?n de datos en la tabla Purchases
--- Insertar datos de factura de ejemplo
 
 -- Inserci?n de datos en la tabla ProductEntries
-INSERT INTO ProductEntries ( ProductId, Quantity) VALUES
-( 1, 10),
-( 2, 20),
-( 3, 5),
-( 4, 30),
-( 5, 15),
-( 6, 10),
-(7, 20),
-( 8, 5),
-( 9, 30),
-( 10, 15),
-( 11, 10),
-( 12, 20),
-( 13, 5),
-( 14, 30),
-( 15, 15),
-( 16, 30),
-( 17, 15);
+INSERT INTO ProductEntries ( ProductId, Quantity, LastModPE) VALUES
+( 1, 10, default),
+( 2, 20,  default),
+( 3, 5,  default),
+( 4, 30,  default),
+( 5, 15,  default),
+( 6, 10,  default),
+(7, 20,  default),
+( 8, 5,  default),
+( 9, 30,  default),
+( 10, 15,  default),
+( 11, 10,  default),
+( 12, 20,  default),
+( 13, 5,  default),
+( 14, 30,  default),
+( 15, 15,  default),
+( 16, 30,  default),
+( 17, 15,  default)
+
+-- Insertar datos en la tabla History
+INSERT INTO History (UserID) VALUES
+(1),
+(2),
+(3),
+(4),
+(5);
+
+-- Insertar datos en la tabla Factura (Invoice)
+INSERT INTO Factura (Identification, TotalBruto, TotalImpuesto, TotalEnvio, TotalPagar, Fecha) VALUES
+(1, 100.00, 13.00, 5.00, 118.00, '2024-04-21 09:00:00'),
+(2, 200.00, 26.00, 10.00, 236.00, '2024-04-22 10:30:00'),
+(3, 150.00, 19.50, 7.00, 176.50, '2024-04-23 11:45:00'),
+(4, 300.00, 39.00, 15.00, 354.00, '2024-04-24 13:15:00'),
+(5, 250.00, 32.50, 12.00, 294.50, '2024-04-25 14:45:00');
+
+-- Insertar datos en la tabla ProductsXFactura (ProductsXInvoice)
+INSERT INTO ProductsXFactura (ProductId, FacturaID, Quantity, LastModPXI) VALUES
+(1, 1, 5,  default),
+(2, 1, 10,  default),
+(3, 2, 3,  default),
+(4, 2, 15,  default),
+(5, 3, 8,  default)
+
+-- Insertar datos en la tabla ContactMessages
+INSERT INTO ContactMessages (Message_text) VALUES
+('¡Hola! Quisiera hacer una consulta sobre uno de sus productos.'),
+('Me gustaría realizar un pedido. ¿Cómo puedo proceder?'),
+('¿Cuál es su política de devolución?'),
+('Estoy interesado en obtener más información sobre sus servicios.'),
+('Necesito ayuda con mi cuenta. ¿Pueden ayudarme?');
+
+
+-- Inserciones en la tabla Purchases
+INSERT INTO Purchases (UserID, Purchasedate, Totalpurchase, Shippingcost, LastModPur) VALUES
+(1, '2024-04-21 09:00:00', 118.00, 5.00, default),
+(2, '2024-04-22 10:30:00', 236.00, 10.00, default),
+(3, '2024-04-23 11:45:00', 176.50, 7.00, default),
+(4, '2024-04-24 13:15:00', 354.00, 15.00, default),
+(5, '2024-04-25 14:45:00', 294.50, 12.00, default);
