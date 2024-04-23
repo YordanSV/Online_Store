@@ -6,11 +6,9 @@ DROP PROCEDURE IF EXISTS SP_Category_Maintenance;
 DROP PROCEDURE IF EXISTS SP_Product_Maintenance;
 DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update;
 DROP PROCEDURE IF EXISTS SP_Register_Clients;
-<<<<<<< HEAD
 
 
 
-=======
 DROP PROCEDURE IF EXISTS GenerarCalculoyFactura;
 DROP PROCEDURE IF EXISTS Product_Entries;
 DROP PROCEDURE IF EXISTS SP_Product_Maintenance
@@ -19,8 +17,8 @@ DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update
 DROP PROCEDURE IF EXISTS Message_Users
 DROP PROCEDURE IF EXISTS SP_Customer_Update
 DROP PROCEDURE IF EXISTS SP_Login
+DROP PROCEDURE IF EXISTS SP_Employee_Update
 drop procedure GenerateCalculusPurchase;
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
 /*Procedimientos almacenados 
 --------------------------
 ----------------------------
@@ -136,7 +134,7 @@ End;
             @ErrorState = ERROR_STATE();
 
         RAISERROR ('Error: ', @ErrorMessage, @ErrorSeverity, @ErrorState);
-    END CATCH
+    END CATCH;
 END;
 GO
 /*----------------------
@@ -197,16 +195,12 @@ BEGIN
     END CATCH;
 END;
 
-
+go
 
 
 Create procedure SP_Register_Clients
 @ID int,
-<<<<<<< HEAD
-@ID_Desc int,
-=======
 @ID_Desc VARCHAR(50),
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
 @Email VARCHAR(50),
 @Pass_word VARCHAR(50),
 @Position VARCHAR(50),
@@ -224,17 +218,15 @@ Create procedure SP_Register_Clients
 AS
 BEGIN
 
-<<<<<<< HEAD
 
 DECLARE @UserID INT;
 
 -- Verifica si el correo electrónico ya existe en la tabla
 IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
 BEGIN
-    return 'Ya existe correo';
-=======
+    RAISERROR ( 'Ya existe correo', 16, 1);
+END;
 BEGIN TRY
-DECLARE @UserID INT;
 -- Verifica si el correo electrónico ya existe en la tabla
 IF LEN(@ID_Desc) > 49 OR LEN(@Email) > 49 OR LEN(@Pass_word) > 49 OR LEN(@Position) > 49 OR
        LEN(@FirstName) > 49 OR LEN(@LastName) > 49 OR LEN(@Province) > 49 OR LEN(@District) > 49 OR
@@ -252,9 +244,8 @@ ELSE IF EXISTS (SELECT 1 FROM Users WHERE Email = @Email)
 BEGIN
 
 	RAISERROR ('El Email ya existe', 16, 1);
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
 END
-ELSE
+--ELSE
 BEGIN
 	INSERT INTO Users (Email, Pass_word, Position)
 	VALUES(@Email, @Pass_word, @Position)
@@ -280,8 +271,6 @@ BEGIN
 		(@ID, @UserID, @FirstName, @LastName)
 	END;
 END;
-<<<<<<< HEAD
-=======
 END TRY
 BEGIN CATCH
     DECLARE @ErrorMessage NVARCHAR(4000);
@@ -294,10 +283,10 @@ BEGIN CATCH
 
     RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
 END CATCH;
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
 END;
 
 GO
+/*
 EXEC SP_Register_Clients 
     @ID = 86,
     @ID_Desc = 'juridico',
@@ -316,7 +305,7 @@ EXEC SP_Register_Clients
     @CardNumber = '12345678',
     @CardType = 'Visa';
 	go
-/*----------------------------
+----------------------------
 -----------------------------
 ----------------------------
 ----------------------------
@@ -504,6 +493,7 @@ END;
 ----------------------------
 ----------------------
 -------------------*/
+go 
 CREATE PROCEDURE SP_Product_Maintenance
     @Answer VARCHAR(2),
     @ProductId INT = NULL,
@@ -606,9 +596,7 @@ BEGIN
 END;
 
 
-<<<<<<< HEAD
 
-=======
 go
     CREATE PROCEDURE Product_Entries
 	@Answer char (2),
@@ -642,7 +630,7 @@ BEGIN
 			PR.CategoryID AS CategoryID,
 			PE.EntryId AS EntryId,
 			PE.ProductId AS ProductId,
-			PE.EntryDate AS EntryDate,
+			--PE.EntryDate AS EntryDate,
 			PE.Quantity AS Quantity
 		FROM
 			ProductEntries PE
@@ -654,8 +642,10 @@ BEGIN
 		INSERT INTO Products (ProductId, ProductName, Presentation, Size, Pr_weight, Price, MinInventoryQuantity, MaxWareHouseQuantity, CategoryID)
 		VALUES (@ProductId, @ProductName, @Presentation, @Size, @Pr_weight, @Price, @MinInventoryQuantity, @MaxWareHouseQuantity, @CategoryID);
 
-		INSERT INTO ProductEntries (EntryId, ProductId, EntryDate, Quantity)
-		VALUES (@EntryId, @ProductId, @EntryDate, @Quantity);
+		--INSERT INTO ProductEntries (EntryId, ProductId, EntryDate, Quantity)
+		INSERT INTO ProductEntries (EntryId, ProductId, Quantity)
+		VALUES (@EntryId, @ProductId, @Quantity);
+		--VALUES (@EntryId, @ProductId, @EntryDate, @Quantity);
 	END
 	ELSE
 	BEGIN
@@ -767,9 +757,9 @@ BEGIN
     END CATCH;
 END;
 go
-exec SP_Login
-@Email = 'user2@example.com',
-@Password = 'password2';
+--exec SP_Login
+--@Email = 'user2@example.com',
+--@Password = 'password2';
 
 
 ---------------------------
@@ -830,4 +820,3 @@ BEGIN
     SELECT * FROM PurchaseDetails WHERE PurchaseId = @PurchaseId;
 END;
 
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d

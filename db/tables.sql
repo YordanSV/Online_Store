@@ -1,14 +1,10 @@
-use Tienda_Online
-<<<<<<< HEAD
-select * from Costumers
-select * from IDs
-select * from Users
-select * from Employees
-select UserID from Users
-where Email = 'satdcov@outlook.com'
-=======
---select * from Factura
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
+-- use Tienda_Online
+-- select * from Costumers
+-- select * from IDs
+-- select * from Users
+-- select * from Employees
+-- select UserID from Users
+-- where Email = 'satdcov@outlook.com'
 
 DROP TABLE IF EXISTS ProductEntries;
 DROP TABLE IF EXISTS ContactMessages;
@@ -107,18 +103,6 @@ CREATE TABLE Factura (
 
 ---ocupa timestamp
 -- Creaci?n de la tabla Purchases
-<<<<<<< HEAD
-
-=======
-CREATE TABLE Purchases (
-    PurchaseID INT IDENTITY(1,1) PRIMARY KEY,
-    UserId INT FOREIGN KEY REFERENCES Ids(Identification),
-    Purchasedate DATETIME NOT NULL,
-    Totalpurchase DECIMAL(10, 2) NOT NULL,
-    Shippingcost DECIMAL(10, 2) NOT NULL
-	---LastModPur TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
->>>>>>> fc8557b8d48d1b502bc235f0d915d13fe981fdea
 
 ---ocupa timestamp
 -- Creaci?n de la tabla ProductEntries

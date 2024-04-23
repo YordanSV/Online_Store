@@ -33,10 +33,6 @@ async function getCustomer(userID) {
                 console.log('exito')
                 response.json().then(data => {
                     console.log(data)
-<<<<<<< HEAD
-=======
-
->>>>>>> 45ebe19c6213616dcbe9b46f7a42cad14ac0acd6
                     customer=data
                 });
             } else {
@@ -113,11 +109,7 @@ function generateFlightCard(product) {
                     <strong class='price'>Precio por kilogramo:</strong> ${product.Pr_weight}<br>
                     <strong>Precio:</strong> $${product.Price}
                 </p>
-<<<<<<< HEAD
-                <a href="#" class="mt-auto btn btn-primary agregar-carrito">Add to cart</a>
-=======
                 <a href="#" class="mt-auto btn btn-primary agregar-carrito">Agregar al carrito</a>
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
             </div>
         </div>
     </div>

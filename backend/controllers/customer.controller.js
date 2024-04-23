@@ -16,36 +16,16 @@ export const getProducts = async (req, res) => {
     }
 }
 
-<<<<<<< HEAD
 export const customerUpdate = async (req, res) => {
-    console.log("Paso controller")
-
-    const { column, customerID, newValue } = req.body;
-
-    const answer = column == "FirstName" ? "1" :
-        column == "LastName" ? "2" :
-            column == "BirthDate" ? "3" :
-                column == "Province" ? "4" :
-                    column == "District" ? "5" :
-                        column == "Canton" ? "6" :
-                            column == "NeighBorhood" ? "7" :
-                                column == "Place_address" ? "8" :
-                                    column == "Phone" ? "9" :
-                                        column == "CardNumber" ? "10" :
-                                            "11";
-
+    const { column, userID, newValue } = req.body;
     try {
         const pool = await getConnection();
         await pool.request()
-            .input("answer", sql.VarChar(50), answer)
-            .input("customerID", sql.Int, customerID)
-            .input("newValue", sql.VarChar(50), newValue)
-            .input("column", sql.VarChar(50), column)
-            .query("EXEC SP_Costumer_Update @Answer = @" + answer + ", @UserID = @" + customerID.toString() + ", @@" + column + " = @" + newValue);
-        res.json({ column, customerID, newValue });
+            .query("EXEC SP_Customer_Update @UserID = " + userID.toString() + ", @" + column + " = " + newValue);
+            res.status(200).json({ message: "Cliente actualizado exitosamente" });
     } catch (error) {
         console.error("Error al actualizar customer:", error);
-        res.status(500).json({ error: "Error interno del servidor al crear un nuevo producto." });
+        res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -77,33 +57,6 @@ export const registerCustomer = async (req, res) => {
     } catch (error) {
         console.error("Error al insertar customer:", error);
         res.status(500).json({ error: "Error interno del servidor al insertar un nuevo cliente." });
-    }
-}
-=======
-
-
-// customerUpdate
-export const customerUpdate = async (req, res) => {
-    console.log("Paso controller")
-
-    const { column, userID, newValue } = req.body;
-
-    try {
-        const pool = await getConnection();
-        const request = pool.request()
-        request.input("UserID", sql.Int, userID);
-        request.input(column, sql.VarChar(50), newValue);
-        const result = await request.execute('SP_Customer_Update');
-
-
-    } catch (error) {
-        console.error('Error al actualizar:', error);
-        if (error && error.message) {
-            // Aquí puedes usar el mensaje de error en tu respuesta al cliente
-            res.status(400).json({ error: error.message });
-        } else {
-            res.status(400).json({ error: 'Error al actualizar' });
-        }
     }
 }
 
@@ -167,4 +120,3 @@ export const addInventory = async (req, res) => {
         }
     }
 }
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d

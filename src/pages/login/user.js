@@ -1,24 +1,5 @@
 
 async function getUser() {
-<<<<<<< HEAD
-    try {
-        const response = await axios.get('http://localhost:3000/login');
-        const users = response.data;
-
-        users.forEach(user => {
-            if (emailInput.value === user.Email && passwordInput.value === user.Pass_word) {
-                selectUser = user;
-                // console.log('El usuario existe:', user);
-                // Almacenar el usuario en el LocalStorage
-                localStorage.setItem('user', JSON.stringify(selectUser));
-                // Redireccionar a otra página
-                window.location.href = "../../index.html";
-            }
-        });
-
-        if (!selectUser) {
-            console.log('El usuario no existe o la clave es incorrecta');
-=======
     var emailInput = document.getElementById("email").value;
     var passwordInput = document.getElementById("password").value;
     fetch('/login', {
@@ -32,7 +13,7 @@ async function getUser() {
         })
     })
     .then(response => {
-        console.log(response)
+        // console.log(response)
         if (response.ok) {
             return response.json();
         } else {
@@ -42,11 +23,10 @@ async function getUser() {
                 console.error('Failed login:', data.error);
                 // Handle failure
             });
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
         }
     })
     .then(user => {
-        console.log(user);
+        // console.log(user);
         if (user && user.UserID) {
             
             if(user.Puesto == 'Costumer'){

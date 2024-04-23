@@ -3,7 +3,7 @@ import { getConnection, sql } from "../database/conexionBD"
 export const insertRegister = async (req, res) => {
     try {
         const { name, identification, surname, birthdate, email, password, province, canton, district, position, neighborhood, address, phone, cardNumber, cardType, idDesc } = req.body;
-        console.log(idDesc)
+        console.log(name)
 
         const pool = await getConnection();
         const request = pool.request();
@@ -23,22 +23,6 @@ export const insertRegister = async (req, res) => {
         request.input('Phone', sql.VarChar(20), phone);
         request.input('CardNumber', sql.VarChar(16), cardNumber);
         request.input('CardType', sql.VarChar(20), cardType);
-<<<<<<< HEAD
-        
-        const result = await request.execute('SP_Register_Clients');
-
-        const returnValue = result.returnValue;
-        if (returnValue === 2) {
-            res.status(400).json({ error: 'La identificación ya existe' });
-        }else if (returnValue === 1) {
-            res.status(400).json({ error: 'El correo electrónico ya existe' });
-        } else{
-            res.json(result.recordset);
-        }
-    } catch (error) {
-        console.error('Error al insertar registro:', error);
-        res.status(500).json({ error: 'Error al insertar registro' });
-=======
         const result = await request.execute('SP_Register_Clients');
         
     } catch (error) {
@@ -50,7 +34,6 @@ export const insertRegister = async (req, res) => {
         } else {
             res.status(400).json({ error: 'Error al insertar registro' });
         }
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
     }
 }
 

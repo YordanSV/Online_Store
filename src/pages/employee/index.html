@@ -7,10 +7,8 @@
     <title>Employee</title>
     <!-- Bootstrap CSS -->
     <link href="./style.css" rel="stylesheet">
-<<<<<<< HEAD
     <script type="module" src="product.js"></script>
-    <script type="module" src="customer.js"></script>
-=======
+    <!-- <script type="module" src="customer.js"></script> -->
     <!-- <script type="module" src="product.js"></script> -->
     <!-- <script type="module" src="customer.js"></script> -->
     <script type="module" src="updateCustomer.js"></script>
@@ -26,6 +24,7 @@
             margin-bottom: 20px;
             border-radius: 8px;
         }
+
         h2 {
             border-bottom: 2px solid #333;
             padding-bottom: 10px;
@@ -34,42 +33,10 @@
 
         }
     </style>
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-<<<<<<< HEAD
-    <div class="container">
-        <h1>Update Customer</h1>
-        <form id="">
-            <div class="dropdown">
-                <button class="dropbtn">Column Selector</button>
-                <div class="dropdown-content">
-                    <a href="#" onclick="customerUpdate(event)">FirstName</a>
-                    <a href="#" onclick="customerUpdate(event)">LastName</a>
-                    <a href="#" onclick="customerUpdate(event)">BirthDate</a>
-                    <a href="#" onclick="customerUpdate(event)">Province</a>
-                    <a href="#" onclick="customerUpdate(event)">District</a>
-                    <a href="#" onclick="customerUpdate(event)">Canton</a>
-                    <a href="#" onclick="customerUpdate(event)">NeighBorhood</a>
-                    <a href="#" onclick="customerUpdate(event)">Place_address</a>
-                    <a href="#" onclick="customerUpdate(event)">Phone</a>
-                    <a href="#" onclick="customerUpdate(event)">CardNumber</a>
-                    <a href="#" onclick="customerUpdate(event)">CardType</a>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="customerID">Customer ID</label>
-                <input type="number" class="form-control" id="customerID" name="customerID">
-                <label for="newValue">New Value</label>
-                <input type="text" class="form-control" id="newValue" name="newValue" required>
-            </div>
-            <button id="customerUpdatebtn" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
-    <div class="container">
-=======
     <section>
         <h1>Actualizar Persona</h1>
         <form>
@@ -92,14 +59,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="customerID">User ID</label>
+                <label for="updateUserID">User ID</label>
                 <input type="number" class="form-control" id="updateUserID" name="customerID" required>
-                <label for="newValue">Nuevo valor</label>
+                <label for="updateNewValue">Nuevo valor</label>
                 <input type="text" class="form-control" id="updateNewValue" name="newValue" required>
             </div>
             <button id="customerUpdatebtn" class="btn btn-primary">Submit</button>
             <div id="customerMessageUpdate" style="display: none; color: red;">
             </div>
+        </form>
     </section>
     <section>
         <h1>Ver historial de compras</h1>
@@ -117,6 +85,7 @@
             <div id="facturasContainer" class="container">
                 <!-- Aquí se inyectarán las facturas -->
             </div>
+        </form>
     </section>
     <section>
         <h1>Mantenimiento de inventario</h1>
@@ -125,7 +94,6 @@
         </div>
     </section>
     <section>
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
         <h1>Create Product</h1>
         <form id="productForm">
             <div class="form-group">
@@ -164,12 +132,9 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-<<<<<<< HEAD
-    </div>
-    <script src="customer.js"></script>
-=======
     </section>
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
+
+    <script src="customer.js"></script>
 
     <!-- Bootstrap JS and dependencies (jQuery) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

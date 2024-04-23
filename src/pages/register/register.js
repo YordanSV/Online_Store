@@ -10,7 +10,6 @@ const province = document.getElementById("province").value;
 const canton = document.getElementById("canton").value;
 const district = document.getElementById("district").value;
 
-<<<<<<< HEAD
 const newUser = {
     name: firtName,
     identification: identification,
@@ -62,8 +61,6 @@ const newUser = {
 
 
 
-=======
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
 
 const cantonsByProvince = {
     "San José": ["San José", "Escazú", "Desamparados", "Alajuelita", "Montes de Oca"],
@@ -193,7 +190,7 @@ document.getElementById("registerButton").addEventListener("click", function (ev
         .then(response => {
             if (response.ok) {
                 document.getElementById("mensajeError").textContent = 'Se ha registrado exitosamente';
-                document.getElementById("mensajeError").style.display = 'inline';
+                document.getElementById("mensajeError").style.display = 'block';
                 console.log('Se ha registrado exitosamente');
                 // Handle success
             } else {
@@ -201,11 +198,7 @@ document.getElementById("registerButton").addEventListener("click", function (ev
                 response.json().then(data => {
                     document.getElementById("mensajeError").textContent = data.error;
                     document.getElementById("mensajeError").style.display = 'block';
-<<<<<<< HEAD
                     console.error('Failed register:', data.error);
-=======
-                    console.error('Failed registerasd:', data.error);
->>>>>>> b2b1316817677c9c8487cb30224c42461b5c123d
                     // Handle failure
                 });
             }
