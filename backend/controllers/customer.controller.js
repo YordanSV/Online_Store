@@ -16,30 +16,47 @@ export const getProducts = async (req, res) => {
     }
 }
 
-
-
-// customerUpdate
 export const customerUpdate = async (req, res) => {
-    console.log("Paso controller")
-
     const { column, userID, newValue } = req.body;
+    try {
+        const pool = await getConnection();
+        await pool.request()
+            .query("EXEC SP_Customer_Update @UserID = " + userID.toString() + ", @" + column + " = " + newValue);
+            res.status(200).json({ message: "Cliente actualizado exitosamente" });
+    } catch (error) {
+        console.error("Error al actualizar customer:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+export const registerCustomer = async (req, res) => {
+    console.log("Paso registerCustomer")
+
+    const { name, identification, surname, birthdate, email, password, province, canton, district } = req.body;
+
+
 
     try {
         const pool = await getConnection();
-        const request = pool.request()
-        request.input("UserID", sql.Int, userID);
-        request.input(column, sql.VarChar(50), newValue);
-        const result = await request.execute('SP_Customer_Update');
-
-
+        await pool.request()
+            .input("UserID", sql.Int, identification) // Assuming you have a userId available
+            .input("FirstName", sql.VarChar(50), name)
+            .input("LastName", sql.VarChar(50), surname)
+            .input("BirthDate", sql.Date, new Date(birthdate))
+            .input("Province", sql.VarChar(50), province)
+            .input("District", sql.VarChar(50), district)
+            .input("Canton", sql.VarChar(50), canton)
+            .input("NeighBorhood", sql.VarChar(50), neighborhood)
+            .input("Place_address", sql.VarChar(100), place_address)
+            .input("Phone", sql.VarChar(15), phone)
+            .input("CardNumber", sql.VarChar(16), cardNumber)
+            .input("CardType", sql.VarChar(50), cardType)
+            .query("INSERT INTO Costumers (UserID, FirstName, LastName, BirthDate, Province, District, Canton, NeighBorhood, Place_address, Phone, CardNumber, CardType) VALUES (@UserID, @FirstName, @LastName, @BirthDate, @Province, @District, @Canton, @NeighBorhood, @Place_address, @Phone, @CardNumber, @CardType)");
+        res.status(200).json({ message: "Customer inserted successfully" });
     } catch (error) {
-        console.error('Error al actualizar:', error);
-        if (error && error.message) {
-            // Aquí puedes usar el mensaje de error en tu respuesta al cliente
-            res.status(400).json({ error: error.message });
-        } else {
-            res.status(400).json({ error: 'Error al actualizar' });
-        }
+        console.error("Error al insertar customer:", error);
+        res.status(500).json({ error: "Error interno del servidor al insertar un nuevo cliente." });
     }
 }
 

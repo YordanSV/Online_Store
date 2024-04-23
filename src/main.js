@@ -33,10 +33,6 @@ async function getCustomer(userID) {
                 console.log('exito')
                 response.json().then(data => {
                     console.log(data)
-<<<<<<< HEAD
-=======
-
->>>>>>> 45ebe19c6213616dcbe9b46f7a42cad14ac0acd6
                     customer=data
                 });
             } else {

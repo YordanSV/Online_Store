@@ -13,7 +13,7 @@ async function getUser() {
         })
     })
     .then(response => {
-        console.log(response)
+        // console.log(response)
         if (response.ok) {
             return response.json();
         } else {
@@ -26,7 +26,7 @@ async function getUser() {
         }
     })
     .then(user => {
-        console.log(user);
+        // console.log(user);
         if (user && user.UserID) {
             
             if(user.Puesto == 'Costumer'){

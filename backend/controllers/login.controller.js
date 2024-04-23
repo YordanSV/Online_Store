@@ -14,7 +14,7 @@ export const getUserDB = async (req, res) => {
 
         const result = await request.execute('SP_Login');
         const userData = result.recordset[0];
-        console.log(userData)
+        // console.log(userData)
         // Enviar una respuesta con los datos del usuario al cliente
         // res.status(200).json(userData);
         res.json(userData);

@@ -7,6 +7,8 @@
     <title>Employee</title>
     <!-- Bootstrap CSS -->
     <link href="./style.css" rel="stylesheet">
+    <script type="module" src="product.js"></script>
+    <!-- <script type="module" src="customer.js"></script> -->
     <!-- <script type="module" src="product.js"></script> -->
     <!-- <script type="module" src="customer.js"></script> -->
     <script type="module" src="updateCustomer.js"></script>
@@ -22,6 +24,7 @@
             margin-bottom: 20px;
             border-radius: 8px;
         }
+
         h2 {
             border-bottom: 2px solid #333;
             padding-bottom: 10px;
@@ -56,14 +59,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="customerID">User ID</label>
+                <label for="updateUserID">User ID</label>
                 <input type="number" class="form-control" id="updateUserID" name="customerID" required>
-                <label for="newValue">Nuevo valor</label>
+                <label for="updateNewValue">Nuevo valor</label>
                 <input type="text" class="form-control" id="updateNewValue" name="newValue" required>
             </div>
             <button id="customerUpdatebtn" class="btn btn-primary">Submit</button>
             <div id="customerMessageUpdate" style="display: none; color: red;">
             </div>
+        </form>
     </section>
     <section>
         <h1>Ver historial de compras</h1>
@@ -81,6 +85,7 @@
             <div id="facturasContainer" class="container">
                 <!-- Aquí se inyectarán las facturas -->
             </div>
+        </form>
     </section>
     <section>
         <h1>Mantenimiento de inventario</h1>
@@ -128,6 +133,8 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </section>
+
+    <script src="customer.js"></script>
 
     <!-- Bootstrap JS and dependencies (jQuery) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

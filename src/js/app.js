@@ -3,8 +3,8 @@ import config from './config'
 import productsRotes from '../../backend/routes/products.routes'
 import customerRotes from '../../backend/routes/customer.routes'
 import registerRotes from '../../backend/routes/register.routes'
-import loginRotes from '../../backend/routes/login.routes'
 
+import loginRotes from '../../backend/routes/login.routes'
 import cors from 'cors'; // Importa el middleware CORS
 import path from 'path';
 //const cors = require('cors');

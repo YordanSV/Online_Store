@@ -3,7 +3,7 @@ import { getConnection, sql } from "../database/conexionBD"
 export const insertRegister = async (req, res) => {
     try {
         const { name, identification, surname, birthdate, email, password, province, canton, district, position, neighborhood, address, phone, cardNumber, cardType, idDesc } = req.body;
-        console.log(idDesc)
+        console.log(name)
 
         const pool = await getConnection();
         const request = pool.request();
