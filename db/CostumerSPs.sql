@@ -4,6 +4,7 @@ DROP PROCEDURE IF EXISTS SP_Customer_Update;
 DROP PROCEDURE IF EXISTS SP_Register_Clients;
 DROP PROCEDURE IF EXISTS SP_Employee_to_Costumer_Update
 DROP PROCEDURE IF EXISTS ObtenerFacturas
+DROP PROCEDURE IF EXISTS SPD_Messaging;
 
 
 ---cambiar nombre a GetInvoice
@@ -489,3 +490,4 @@ END TRY
 		ROLLBACK TRANSACTION;
 		End catch;
 End;
+Go

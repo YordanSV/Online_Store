@@ -7,6 +7,7 @@ DROP PROCEDURE IF EXISTS SP_Employee_Registration;
 DROP PROCEDURE IF EXISTS SP_SelectProductInventory;
 DROP PROCEDURE IF EXISTS SP_InsertProductEntry;
 DROP PROCEDURE IF EXISTS addInventory;
+Drop procedure if exists SP_AddInventoryToMax;
 
 go
 CREATE PROCEDURE addInventory
@@ -257,6 +258,7 @@ BEGIN TRANSACTION;
     INSERT INTO ProductEntries (ProductId, Quantity)
     VALUES (@ProductId, @Quantity);
 END;
+Go;
 
 --############################################
 --############################################
@@ -266,8 +268,7 @@ END;
 --#################################################
 --#################################################
 
-CREATE PROCEDURE SP_AddInventoryToMax
-AS
+CREATE PROCEDURE SP_AddInventoryToMax AS
 BEGIN
 BEGIN TRANSACTION;
     DECLARE @ProductId INT;

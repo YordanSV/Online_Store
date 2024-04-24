@@ -2,6 +2,7 @@ use Tienda_Online
 DROP PROCEDURE IF EXISTS AgregarCompra;
 DROP PROCEDURE IF EXISTS Realizar_Compra;
 DROP PROCEDURE IF EXISTS SP_InsertProductEntry;
+DROP PROCEDURE IF EXISTS Complete_purchase;
 
 
 -----Cambiar nombre a add purchase
@@ -73,5 +74,60 @@ BEGIN
     VALUES (@ProductId, @Quantity, default);
 
 	Commit transaction;
-END;
+END
+Go;
+
+
+
+----------------##################
+---------------###################
+----------------##################
+---------------###################
+----------------##################
+---------------###################
+----------------##################
+---------------###################
+----------------##################
+---------------###################
+----------------##################
+---------------###################
+
+
+CREATE PROCEDURE Complete_purchase
+    @ProductName VARCHAR(100),
+	@Quantity int
+AS
+BEGIN
+Begin transaction;
+    SET NOCOUNT ON;
+
+    DECLARE @ProductId INT;
+
+    -- Buscar el ID del producto basado en el nombre proporcionado
+    SELECT @ProductId = ProductId
+    FROM Products
+    WHERE ProductName = @ProductName;
+
+    IF @ProductId IS NOT NULL
+    BEGIN
+        -- Restar la cantidad del producto de ProductEntries
+        UPDATE ProductEntries
+        SET Quantity = Quantity - @Quantity
+        WHERE ProductId = @ProductId;
+		
+        
+		UPDATE Products
+        SET ActualInventoryInt = ActualInventoryInt - @Quantity
+        WHERE ProductId = @ProductId;
+		Commit transaction;
+    END
+    ELSE
+    BEGIN
+              RAISERROR ('Ocurrió un error al intentar comprar el producto', 16, 1);
+			  Rollback transaction;
+    END
+
+END
+
+
 
